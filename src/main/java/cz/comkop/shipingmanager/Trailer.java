@@ -10,7 +10,7 @@ public class Trailer {
      */
     private final String[][] trailerModel;
 
-    private final ArrayList<Item> loadedItems = new ArrayList<>();
+    private final ArrayList<ItemTemplate> loadedItemTemplates = new ArrayList<>();
     private String name = "";
     private char fullSpaceChar = 'A';
     private int totalWidth = 0;
@@ -60,16 +60,16 @@ public class Trailer {
         }
         totalWeight += selectedItems.getSelectedItems().get(indexOfGoods).getWeight();
         setFieldsOfLoadedGoods(indexOfGoods, cX, cY, selectedItems);
-        freeSquareCentimeters -= loadedItems.get(loadedItems.size() - 1).getLength() * loadedItems.get(loadedItems.size() - 1).getWidth();
+        freeSquareCentimeters -= loadedItemTemplates.get(loadedItemTemplates.size() - 1).getLength() * loadedItemTemplates.get(loadedItemTemplates.size() - 1).getWidth();
         fullSpaceChar++;
         //System.out.println("Coordinates X: " + loadedGoods.get(loadedGoods.size() - 1).getX() + ",Y: " + loadedGoods.get(loadedGoods.size() - 1).getY() + " Added! Goods: " + loadedGoods.get(loadedGoods.size() - 1).getName());
     }
 
     private void setFieldsOfLoadedGoods(int indexOfGoods, int cX, int cY, SelectedItems selectedItems) {
-        loadedItems.add(selectedItems.getSelectedItems().get(indexOfGoods));
-        loadedItems.get(loadedItems.size() - 1).setX(cX);
-        loadedItems.get(loadedItems.size() - 1).setY(cY);
-        loadedItems.get(loadedItems.size() - 1).setFullCharName(fullSpaceChar);
+        loadedItemTemplates.add(selectedItems.getSelectedItems().get(indexOfGoods));
+        loadedItemTemplates.get(loadedItemTemplates.size() - 1).setX(cX);
+        loadedItemTemplates.get(loadedItemTemplates.size() - 1).setY(cY);
+        loadedItemTemplates.get(loadedItemTemplates.size() - 1).setFullCharName(fullSpaceChar);
         selectedItems.getSelectedItems().remove(indexOfGoods);
     }
 
@@ -114,17 +114,17 @@ public class Trailer {
      * @return true or false
      */
     private boolean doesCurrentGoodsFitForTheseCoordinates(int x, int y, int indexOfGoods, SelectedItems selectedItems) {
-        Item item = selectedItems.getSelectedItems().get(indexOfGoods);
+        ItemTemplate itemTemplate = selectedItems.getSelectedItems().get(indexOfGoods);
         breakHere:
-        if (item.getWidth() + x <= totalWidth && item.getLength() + y <= totalLength) {
-            if (freeCoordinatesChecker2(x, (x + item.getWidth()), y, (y + item.getLength()))) {
+        if (itemTemplate.getWidth() + x <= totalWidth && itemTemplate.getLength() + y <= totalLength) {
+            if (freeCoordinatesChecker2(x, (x + itemTemplate.getWidth()), y, (y + itemTemplate.getLength()))) {
                 return true;
             }
             break breakHere;
         }
-        if (item.isTurnAble() && item.getLength() + x <= totalWidth && item.getWidth() + y <= totalLength) {
-            if (freeCoordinatesChecker2(x, (x + item.getLength()), y, (y + item.getWidth()))) {
-                item.setTurnGoods(true);
+        if (itemTemplate.isTurnAble() && itemTemplate.getLength() + x <= totalWidth && itemTemplate.getWidth() + y <= totalLength) {
+            if (freeCoordinatesChecker2(x, (x + itemTemplate.getLength()), y, (y + itemTemplate.getWidth()))) {
+                itemTemplate.setTurnGoods(true);
                 return true;
             }
             return false;
@@ -155,8 +155,8 @@ public class Trailer {
     private boolean freeCoordinatesChecker2(int coordinateXStart, int coordinateXEnd, int coordinateYStart, int coordinateYEnd) {
         for (int y = coordinateYStart; y < coordinateYEnd; y++) {
             for (int x = coordinateXStart; x < coordinateXEnd; x++) {
-                for (int i = 0; i < loadedItems.size(); i++) {
-                    if (x >= loadedItems.get(i).getX() && x <= loadedItems.get(i).getX() + loadedItems.get(i).getWidth() - 1 && y >= loadedItems.get(i).getY() && y <= loadedItems.get(i).getY() + loadedItems.get(i).getLength() - 1) {
+                for (int i = 0; i < loadedItemTemplates.size(); i++) {
+                    if (x >= loadedItemTemplates.get(i).getX() && x <= loadedItemTemplates.get(i).getX() + loadedItemTemplates.get(i).getWidth() - 1 && y >= loadedItemTemplates.get(i).getY() && y <= loadedItemTemplates.get(i).getY() + loadedItemTemplates.get(i).getLength() - 1) {
                         return false;
                     }
                 }
@@ -166,12 +166,12 @@ public class Trailer {
     }
 
     private boolean searchFreeSpaceOnTrailer2(SelectedItems selectedItems, int indexOfGoods) {
-        if (loadedItems.size() != 0) {
+        if (loadedItemTemplates.size() != 0) {
             for (int y = 0; y < totalLength; y++) {
                 for (int x = 0; x < totalWidth; ) {
-                    for (int i = 0; i < loadedItems.size(); i++) {
-                        if (x >= loadedItems.get(i).getX() && x <= loadedItems.get(i).getX() + loadedItems.get(i).getWidth() - 1 && y >= loadedItems.get(i).getY() && y <= loadedItems.get(i).getY() + loadedItems.get(i).getLength() - 1) {
-                            x += loadedItems.get(i).getWidth();
+                    for (int i = 0; i < loadedItemTemplates.size(); i++) {
+                        if (x >= loadedItemTemplates.get(i).getX() && x <= loadedItemTemplates.get(i).getX() + loadedItemTemplates.get(i).getWidth() - 1 && y >= loadedItemTemplates.get(i).getY() && y <= loadedItemTemplates.get(i).getY() + loadedItemTemplates.get(i).getLength() - 1) {
+                            x += loadedItemTemplates.get(i).getWidth();
                         }
                     }
                     if (doesCurrentGoodsFitForTheseCoordinates(x, y, indexOfGoods, selectedItems)) {
@@ -188,8 +188,8 @@ public class Trailer {
         return true;
     }
 
-    public ArrayList<Item> getLoadedItems() {
-        return loadedItems;
+    public ArrayList<ItemTemplate> getLoadedItems() {
+        return loadedItemTemplates;
     }
 
     public void loading(SelectedItems selectedItems, RemovedItems removedItems) {
@@ -266,7 +266,7 @@ public class Trailer {
     public void printOutlineOfTrailer2() {
         String usedCharnames = "";
         String foundCharnames = "";
-        Item[][] outlineItems = new Item[loadedItems.size()][loadedItems.size()];
+        ItemTemplate[][] outlineItemTemplates = new ItemTemplate[loadedItemTemplates.size()][loadedItemTemplates.size()];
         ArrayList<String> outline = new ArrayList<>();
         int countYDifference = 0;
         int xS = 0;
@@ -274,37 +274,37 @@ public class Trailer {
         int yS = 0;
         int yE = 0;
         int previousY = 0;
-        for (int i = 0; i < loadedItems.size(); i++) {
+        for (int i = 0; i < loadedItemTemplates.size(); i++) {
             if (i == 0) {
-                outline.add(String.valueOf(loadedItems.get(0).getFullCharName()));
+                outline.add(String.valueOf(loadedItemTemplates.get(0).getFullCharName()));
                 usedCharnames += "A";
-            } else if (loadedItems.get(i).getY() > previousY) {
-                outline.add(String.valueOf(loadedItems.get(i).getFullCharName()));
-                previousY = loadedItems.get(i).getY();
-                usedCharnames += loadedItems.get(i).getFullCharName();
+            } else if (loadedItemTemplates.get(i).getY() > previousY) {
+                outline.add(String.valueOf(loadedItemTemplates.get(i).getFullCharName()));
+                previousY = loadedItemTemplates.get(i).getY();
+                usedCharnames += loadedItemTemplates.get(i).getFullCharName();
             }
         }
 
         for (int i = 0; i < outline.size(); i++) {
-            for (int j = 0; j < loadedItems.size(); j++) {
-                if (outline.get(i).equals(String.valueOf(loadedItems.get(j).getFullCharName()))) {
-                    xS = loadedItems.get(j).getX();
-                    yS = loadedItems.get(j).getY();
-                    xE = xS + loadedItems.get(j).getX() - 1;
-                    yE = yE + loadedItems.get(j).getY() - 1;
-                    for (int k = j + 1; k < loadedItems.size(); k++) {
-                        if (xS >= loadedItems.get(i).getX() && xE <= loadedItems.get(i).getX() + loadedItems.get(i).getWidth() - 1 && yS >= loadedItems.get(i).getY() && yE <= loadedItems.get(i).getY() + loadedItems.get(i).getLength() - 1) {
-                            if (loadedItems.get(i).getY() > yS) {
+            for (int j = 0; j < loadedItemTemplates.size(); j++) {
+                if (outline.get(i).equals(String.valueOf(loadedItemTemplates.get(j).getFullCharName()))) {
+                    xS = loadedItemTemplates.get(j).getX();
+                    yS = loadedItemTemplates.get(j).getY();
+                    xE = xS + loadedItemTemplates.get(j).getX() - 1;
+                    yE = yE + loadedItemTemplates.get(j).getY() - 1;
+                    for (int k = j + 1; k < loadedItemTemplates.size(); k++) {
+                        if (xS >= loadedItemTemplates.get(i).getX() && xE <= loadedItemTemplates.get(i).getX() + loadedItemTemplates.get(i).getWidth() - 1 && yS >= loadedItemTemplates.get(i).getY() && yE <= loadedItemTemplates.get(i).getY() + loadedItemTemplates.get(i).getLength() - 1) {
+                            if (loadedItemTemplates.get(i).getY() > yS) {
 
-                            } else if (loadedItems.get(i).getY() == yS) {
-                                //  outline.add(String.valueOf(loadedItems.get(i).getFullCharName()));
+                            } else if (loadedItemTemplates.get(i).getY() == yS) {
+                                //  outline.add(String.valueOf(loadedItemTemplates.get(i).getFullCharName()));
                             } else {
 
                             }
-                        } else if (loadedItems.get(i).getX() == xS) {
-                            if (loadedItems.get(i).getY() > yS) {
-                                // outline.add(String.valueOf(loadedItems.get(i).getFullCharName()));
-                            } else if (loadedItems.get(i).getY() == yS) {
+                        } else if (loadedItemTemplates.get(i).getX() == xS) {
+                            if (loadedItemTemplates.get(i).getY() > yS) {
+                                // outline.add(String.valueOf(loadedItemTemplates.get(i).getFullCharName()));
+                            } else if (loadedItemTemplates.get(i).getY() == yS) {
 
                             } else {
 
@@ -321,38 +321,38 @@ public class Trailer {
 //
 //
 //
-//        for (int i = 0; i < loadedItems.size(); i++) {
+//        for (int i = 0; i < loadedItemTemplates.size(); i++) {
 //            if (i != 0) {
-//                if (loadedItems.get(i).getX() > xS) {
-//                    if (loadedItems.get(i).getY() > yS) {
+//                if (loadedItemTemplates.get(i).getX() > xS) {
+//                    if (loadedItemTemplates.get(i).getY() > yS) {
 //
-//                    } else if (loadedItems.get(i).getY() == yS) {
-//                      //  outline.add(String.valueOf(loadedItems.get(i).getFullCharName()));
+//                    } else if (loadedItemTemplates.get(i).getY() == yS) {
+//                      //  outline.add(String.valueOf(loadedItemTemplates.get(i).getFullCharName()));
 //                    } else {
 //
 //                    }
-//                } else if (loadedItems.get(i).getX() == xS) {
-//                    if (loadedItems.get(i).getY() > yS) {
-//                       // outline.add(String.valueOf(loadedItems.get(i).getFullCharName()));
-//                    } else if (loadedItems.get(i).getY() == yS) {
+//                } else if (loadedItemTemplates.get(i).getX() == xS) {
+//                    if (loadedItemTemplates.get(i).getY() > yS) {
+//                       // outline.add(String.valueOf(loadedItemTemplates.get(i).getFullCharName()));
+//                    } else if (loadedItemTemplates.get(i).getY() == yS) {
 //
 //                    } else {
 //
 //                    }
 //                } else {
-//                    if (loadedItems.get(i).getY() > yS) {
-//                       // outline.add(String.valueOf(loadedItems.get(i).getFullCharName()));
-//                    } else if (loadedItems.get(i).getY() == yS) {
+//                    if (loadedItemTemplates.get(i).getY() > yS) {
+//                       // outline.add(String.valueOf(loadedItemTemplates.get(i).getFullCharName()));
+//                    } else if (loadedItemTemplates.get(i).getY() == yS) {
 //                    } else {
 //
 //                    }
 //                }
 //            } else {
-//               // outline.add(String.valueOf(loadedItems.get(i).getFullCharName()));
-//                xS = loadedItems.get(i).getX();
-//                yS = loadedItems.get(i).getY();
-//                xE = xS + loadedItems.get(i).getWidth() - 1;
-//                yE = yS + loadedItems.get(i).getLength() - 1;
+//               // outline.add(String.valueOf(loadedItemTemplates.get(i).getFullCharName()));
+//                xS = loadedItemTemplates.get(i).getX();
+//                yS = loadedItemTemplates.get(i).getY();
+//                xE = xS + loadedItemTemplates.get(i).getWidth() - 1;
+//                yE = yS + loadedItemTemplates.get(i).getLength() - 1;
 //            }
 //        }
 

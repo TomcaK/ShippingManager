@@ -1,6 +1,7 @@
 package cz.comkop.shipingmanager;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +13,7 @@ public class ConsoleUI {
     private Scanner scanner = new Scanner(System.in);
     private static final String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
     private static final String TRAILER_REGEX = "[1-5]+";
-    Matcher matcher;//TODO any reason to use package level visibility?
+    private Matcher matcher;//TODO any reason to use package level visibility?
 
 
     public void welcome() {
@@ -54,12 +55,11 @@ public class ConsoleUI {
     /**
      * Methods takes input from user, controls it and then creates list of goods which should be loaded
      *
-     * @param items
+     * @param itemTemplates
      */
-    public void selectionOfItems(ArrayList<Item> items) {
-        for (Item good : items) {
-            good.setQuantity(0);
-        }
+    public void selectionOfItems() {
+
+        List<ItemTemplate> items = new ItemTemplateList().getItemTemplates();
         System.out.println("--Please select goods and insert numbers of pieces in format \"(position number of goods).(how many pieces)\"separated by space, for example 1.2 3.5......\"--");
         System.out.println();
         for (int i = 0; i < items.size(); i++) {
@@ -73,11 +73,11 @@ public class ConsoleUI {
         return itemsChoice;
     }
 
-    public void printSelectedItems(ArrayList<Item> items) {
+    public void printSelectedItems(ArrayList<ItemTemplate> itemTemplates) {
         System.out.println("* Selected goods *");
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getQuantity() != 0) {
-                System.out.println((i + 1) + ". " + items.get(i).getName() + ", number of pieces: " + items.get(i).getQuantity());
+        for (int i = 0; i < itemTemplates.size(); i++) {
+            if (itemTemplates.get(i).getQuantity() != 0) {
+                System.out.println((i + 1) + ". " + itemTemplates.get(i).getName() + ", number of pieces: " + itemTemplates.get(i).getQuantity());
             }
         }
     }
@@ -112,7 +112,7 @@ public class ConsoleUI {
     }
 
     private static void printRemovedGoods(RemovedItems removedItems) {
-        for (Item g : removedItems.getRemovedItems()
+        for (ItemTemplate g : removedItems.getRemovedItems()
         ) {
             System.out.println(g.getName() + " NOT LOADED");
         }

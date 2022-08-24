@@ -2,13 +2,12 @@ package cz.comkop.shipingmanager;
 
 public class Main {
     static ConsoleUI consoleUI = new ConsoleUI();
-
+    static ItemTemplate itemTemplate;
     static SelectedItems selectedItems = new SelectedItems();
     static RemovedItems removedItems = new RemovedItems();
 
 
     public static void main(String[] args) {
-
 
         consoleUI.welcome();
         do {

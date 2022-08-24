@@ -3,66 +3,66 @@ package cz.comkop.shipingmanager;
 import java.util.ArrayList;
 
 public class SelectedItems {
-    private ArrayList<Item> selectedItems = new ArrayList<>();
+    private ArrayList<ItemTemplate> selectedItemTemplates = new ArrayList<>();
 
     /**
-     * Method takes selected types of items and their quantity and adds them to ArrayList.
+     * Method takes selected types of itemTemplates and their quantity and adds them to ArrayList.
      *
-     * @param items
+     * @param itemTemplates
      */
-    public void createSelectedItems(ArrayList<Item> items) {
+   /* public void createSelectedItems(ArrayList<ItemTemplate> itemTemplates) {
 
-        for (int i = 0; i < items.size(); i++) {
-            for (int j = 0; j < items.get(i).getQuantity(); j++) {
-                selectedItems.add(new Item(items.get(i)));
-                selectedItems.get(selectedItems.size() - 1).setQuantity(items.get(i).getQuantity());
+        for (int i = 0; i < itemTemplates.size(); i++) {
+            for (int j = 0; j < itemTemplates.get(i).getQuantity(); j++) {
+                selectedItemTemplates.add(new ItemTemplate(itemTemplates.get(i)));
+                selectedItemTemplates.get(selectedItemTemplates.size() - 1).setQuantity(itemTemplates.get(i).getQuantity());
             }
         }
 
-    }
+    }*/
 
-    public void searchItemsFromInput(ArrayList<Item> items, String itemsChoice) {
+    public void searchItemsFromInput(ArrayList<ItemTemplate> itemTemplates, String itemsChoice) {
         String[] arrItemsChoice = itemsChoice.split("\\s");
         for (String s : arrItemsChoice) {
             String[] separate = s.split("\\.");
-            items.get(Integer.parseInt(separate[0]) - 1).setQuantity(Integer.parseInt(separate[1]));
+            itemTemplates.get(Integer.parseInt(separate[0]) - 1).setQuantity(Integer.parseInt(separate[1]));
         }
     }
 
     private void sortSelectedItemsByDimension() {
-        ArrayList<Item> sortArray = new ArrayList<>();
+        ArrayList<ItemTemplate> sortArray = new ArrayList<>();
         int maxSize = 0;
-        while (selectedItems.size() != 0) {
-            for (int i = 0; i < selectedItems.size(); i++) {
-                if (selectedItems.get(i).getWidth() * selectedItems.get(i).getLength() > maxSize) {
-                    maxSize = selectedItems.get(i).getWidth() * selectedItems.get(i).getLength();
+        while (selectedItemTemplates.size() != 0) {
+            for (int i = 0; i < selectedItemTemplates.size(); i++) {
+                if (selectedItemTemplates.get(i).getWidth() * selectedItemTemplates.get(i).getLength() > maxSize) {
+                    maxSize = selectedItemTemplates.get(i).getWidth() * selectedItemTemplates.get(i).getLength();
                 }
             }
-            for (int i = 0; i < selectedItems.size(); i++) {
-                if (maxSize == selectedItems.get(i).getWidth() * selectedItems.get(i).getLength()) {
-                    sortArray.add(selectedItems.get(i));
-                    selectedItems.remove(i);
+            for (int i = 0; i < selectedItemTemplates.size(); i++) {
+                if (maxSize == selectedItemTemplates.get(i).getWidth() * selectedItemTemplates.get(i).getLength()) {
+                    sortArray.add(selectedItemTemplates.get(i));
+                    selectedItemTemplates.remove(i);
                     i--;
                 }
             }
             maxSize = 0;
         }
-        selectedItems = sortArray;
+        selectedItemTemplates = sortArray;
 
     }
 
     private void createPackFromItems(Trailer trailer) {
         int rest = 0;
         int pack = 0;
-        for (int i = 0; i < selectedItems.size(); ) {
-            pack = trailer.getTotalWidth() / selectedItems.get(i).getWidth();
-            rest = selectedItems.get(i).getQuantity() % pack;
-            for (int j = i; j < i + selectedItems.get(i).getQuantity(); j++) {
+        for (int i = 0; i < selectedItemTemplates.size(); ) {
+            pack = trailer.getTotalWidth() / selectedItemTemplates.get(i).getWidth();
+            rest = selectedItemTemplates.get(i).getQuantity() % pack;
+            for (int j = i; j < i + selectedItemTemplates.get(i).getQuantity(); j++) {
                 if (j < i + rest) {
-                    selectedItems.get(i).setLoadLast(true);
+                    selectedItemTemplates.get(i).setLoadLast(true);
                 }
             }
-            i += selectedItems.get(i).getQuantity();
+            i += selectedItemTemplates.get(i).getQuantity();
         }
     }
 
@@ -71,7 +71,7 @@ public class SelectedItems {
         createPackFromItems(trailer);
     }
 
-    public ArrayList<Item> getSelectedItems() {
-        return selectedItems;
+    public ArrayList<ItemTemplate> getSelectedItems() {
+        return selectedItemTemplates;
     }
 }

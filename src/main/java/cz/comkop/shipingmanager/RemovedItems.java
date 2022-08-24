@@ -3,10 +3,10 @@ package cz.comkop.shipingmanager;
 import java.util.ArrayList;
 
 public class RemovedItems {
-    private final ArrayList<Item> removedItems = new ArrayList<>();
+    private final ArrayList<ItemTemplate> removedItemTemplates = new ArrayList<>();
 
-    public ArrayList<Item> getRemovedItems() {
-        return removedItems;
+    public ArrayList<ItemTemplate> getRemovedItems() {
+        return removedItemTemplates;
     }
 
 
