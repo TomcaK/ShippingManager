@@ -9,7 +9,7 @@ public class RequiredItemList {
  List<RequiredItem> requiredItems = new ArrayList<>();
 
     public static class RequiredItem {
-        private ItemTemplate itemTemplate;
+        private final ItemTemplate itemTemplate;
         private int quantity;
 
         public RequiredItem(ItemTemplate template, int count) {
@@ -43,5 +43,4 @@ public class RequiredItemList {
     public List<RequiredItem> getAll(){
         return Collections.unmodifiableList(requiredItems);
     }
-
 }

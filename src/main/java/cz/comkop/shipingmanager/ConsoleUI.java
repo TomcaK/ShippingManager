@@ -1,13 +1,12 @@
 package cz.comkop.shipingmanager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConsoleUI {
-    private int trailerChoice;//TODO consider use of enum
+    private TrailerTemplate trailerChoice;//TODO consider use of enum
+
     private String userInput;
     private String itemsChoice;
     private Scanner scanner = new Scanner(System.in);
@@ -34,19 +33,21 @@ public class ConsoleUI {
     /**
      * Method prints list of available trailer and takes input from user and
      *
-     * @param trailers
+     * @param
      */
-    public void selectionOfTrailer(Trailers trailers) {
+    public void selectionOfTrailer(List<TrailerTemplate> trailerTemplates) {
         double w, l;
-        trailerChoice = 0;
         System.out.println("--Please select trailer to be loaded--");
-        for (int i = 0; i < trailers.getTrailers().size(); i++) {
-            System.out.println((i + 1) + "." + trailers.getTrailers().get(i).getName());
+        for (int i = 0; i < trailerTemplates.size(); i++) {
+            System.out.println((i + 1) + "." + trailerTemplates.get(i).getName());
         }
-        trailerChoice = Integer.parseInt(inputControl(TRAILER_REGEX)) - 1;
-        w = Converter.metersFromCentimeters(trailers.getTrailers().get(trailerChoice).getTotalWidth());
-        l = Converter.metersFromCentimeters(trailers.getTrailers().get(trailerChoice).getTotalLength());
-        System.out.println("* Selected trailer: " + trailers.getTrailers().get(trailerChoice).getName() + "," +
+        String input = inputControl(TRAILER_REGEX);
+        trailerChoice = Arrays.stream(TrailerTemplate.values()).filter(c -> c.equals(trailerTemplates.get(Integer.parseInt(input)-1))).findFirst().get();
+
+
+        w = Converter.metersFromCentimeters(trailerChoice.getTotalWidth());
+        l = Converter.metersFromCentimeters(trailerChoice.getTotalLength());
+        System.out.println("* Selected trailer: " + trailerChoice.getName() + "," +
                 " width: " + w + " m, length: " +
                 l + " m *");
     }
@@ -57,9 +58,9 @@ public class ConsoleUI {
      *
      * @param itemTemplates
      */
-    public void selectionOfItems() {
+    public void selectionOfItems(List<ItemTemplate> itemTemplates) {
 
-        List<ItemTemplate> items = new ItemTemplateList().getItemTemplates();
+
         System.out.println("--Please select goods and insert numbers of pieces in format \"(position number of goods).(how many pieces)\"separated by space, for example 1.2 3.5......\"--");
         System.out.println();
         for (int i = 0; i < items.size(); i++) {

@@ -12,8 +12,7 @@ public class Item {
     private int length = 0;
     private int weight = 0;
 
-    private int x = 0;
-    private int y = 0;
+
 
 
     public Item(String name, int width, int length, int weight, boolean turnAble) {

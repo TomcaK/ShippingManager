@@ -1,5 +1,9 @@
 package cz.comkop.shipingmanager;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public enum ItemTemplate {
     TEST_QUARTER_MACHINE("Test-Quarter machine", 1, 2, 235, true),
     TEST_HALF_MACHINE("Test-Half machine", 2, 3, 320, true),
@@ -40,12 +44,14 @@ public enum ItemTemplate {
     private int weight;
 
 
+
     ItemTemplate(String name, int width, int length, int weight, boolean turnAble) {
         this.name = name;
         this.width = width;
         this.length = length;
         this.weight = weight;
         this.turnAble = turnAble;
+
 
     }
 
@@ -88,8 +94,6 @@ public enum ItemTemplate {
     public boolean isTurnAble() {
         return turnAble;
     }
-
-
 
 
 }
