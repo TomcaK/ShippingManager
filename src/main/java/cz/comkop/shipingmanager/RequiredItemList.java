@@ -20,6 +20,14 @@ public class RequiredItemList {
         public void setCount(int count) {
             quantity = count;
         }
+
+        public ItemTemplate getItemTemplate() {
+            return itemTemplate;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
     }
 
     public void setItemCount(ItemTemplate template, int count) {
@@ -40,7 +48,7 @@ public class RequiredItemList {
         }
     }
 
-    public List<RequiredItem> getAll(){
+    public List<RequiredItem> getRequiredItems(){
         return Collections.unmodifiableList(requiredItems);
     }
 }

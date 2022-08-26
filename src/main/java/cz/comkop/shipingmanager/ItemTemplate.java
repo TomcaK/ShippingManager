@@ -94,6 +94,15 @@ public enum ItemTemplate {
     public boolean isTurnAble() {
         return turnAble;
     }
-
+//      440 x600 Horizontal X - NC - BS 290 160 214 2000
+//            500 x750 Horizontal X 310 176 221 2120
+//            600 Camel X 432 136 220
+//            400 x400 Herkules X - CNC 326 233 221 3560
+//            500 x750 Horizontal X - NC - BS 360 170 221 4150
+//            440 x600 Horizontal SHI 295 176 215 1685
+//            510 x 510 Herkules X -CNC 336 240 210 6380
+//            540 Caliber X -CNC 370 212 239 3790
+//            540 Horizont X -CNC 358 137 240 3900
+//            600 x1100 Horizontal X 434 198 265 5678
 
 }

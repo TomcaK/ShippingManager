@@ -1,6 +1,7 @@
 package cz.comkop.shipingmanager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SelectedItems {
     private ArrayList<ItemTemplate> selectedItemTemplates = new ArrayList<>();
@@ -66,7 +67,7 @@ public class SelectedItems {
         }
     }
 
-    public void sorting(Trailer trailer) {
+    public void sorting(List<RequiredItemList.RequiredItem> requiredItems) {
         sortSelectedItemsByDimension();
         createPackFromItems(trailer);
     }

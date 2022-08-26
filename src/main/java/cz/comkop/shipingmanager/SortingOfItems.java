@@ -1,14 +1,14 @@
 package cz.comkop.shipingmanager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SortingOfItems {
-    public void searchItemsFromInput(RequiredItemList requiredItemList, String itemsChoice) {
+    public void searchItemsFromInput(List<ItemTemplate> itemTemplates, String itemsChoice, RequiredItemList requiredItems) {
         String[] arrItemsChoice = itemsChoice.split("\\s");
         for (String s : arrItemsChoice) {
             String[] separate = s.split("\\.");
-            requiredItemList.setItemCount();
-           // itemTemplates.get(Integer.parseInt(separate[0]) - 1).setQuantity(Integer.parseInt(separate[1]));
+            requiredItems.setItemCount(itemTemplates.get(Integer.parseInt(separate[0]) - 1),Integer.parseInt(separate[1]));
         }
     }
 
@@ -28,6 +28,7 @@ public class SortingOfItems {
                     i--;
                 }
             }
+
             maxSize = 0;
         }
         selectedItemTemplates = sortArray;
@@ -54,7 +55,5 @@ public class SortingOfItems {
         createPackFromItems(trailer);
     }
 
-    public ArrayList<ItemTemplate> getSelectedItems() {
-        return selectedItemTemplates;
-    }
+
 }

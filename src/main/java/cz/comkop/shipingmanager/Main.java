@@ -4,6 +4,8 @@ public class Main {
     static ConsoleUI consoleUI = new ConsoleUI();
     static ItemTemplateList itemTemplates = new ItemTemplateList();
     static TrailerTemplateList trailerTemplates = new TrailerTemplateList();
+    static RequiredItemList requiredItems = new RequiredItemList();
+    static SortingOfItems sorting = new SortingOfItems();
 
     static SelectedItems selectedItems = new SelectedItems();
     static RemovedItems removedItems = new RemovedItems();
@@ -15,9 +17,9 @@ public class Main {
         do {
             consoleUI.selectionOfTrailer(trailerTemplates.getTrailerTemplates());
             do {
-                consoleUI.selectionOfItems(itemTemplate.getItemTemplates());
-                selectedItems.searchItemsFromInput(ListOfItems.TEMPLATE.getItems(), consoleUI.getItemsChoice());
-                consoleUI.printSelectedItems(ListOfItems.TEMPLATE.getItems());
+                consoleUI.selectionOfItems(itemTemplates.getItemTemplates());
+                sorting.searchItemsFromInput(itemTemplates.getItemTemplates(), consoleUI.getItemsChoice(),requiredItems);
+                consoleUI.printSelectedItems(requiredItems.getRequiredItems());
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
             selectedItems.createSelectedItems(ListOfItems.TEMPLATE.getItems());
@@ -33,7 +35,7 @@ public class Main {
     }
 
     private static void reset() {
-       //new trailers, list of items
+        //new trailers, list of items
         TrailerTemplate.reset();
         selectedItems = new SelectedItems();
         removedItems = new RemovedItems();
