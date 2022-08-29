@@ -1,9 +1,6 @@
 package cz.comkop.shipingmanager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class RequiredItemList {
  List<RequiredItem> requiredItems = new ArrayList<>();
@@ -12,9 +9,13 @@ public class RequiredItemList {
         private final ItemTemplate itemTemplate;
         private int quantity;
 
+
+
+
         public RequiredItem(ItemTemplate template, int count) {
             this.itemTemplate = template;
             this.quantity = count;
+
         }
 
         public void setCount(int count) {
@@ -28,9 +29,10 @@ public class RequiredItemList {
         public int getQuantity() {
             return quantity;
         }
+
     }
 
-    public void setItemCount(ItemTemplate template, int count) {
+    private void setItemCount(ItemTemplate template, int count) {
         Optional<RequiredItem> requiredItem = requiredItems.stream().filter(ri -> ri.itemTemplate == template).findFirst();
         if (requiredItem.isPresent()) {
             requiredItem.get().setCount(count);
@@ -48,7 +50,22 @@ public class RequiredItemList {
         }
     }
 
+
     public List<RequiredItem> getRequiredItems(){
         return Collections.unmodifiableList(requiredItems);
     }
+
+    public void searchItemsFromInput(List<ItemTemplate> itemTemplates, String itemsChoice) {
+        String[] arrItemsChoice = itemsChoice.split("\\s");
+        for (String s : arrItemsChoice) {
+            String[] separate = s.split("\\.");
+            setItemCount(itemTemplates.get(Integer.parseInt(separate[0]) - 1),Integer.parseInt(separate[1]));
+        }
+    }
+
+
+
+
+
+
 }

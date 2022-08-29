@@ -60,6 +60,7 @@ public enum ItemTemplate {
         this.name = name;
         this.width = width;
         this.length = length;
+
     }
 
     ItemTemplate(String name, int width, int length, int weight) {
@@ -67,6 +68,7 @@ public enum ItemTemplate {
         this.width = width;
         this.length = length;
         this.weight = weight;
+
     }
 
 
@@ -89,6 +91,7 @@ public enum ItemTemplate {
     public int getWeight() {
         return weight;
     }
+
 
 
     public boolean isTurnAble() {

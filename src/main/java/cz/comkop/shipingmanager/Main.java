@@ -5,8 +5,7 @@ public class Main {
     static ItemTemplateList itemTemplates = new ItemTemplateList();
     static TrailerTemplateList trailerTemplates = new TrailerTemplateList();
     static RequiredItemList requiredItems = new RequiredItemList();
-    static SortingOfItems sorting = new SortingOfItems();
-
+    static ReadyToLoadItemList readyToLoadItems = new ReadyToLoadItemList();
     static SelectedItems selectedItems = new SelectedItems();
     static RemovedItems removedItems = new RemovedItems();
 
@@ -18,12 +17,14 @@ public class Main {
             consoleUI.selectionOfTrailer(trailerTemplates.getTrailerTemplates());
             do {
                 consoleUI.selectionOfItems(itemTemplates.getItemTemplates());
-                sorting.searchItemsFromInput(itemTemplates.getItemTemplates(), consoleUI.getItemsChoice(),requiredItems);
+                requiredItems.searchItemsFromInput(itemTemplates, consoleUI.getItemsChoice();
                 consoleUI.printSelectedItems(requiredItems.getRequiredItems());
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
-            selectedItems.createSelectedItems(ListOfItems.TEMPLATE.getItems());
-            selectedItems.sorting(TrailerTemplate.TEMPLATE.getTrailers().get(consoleUI.getTrailerChoice()));
+            //readyToLoadItems..createSelectedItems(ListOfItems.TEMPLATE.getItems());
+            requiredItems.searchItemsFromInput(itemTemplates.getItemTemplates(), consoleUI.getItemsChoice());
+            readyToLoadItems.addItems(requiredItems, consoleUI.getTrailerChoice());//zde
+
             TrailerTemplate.TEMPLATE.getTrailers().get(consoleUI.getTrailerChoice()).loading(selectedItems, removedItems);
             consoleUI.printDebugReport(TrailerTemplate.TEMPLATE.getTrailers().get(consoleUI.getTrailerChoice()));
             consoleUI.printEmailReport(TrailerTemplate.TEMPLATE.getTrailers(), removedItems);
@@ -36,7 +37,7 @@ public class Main {
 
     private static void reset() {
         //new trailers, list of items
-        TrailerTemplate.reset();
+
         selectedItems = new SelectedItems();
         removedItems = new RemovedItems();
     }

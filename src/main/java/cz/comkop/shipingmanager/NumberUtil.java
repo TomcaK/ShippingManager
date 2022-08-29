@@ -7,6 +7,11 @@ public class NumberUtil {
         return (double) centimeters / 100;
     }
 
+    public static int areaOfObject(int width, int length){
+        return width * length;
+    }
+
+
 
 
 }

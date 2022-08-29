@@ -81,7 +81,6 @@ public class ConsoleUI {
             System.out.println((i + 1) + "." + itemTemplates.get(i).getName() + "\t");
         }
         itemsChoice = inputControl(ITEM_REGEX);
-
     }
 
     public String getItemsChoice() {
@@ -124,7 +123,7 @@ public class ConsoleUI {
         }
     }
 
-    public int getTrailerChoice() {
+    public TrailerTemplate getTrailerChoice() {
         return trailerChoice;
     }
 
