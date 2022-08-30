@@ -1,0 +1,40 @@
+@startuml
+enum ItemTemplate
+enum TrailerTemplate
+class Item
+class Trailer
+class ListOfItems
+class RequiredItems
+class Main
+class ConsoleUI
+
+Main : main()
+Main -> RequiredItems
+Main -> ListOfItems
+RequiredItems -> ItemTemplate
+Trailer -> TrailerTemplate
+ListOfItems -> Item
+Main -> ConsoleUI
+Main -> Trailer
+
+ListOfItems : List<Item> selectedItems
+ListOfItems : List<Item> removedItems
+ListOfItems : List<Item> loadedItems
+
+ItemTemplate : String name
+ItemTemplate : boolean canBeTurnedAround
+ItemTemplate : int width
+ItemTemplate : int length
+ItemTemplate : int weight
+
+
+TrailerTemplate : String name
+TrailerTemplate : int width
+TrailerTemplate : int length
+
+
+RequiredItems : ItemTemplate itemTemplate
+RequiredItems : int quantity
+
+
+@enduml

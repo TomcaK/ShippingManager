@@ -1,5 +1,5 @@
 package cz.comkop.shipingmanager;
 
-public class Loading {
+public class LoadingOperations {
 
 }

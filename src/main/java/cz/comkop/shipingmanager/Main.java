@@ -2,29 +2,25 @@ package cz.comkop.shipingmanager;
 
 public class Main {
     static ConsoleUI consoleUI = new ConsoleUI();
-    static ItemTemplateList itemTemplates = new ItemTemplateList();
-    static TrailerTemplateList trailerTemplates = new TrailerTemplateList();
-    static RequiredItemList requiredItems = new RequiredItemList();
-    static ReadyToLoadItemList readyToLoadItems = new ReadyToLoadItemList();
-    static SelectedItems selectedItems = new SelectedItems();
-    static RemovedItems removedItems = new RemovedItems();
+    static  ListOfItems listOfItems = new ListOfItems();
+    //static RequiredItemList requiredItems = new RequiredItemList();
+
 
 
     public static void main(String[] args) {
 
         consoleUI.welcome();
         do {
-            consoleUI.selectionOfTrailer(trailerTemplates.getTrailerTemplates());
+            consoleUI.selectionOfTrailer();
             do {
-                consoleUI.selectionOfItems(itemTemplates.getItemTemplates());
-                requiredItems.searchItemsFromInput(itemTemplates, consoleUI.getItemsChoice();
-                consoleUI.printSelectedItems(requiredItems.getRequiredItems());
+                consoleUI.selectionOfItems();
+                listOfItems.getItemsFromInput(consoleUI.getItemsChoice());
+                consoleUI.printRequiredItems(listOfItems);
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
-            //readyToLoadItems..createSelectedItems(ListOfItems.TEMPLATE.getItems());
-            requiredItems.searchItemsFromInput(itemTemplates.getItemTemplates(), consoleUI.getItemsChoice());
-            readyToLoadItems.addItems(requiredItems, consoleUI.getTrailerChoice());//zde
-
+            listOfItems.createSelectedItems(consoleUI.getTrailerChoice());
+            listOfItems.sortSelectedItemsByArea();
+            listOfItems.selectItemsToLoadLater(consoleUI.getTrailerChoice());
             TrailerTemplate.TEMPLATE.getTrailers().get(consoleUI.getTrailerChoice()).loading(selectedItems, removedItems);
             consoleUI.printDebugReport(TrailerTemplate.TEMPLATE.getTrailers().get(consoleUI.getTrailerChoice()));
             consoleUI.printEmailReport(TrailerTemplate.TEMPLATE.getTrailers(), removedItems);

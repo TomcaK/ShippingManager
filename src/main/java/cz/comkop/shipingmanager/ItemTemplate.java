@@ -1,9 +1,5 @@
 package cz.comkop.shipingmanager;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public enum ItemTemplate {
     TEST_QUARTER_MACHINE("Test-Quarter machine", 1, 2, 235, true),
     TEST_HALF_MACHINE("Test-Half machine", 2, 3, 320, true),
@@ -38,19 +34,19 @@ public enum ItemTemplate {
 
 
     private final String name;
-    private boolean turnAble;
-    private int width;
-    private int length;
-    private int weight;
+    private boolean canBeRotated90Degrees;
+    private final int width;
+    private final int length;
+    private final int weight;
 
 
 
-    ItemTemplate(String name, int width, int length, int weight, boolean turnAble) {
+    ItemTemplate(String name, int width, int length, int weight, boolean canBeRotated90Degrees) {
         this.name = name;
         this.width = width;
         this.length = length;
         this.weight = weight;
-        this.turnAble = turnAble;
+        this.canBeRotated90Degrees = canBeRotated90Degrees;
 
 
     }
@@ -94,8 +90,8 @@ public enum ItemTemplate {
 
 
 
-    public boolean isTurnAble() {
-        return turnAble;
+    public boolean isCanBeRotated90Degrees() {
+        return canBeRotated90Degrees;
     }
 //      440 x600 Horizontal X - NC - BS 290 160 214 2000
 //            500 x750 Horizontal X 310 176 221 2120
@@ -107,5 +103,7 @@ public enum ItemTemplate {
 //            540 Caliber X -CNC 370 212 239 3790
 //            540 Horizont X -CNC 358 137 240 3900
 //            600 x1100 Horizontal X 434 198 265 5678
+
+
 
 }

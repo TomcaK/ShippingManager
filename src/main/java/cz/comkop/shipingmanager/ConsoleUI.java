@@ -1,6 +1,7 @@
 package cz.comkop.shipingmanager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -10,11 +11,11 @@ public class ConsoleUI {
     private static final String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
     private static final String ITEM_REGEX_2 = "(";
     private static final String TRAILER_REGEX = "[1-5]+";
-    private TrailerTemplate trailerChoice;//TODO consider use of enum
+    private TrailerTemplate trailerChoice;
     private String userInput;
     private String itemsChoice;
     private Scanner scanner = new Scanner(System.in);
-    private Matcher matcher;//TODO any reason to use package level visibility?
+    private Matcher matcher;
 
     private static void printRemovedGoods(RemovedItems removedItems) {
         for (ItemTemplate g : removedItems.getRemovedItems()
@@ -42,12 +43,11 @@ public class ConsoleUI {
     }
 
     public boolean userSelection() {
-
         userInput = scanner.nextLine();
-        return switch (userInput) {
-            case "a" -> true;
-            default -> false;
-        };
+        if (userInput.equals("a")){
+            return  true;
+        }
+        return false;
     }
 
     /**
@@ -55,18 +55,14 @@ public class ConsoleUI {
      *
      * @param
      */
-    public void selectionOfTrailer(List<TrailerTemplate> trailerTemplates) {
-        double w, l;
+    public void selectionOfTrailer() {
+        List<TrailerTemplate> trailerTemplates = Arrays.stream(TrailerTemplate.values()).toList();
         System.out.println("--Please select trailer to be loaded--");
         for (int i = 0; i < trailerTemplates.size(); i++) {
-            System.out.println((i + 1) + "." + trailerTemplates.get(i).getName());
+            System.out.println((i + 1) + "." + trailerTemplates.get(i);
         }
         trailerChoice = trailerTemplates.get(Integer.parseInt(inputControl(TRAILER_REGEX)) - 1);
-        w = NumberUtil.metersFromCentimeters(trailerChoice.getTotalWidth());
-        l = NumberUtil.metersFromCentimeters(trailerChoice.getTotalLength());
-        System.out.println("* Selected trailer: " + trailerChoice.getName() + "," +
-                " width: " + w + " m, length: " +
-                l + " m *");
+        System.out.println("* Selected trailer: " + trailerChoice);
     }
 
     /**
@@ -74,11 +70,12 @@ public class ConsoleUI {
      *
      * @param itemTemplates
      */
-    public void selectionOfItems(List<ItemTemplate> itemTemplates) {
+    public void selectionOfItems() {
+        List<ItemTemplate> itemTemplates = Arrays.stream(ItemTemplate.values()).toList();
         System.out.println("--Please select goods and insert numbers of pieces in format \"(position number of goods).(how many pieces)\"separated by space, for example 1.2 3.5......\"--");
         System.out.println();
         for (int i = 0; i < itemTemplates.size(); i++) {
-            System.out.println((i + 1) + "." + itemTemplates.get(i).getName() + "\t");
+            System.out.println((i + 1) + "." + itemTemplates.get(i));
         }
         itemsChoice = inputControl(ITEM_REGEX);
     }
@@ -87,10 +84,11 @@ public class ConsoleUI {
         return itemsChoice;
     }
 
-    public void printSelectedItems(List<RequiredItemList.RequiredItem> requiredItems) {
+    public void printRequiredItems(ListOfItems listOfItems) {
         System.out.println("* Selected goods *");
-        for (int i = 0; i < requiredItems.size(); i++) {
-                System.out.println((i + 1) + ". " + requiredItems.get(i).getItemTemplate().getName() + ", number of pieces: " + requiredItems.get(i).getQuantity());
+        int i = 1;
+        for (ItemTemplate itemTemplate : listOfItems.getRequiredItems().keySet()) {
+            System.out.println((i++ + ". " + itemTemplate.getName() + ", number of pieces: " + listOfItems.getRequiredItems().get(itemTemplate)));
         }
     }
 

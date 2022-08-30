@@ -3,18 +3,14 @@ package cz.comkop.shipingmanager;
 import java.util.ArrayList;
 
 public class Trailer {
-
+    private final TrailerTemplate template;
     private final String freeSpaceChar = "-";
     /**
      * Holds centimeter sized model of trailer
      */
     private final String[][] trailerModel;
 
-    private final ArrayList<ItemTemplate> loadedItemTemplates = new ArrayList<>();
-    private String name = "";
-    private char fullSpaceChar = 'A';
-    private int totalWidth = 0;
-    private int totalLength = 0;
+    private char nextCodename = 'A';
     private double freeSquareCentimeters;
     private double LDM, freeLDM;
     private int totalWeight = 0;
@@ -22,12 +18,10 @@ public class Trailer {
     private int checkpointY = 0;
 
 
-    public Trailer(String name, int totalWidth, int totalLength) {
-        this.name = name;
-        this.totalWidth = totalWidth;
-        this.totalLength = totalLength;
-        freeSquareCentimeters = totalLength * totalWidth;
-        trailerModel = new String[totalLength][totalWidth];
+    public Trailer(TrailerTemplate template) {
+        this.template = template;
+        freeSquareCentimeters = template.getLength() * template.getWidth();
+        trailerModel = new String[template.getLength()][template.getWidth()];
         for (int i = 0; i < trailerModel.length; i++) {
             for (int j = 0; j < trailerModel[0].length; j++) {
                 if (trailerModel[i][j] != null) {
@@ -55,13 +49,13 @@ public class Trailer {
         }
         for (int y = cY; y < maxLength; y++) {
             for (int x = cX; x < maxWidth; x++) {
-                trailerModel[y][x] = String.valueOf(fullSpaceChar);
+                trailerModel[y][x] = String.valueOf(nextCodename);
             }
         }
         totalWeight += selectedItems.getSelectedItems().get(indexOfGoods).getWeight();
         setFieldsOfLoadedGoods(indexOfGoods, cX, cY, selectedItems);
         freeSquareCentimeters -= loadedItemTemplates.get(loadedItemTemplates.size() - 1).getLength() * loadedItemTemplates.get(loadedItemTemplates.size() - 1).getWidth();
-        fullSpaceChar++;
+        nextCodename++;
         //System.out.println("Coordinates X: " + loadedGoods.get(loadedGoods.size() - 1).getX() + ",Y: " + loadedGoods.get(loadedGoods.size() - 1).getY() + " Added! Goods: " + loadedGoods.get(loadedGoods.size() - 1).getName());
     }
 
@@ -69,7 +63,7 @@ public class Trailer {
         loadedItemTemplates.add(selectedItems.getSelectedItems().get(indexOfGoods));
         loadedItemTemplates.get(loadedItemTemplates.size() - 1).setX(cX);
         loadedItemTemplates.get(loadedItemTemplates.size() - 1).setY(cY);
-        loadedItemTemplates.get(loadedItemTemplates.size() - 1).setFullCharName(fullSpaceChar);
+        loadedItemTemplates.get(loadedItemTemplates.size() - 1).setFullCharName(nextCodename);
         selectedItems.getSelectedItems().remove(indexOfGoods);
     }
 
@@ -122,7 +116,7 @@ public class Trailer {
             }
             break breakHere;
         }
-        if (itemTemplate.isTurnAble() && itemTemplate.getLength() + x <= totalWidth && itemTemplate.getWidth() + y <= totalLength) {
+        if (itemTemplate.isCanBeRotated90Degrees() && itemTemplate.getLength() + x <= totalWidth && itemTemplate.getWidth() + y <= totalLength) {
             if (freeCoordinatesChecker2(x, (x + itemTemplate.getLength()), y, (y + itemTemplate.getWidth()))) {
                 itemTemplate.setTurnGoods(true);
                 return true;

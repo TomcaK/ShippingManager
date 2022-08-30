@@ -31,7 +31,7 @@ public class ReadyToLoadItemList {
         int pack = 0;
         int quantity = 0;
         for (int i = 0; i < readyToLoadItems.size(); ) {
-            pack = trailer.getTotalWidth() / readyToLoadItems.get(i).getItemTemplate().getWidth();
+            pack = trailer.getWidth() / readyToLoadItems.get(i).getItemTemplate().getWidth();
             quantity = requiredItems.getForTemplate(readyToLoadItems.get(i).getItemTemplate()).getQuantity();
             rest = quantity % pack;
             for (int j = i; j < i + quantity; j++) {
