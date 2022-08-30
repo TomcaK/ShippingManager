@@ -56,7 +56,7 @@ public class SelectedItems {
         int rest = 0;
         int pack = 0;
         for (int i = 0; i < selectedItemTemplates.size(); ) {
-            pack = trailer.getTotalWidth() / selectedItemTemplates.get(i).getWidth();
+            pack = trailer.getWidth() / selectedItemTemplates.get(i).getWidth();
             rest = selectedItemTemplates.get(i).getQuantity() % pack;
             for (int j = i; j < i + selectedItemTemplates.get(i).getQuantity(); j++) {
                 if (j < i + rest) {

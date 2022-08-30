@@ -3,6 +3,8 @@ package cz.comkop.shipingmanager;
 public class Main {
     static ConsoleUI consoleUI = new ConsoleUI();
     static  ListOfItems listOfItems = new ListOfItems();
+    static Trailer trailer;
+    static LoadTrailer loadTrailer = new LoadTrailer();
     //static RequiredItemList requiredItems = new RequiredItemList();
 
 
@@ -12,6 +14,7 @@ public class Main {
         consoleUI.welcome();
         do {
             consoleUI.selectionOfTrailer();
+            trailer = new Trailer(consoleUI.getTrailerChoice());
             do {
                 consoleUI.selectionOfItems();
                 listOfItems.getItemsFromInput(consoleUI.getItemsChoice());
@@ -21,7 +24,7 @@ public class Main {
             listOfItems.createSelectedItems(consoleUI.getTrailerChoice());
             listOfItems.sortSelectedItemsByArea();
             listOfItems.selectItemsToLoadLater(consoleUI.getTrailerChoice());
-            TrailerTemplate.TEMPLATE.getTrailers().get(consoleUI.getTrailerChoice()).loading(selectedItems, removedItems);
+            loadTrailer.loading(listOfItems, trailer);
             consoleUI.printDebugReport(TrailerTemplate.TEMPLATE.getTrailers().get(consoleUI.getTrailerChoice()));
             consoleUI.printEmailReport(TrailerTemplate.TEMPLATE.getTrailers(), removedItems);
             System.out.println("--Write \"a\" to start again or write another key to finish.--");

@@ -21,6 +21,10 @@ public class Item {
         this.y = y;
     }
 
+    public Item(ItemTemplate template){
+        this.template = template;
+    }
+
 
 
 
@@ -64,5 +68,13 @@ public class Item {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean isTurnItem90Degrees() {
+        return turnItem90Degrees;
+    }
+
+    public void setTurnItem90Degrees(boolean turnItem90Degrees) {
+        this.turnItem90Degrees = turnItem90Degrees;
     }
 }
