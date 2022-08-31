@@ -17,7 +17,7 @@ public class Main {
             trailer = new Trailer(consoleUI.getTrailerChoice());
             do {
                 consoleUI.selectionOfItems();
-                listOfItems.getItemsFromInput(consoleUI.getItemsChoice());
+                listOfItems.getItemsFromInput(consoleUI.getUserChoice());
                 consoleUI.printRequiredItems(listOfItems);
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
@@ -25,8 +25,9 @@ public class Main {
             listOfItems.sortSelectedItemsByArea();
             listOfItems.selectItemsToLoadLater(consoleUI.getTrailerChoice());
             loadTrailer.loading(listOfItems, trailer);
-            consoleUI.printDebugReport(TrailerTemplate.TEMPLATE.getTrailers().get(consoleUI.getTrailerChoice()));
-            consoleUI.printEmailReport(TrailerTemplate.TEMPLATE.getTrailers(), removedItems);
+            consoleUI.printDebugReport(trailer,listOfItems);
+            consoleUI.printFinalReport(trailer,listOfItems);
+            consoleUI.printEmailData(trailer,listOfItems);
             System.out.println("--Write \"a\" to start again or write another key to finish.--");
             reset();
         } while (consoleUI.userSelection());
@@ -37,7 +38,6 @@ public class Main {
     private static void reset() {
         //new trailers, list of items
 
-        selectedItems = new SelectedItems();
-        removedItems = new RemovedItems();
+       listOfItems = new ListOfItems();
     }
 }

@@ -3,7 +3,7 @@ package cz.comkop.shipingmanager;
 public class Item {
     private ItemTemplate template;
     private int area;
-    private char codename;
+    private char codeName;
     private boolean loadLater = false;
     private boolean turnItem90Degrees = false;
     private int x,y;
@@ -13,10 +13,10 @@ public class Item {
 
 
 
-    public Item(ItemTemplate template, char codename, int x, int y) {
+    public Item(ItemTemplate template, char codeName, int x, int y) {
         this.template = template;
         area = template.getLength() * template.getWidth();
-        this.codename = codename;
+        this.codeName = codeName;
         this.x = x;
         this.y = y;
     }
@@ -32,12 +32,12 @@ public class Item {
         return template;
     }
 
-    public char getCodename() {
-        return codename;
+    public char getCodeName() {
+        return codeName;
     }
 
-    public void setCodename(char codename) {
-        this.codename = codename;
+    public void setCodeName(char codeName) {
+        this.codeName = codeName;
     }
 
 
@@ -77,4 +77,13 @@ public class Item {
     public void setTurnItem90Degrees(boolean turnItem90Degrees) {
         this.turnItem90Degrees = turnItem90Degrees;
     }
+
+    @Override
+    public String toString() {
+        return  template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
+                " cm, weight: " + template.getWeight() + " kg, height: " + template.getHeight() ;
+
+    }
+
+
 }

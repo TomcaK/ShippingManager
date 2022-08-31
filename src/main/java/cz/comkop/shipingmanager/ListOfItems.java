@@ -4,10 +4,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ListOfItems {
-    private List<Item> selectedItems;
-    private List<Item> removedItems;
-    private List<Item> loadedItems;
-    private Map<ItemTemplate, Integer> requiredItems;
+    private List<Item> selectedItems = new ArrayList<>();
+    private List<Item> removedItems= new ArrayList<>();
+    private List<Item> loadedItems= new ArrayList<>();
+    private Map<ItemTemplate, Integer> requiredItems = new HashMap<>();
 
     public List<Item> getSelectedItems() {
         return selectedItems;

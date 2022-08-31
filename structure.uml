@@ -4,22 +4,21 @@ enum TrailerTemplate
 class Item
 class Trailer
 class ListOfItems
-class RequiredItems
 class Main
 class ConsoleUI
 
 Main : main()
-Main -> RequiredItems
 Main -> ListOfItems
-RequiredItems -> ItemTemplate
 Trailer -> TrailerTemplate
 ListOfItems -> Item
 Main -> ConsoleUI
 Main -> Trailer
+Item -> ItemTemplate
 
 ListOfItems : List<Item> selectedItems
 ListOfItems : List<Item> removedItems
 ListOfItems : List<Item> loadedItems
+ListOfItems : List<Item> requiredItems
 
 ItemTemplate : String name
 ItemTemplate : boolean canBeTurnedAround
@@ -33,8 +32,6 @@ TrailerTemplate : int width
 TrailerTemplate : int length
 
 
-RequiredItems : ItemTemplate itemTemplate
-RequiredItems : int quantity
 
 
 @enduml

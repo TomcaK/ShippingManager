@@ -1,10 +1,11 @@
 package cz.comkop.shipingmanager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Trailer {
     private final TrailerTemplate template;
-    private final String freeSpaceChar = "-";
+    private final char freeSpaceChar = '-';
     /**
      * Holds centimeter sized model of trailer
      */
@@ -24,10 +25,10 @@ public class Trailer {
         for (int i = 0; i < trailerModel.length; i++) {
             for (int j = 0; j < trailerModel[0].length; j++) {
                 if (trailerModel[i][j] != null) {
-                    trailerModel[i][j] += freeSpaceChar;
+                   trailerModel[i][j] += freeSpaceChar;
                 } else {
-                    trailerModel[i][j] = freeSpaceChar;
-                }
+                    trailerModel[i][j] = String.valueOf(freeSpaceChar);
+               }
             }
         }
     }
@@ -82,9 +83,9 @@ public class Trailer {
      * @param indexOfGoods
      * @return true or false
      */
-    private boolean isFreeSpaceOnTrailer(int indexOfGoods, SelectedItems selectedItems) {
-        return selectedItems.getSelectedItems().get(indexOfGoods).getWidth() * selectedItems.getSelectedItems().get(indexOfGoods).getLength() <= freeSquareCentimeters;
-    }
+//    private boolean isFreeSpaceOnTrailer(int indexOfGoods, SelectedItems selectedItems) {
+//        return selectedItems.getSelectedItems().get(indexOfGoods).getWidth() * selectedItems.getSelectedItems().get(indexOfGoods).getLength() <= freeSquareCentimeters;
+//    }
 
 
     /**
@@ -107,15 +108,15 @@ public class Trailer {
 //        return false;
 //    }
 
-    /**
-     * Calculates if goods fit from set coordinates to the end of trailer, sets area for searching in square centimeters of goods size and controls every single centimeter if another goods are not loaded.
-     * If method finds another goods were put, it tries to turn goods to change dimensions and checks space again.
-     *
-     * @param x            x coordinate where goods could be put
-     * @param y            y coordinate where goods could be put
-     * @param indexOfGoods index of selected goods
-     * @return true or false
-     */
+//    /**
+//     * Calculates if goods fit from set coordinates to the end of trailer, sets area for searching in square centimeters of goods size and controls every single centimeter if another goods are not loaded.
+//     * If method finds another goods were put, it tries to turn goods to change dimensions and checks space again.
+//     *
+//     * @param            x coordinate where goods could be put
+//     * @param             y coordinate where goods could be put
+//     * @param  index of selected goods
+//     * @return true or false
+//     */
 //    private boolean doesCurrentGoodsFitForTheseCoordinates(int x, int y, int indexOfGoods, SelectedItems selectedItems) {
 //        ItemTemplate itemTemplate = selectedItems.getSelectedItems().get(indexOfGoods);
 //        breakHere:
@@ -135,25 +136,25 @@ public class Trailer {
 //        return false;
 //    }
 
-    /**
-     * Method searches character in set coordinates
-     *
-     * @param coordinateXStart
-     * @param coordinateXEnd
-     * @param coordinateYStart
-     * @param coordinateYEnd
-     * @return
-     */
-    private boolean freeCoordinatesChecker(int coordinateXStart, int coordinateXEnd, int coordinateYStart, int coordinateYEnd) {
-        for (int y = coordinateYStart; y < coordinateYEnd; y++) {
-            for (int x = coordinateXStart; x < coordinateXEnd; x++) {
-                if (!trailerModel[y][x].equals(freeSpaceChar)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+//    /**
+//     * Method searches character in set coordinates
+//     *
+//     * @param coordinateXStart
+//     * @param coordinateXEnd
+//     * @param coordinateYStart
+//     * @param coordinateYEnd
+//     * @return
+//     */
+//    private boolean freeCoordinatesChecker(int coordinateXStart, int coordinateXEnd, int coordinateYStart, int coordinateYEnd) {
+//        for (int y = coordinateYStart; y < coordinateYEnd; y++) {
+//            for (int x = coordinateXStart; x < coordinateXEnd; x++) {
+//                if (!trailerModel[y][x].equals( freeSpaceChar)) {
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+//    }
 
 //    private boolean freeCoordinatesChecker2(int coordinateXStart, int coordinateXEnd, int coordinateYStart, int coordinateYEnd) {
 //        for (int y = coordinateYStart; y < coordinateYEnd; y++) {
@@ -224,7 +225,7 @@ public class Trailer {
         double count = 0;
         for (String[] strings : trailerModel) {
             for (int j = 0; j < trailerModel[0].length; j++) {
-                if (!strings[j].contains("-")) {
+                if (!strings[j].equals("-")) {
                     count++;
                     break;
                 }
@@ -245,23 +246,23 @@ public class Trailer {
 
 
     public void printOutlineOfTrailer() {
-        String usedCharnames = "";
-        String foundCharnames = "";
+        StringBuilder usedCodeNames = new StringBuilder("-");
+        StringBuilder foundCodeNames = new StringBuilder();
         int count = 0;
         for (int i = 0; i < trailerModel.length; i++) {
             for (int j = 0; j < trailerModel[0].length; j++) {
-                if (!usedCharnames.contains(trailerModel[i][j]) && !trailerModel[i][j].equals("-")) {
-                    usedCharnames += trailerModel[i][j];
-                    foundCharnames += trailerModel[i][j];
+                if (!usedCodeNames.toString().equals(String.valueOf(trailerModel[i][j]))) {
+                    usedCodeNames.append(trailerModel[i][j]);
+                    foundCodeNames.append(trailerModel[i][j]);
                     count++;
                 }
             }
             if (count > 0) {
-                foundCharnames += "\n";
+                foundCodeNames.append("\n");
                 count = 0;
             }
         }
-        System.out.println(foundCharnames);
+        System.out.println(foundCodeNames);
     }
 
 //    public void printOutlineOfTrailer2() {
@@ -383,7 +384,12 @@ public class Trailer {
         return freeSquareCentimeters;
     }
 
+    public TrailerTemplate getTemplate() {
+        return template;
+    }
 
-
-
+    @Override
+    public String toString() {
+        return "Needed LDM: " + LDM + ", free LDM: " + freeLDM + ", total weight: " +totalWeight + " kg";
+    }
 }

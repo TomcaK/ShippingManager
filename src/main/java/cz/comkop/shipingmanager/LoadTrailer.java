@@ -13,7 +13,7 @@ public class LoadTrailer {
             for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
                 if (!listOfItems.getSelectedItems().get(i).isLoadLater() || listOfItems.getSelectedItems().get(i).isLoadLater() && round > 0) {
                     if (isFreeSpaceOnTrailer(i, listOfItems,trailer) && /*searchFreeSpaceCharacterOnTrailer(i, selectedItems)*/ searchFreeSpaceOnTrailer2(i,listOfItems,trailer)) {
-                        addItemToTrailer(i, checkpointX, checkpointY, selectedItems);
+                        addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
                         i--;
                     } else if (round == 2) {
                         listOfItems.getRemovedItems().add(new Item(listOfItems.getLoadedItems().get(i).getTemplate()));
@@ -57,8 +57,8 @@ public class LoadTrailer {
     }
     private boolean searchFreeSpaceOnTrailer2(int indexOfGoods, ListOfItems listOfItems, Trailer trailer ) {
         if (listOfItems.getLoadedItems().size() != 0) {
-            for (int y = 0; y < trailer.getLength(); y++) {
-                for (int x = 0; x < trailer.getWidth(); ) {
+            for (int y = 0; y < trailer.getTemplate().getLength(); y++) {
+                for (int x = 0; x < trailer.getTemplate().getWidth(); ) {
                     for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
                         if (x >= listOfItems.getLoadedItems().get(i).getX() && x <= listOfItems.getLoadedItems().get(i).getX() + listOfItems.getLoadedItems().get(i).getTemplate().getWidth() - 1 && y >= listOfItems.getLoadedItems().get(i).getY() && y <= listOfItems.getLoadedItems().get(i).getY() + listOfItems.getLoadedItems().get(i).getTemplate().getLength() - 1) {
                             x += listOfItems.getLoadedItems().get(i).getTemplate().getWidth();
@@ -81,13 +81,13 @@ public class LoadTrailer {
     private boolean doesCurrentGoodsFitForTheseCoordinates(int x, int y, int indexOfGoods, ListOfItems listOfItems, Trailer trailer) {
         ItemTemplate itemTemplate = listOfItems.getSelectedItems().get(indexOfGoods).getTemplate();
         breakHere:
-        if (itemTemplate.getWidth() + x <= trailer.getWidth() && itemTemplate.getLength() + y <= trailer.getLength()) {
+        if (itemTemplate.getWidth() + x <= trailer.getTemplate().getWidth() && itemTemplate.getLength() + y <= trailer.getTemplate().getLength()) {
             if (freeCoordinatesChecker2(x, (x + itemTemplate.getWidth()), y, (y + itemTemplate.getLength()),listOfItems)) {
                 return true;
             }
             break breakHere;
         }
-        if (itemTemplate.isCanBeRotated90Degrees() && itemTemplate.getLength() + x <= trailer.getWidth() && itemTemplate.getWidth() + y <= trailer.getLength()) {
+        if (itemTemplate.isCanBeRotated90Degrees() && itemTemplate.getLength() + x <= trailer.getTemplate().getWidth() && itemTemplate.getWidth() + y <= trailer.getTemplate().getLength()) {
             if (freeCoordinatesChecker2(x, (x + itemTemplate.getLength()), y, (y + itemTemplate.getWidth()),listOfItems)) {
                 listOfItems.getSelectedItems().get(indexOfGoods).setTurnItem90Degrees(true);
                 return true;
