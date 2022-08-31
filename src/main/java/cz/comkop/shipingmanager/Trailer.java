@@ -1,11 +1,9 @@
 package cz.comkop.shipingmanager;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 
 public class Trailer {
     private final TrailerTemplate template;
-    private final char freeSpaceChar = '-';
     /**
      * Holds centimeter sized model of trailer
      */
@@ -14,7 +12,7 @@ public class Trailer {
     private char nextCodename = 'A';
     private double freeSquareCentimeters;
     private double LDM, freeLDM;
-    private int totalWeight = 0;
+    private int totalWeight;
 
 
 
@@ -24,6 +22,7 @@ public class Trailer {
         trailerModel = new String[template.getLength()][template.getWidth()];
         for (int i = 0; i < trailerModel.length; i++) {
             for (int j = 0; j < trailerModel[0].length; j++) {
+                char freeSpaceChar = '-';
                 if (trailerModel[i][j] != null) {
                    trailerModel[i][j] += freeSpaceChar;
                 } else {
@@ -240,30 +239,28 @@ public class Trailer {
         return totalWeight;
     }
 
-    public double getFreeLDM() {
-        return freeLDM;
-    }
 
 
     public void printOutlineOfTrailer() {
-        StringBuilder usedCodeNames = new StringBuilder("-");
-        StringBuilder foundCodeNames = new StringBuilder();
+        String usedCharnames = "";
+        String foundCharnames = "";
         int count = 0;
-        for (int i = 0; i < trailerModel.length; i++) {
+        for (String[] strings : trailerModel) {
             for (int j = 0; j < trailerModel[0].length; j++) {
-                if (!usedCodeNames.toString().equals(String.valueOf(trailerModel[i][j]))) {
-                    usedCodeNames.append(trailerModel[i][j]);
-                    foundCodeNames.append(trailerModel[i][j]);
+                if (!usedCharnames.contains(strings[j]) && !strings[j].equals("-")) {
+                    usedCharnames += strings[j];
+                    foundCharnames += strings[j];
                     count++;
                 }
             }
             if (count > 0) {
-                foundCodeNames.append("\n");
+                foundCharnames += "\n";
                 count = 0;
             }
         }
-        System.out.println(foundCodeNames);
+        System.out.println(foundCharnames);
     }
+
 
 //    public void printOutlineOfTrailer2() {
 //        String usedCharnames = "";
@@ -390,6 +387,6 @@ public class Trailer {
 
     @Override
     public String toString() {
-        return "Needed LDM: " + LDM + ", free LDM: " + freeLDM + ", total weight: " +totalWeight + " kg";
+        return "Needed LDM: " + LDM + " m, free LDM: " + freeLDM + " m, total weight: " +totalWeight + " kg";
     }
 }

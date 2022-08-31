@@ -1,7 +1,7 @@
 package cz.comkop.shipingmanager;
 
 public class Item {
-    private ItemTemplate template;
+    private final ItemTemplate template;
     private int area;
     private char codeName;
     private boolean loadLater = false;
@@ -36,12 +36,6 @@ public class Item {
         return codeName;
     }
 
-    public void setCodeName(char codeName) {
-        this.codeName = codeName;
-    }
-
-
-
     public boolean isLoadLater() {
         return loadLater;
     }
@@ -57,19 +51,9 @@ public class Item {
     public int getX() {
         return x;
     }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
     }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public boolean isTurnItem90Degrees() {
         return turnItem90Degrees;
     }

@@ -5,36 +5,20 @@ import java.util.stream.Collectors;
 
 public class ListOfItems {
     private List<Item> selectedItems = new ArrayList<>();
-    private List<Item> removedItems= new ArrayList<>();
-    private List<Item> loadedItems= new ArrayList<>();
-    private Map<ItemTemplate, Integer> requiredItems = new HashMap<>();
+    private final List<Item> removedItems = new ArrayList<>();
+    private final List<Item> loadedItems = new ArrayList<>();
+    private final Map<ItemTemplate, Integer> requiredItems = new HashMap<>();
 
     public List<Item> getSelectedItems() {
         return selectedItems;
     }
 
-    public void setSelectedItems(List<Item> selectedItems) {
-        this.selectedItems = selectedItems;
-    }
-
-
-
-
-
     public List<Item> getRemovedItems() {
         return removedItems;
     }
 
-    public void setRemovedItems(List<Item> removedItems) {
-        this.removedItems = removedItems;
-    }
-
     public List<Item> getLoadedItems() {
         return loadedItems;
-    }
-
-    public void setLoadedItems(List<Item> loadedItems) {
-        this.loadedItems = loadedItems;
     }
 
     public Map<ItemTemplate, Integer> getRequiredItems() {
@@ -109,10 +93,11 @@ public class ListOfItems {
             requiredItems.put(list.get(Integer.parseInt(separate[0]) - 1), Integer.parseInt(separate[1]));
         }
     }
-    public void createSelectedItems(TrailerTemplate trailer) {
+
+    public void createSelectedItems() {
         for (ItemTemplate template : requiredItems.keySet()) {
             for (int i = 0; i < requiredItems.get(template); i++) {
-                selectedItems.add(new Item(template,' ',0,0));
+                selectedItems.add(new Item(template, ' ', 0, 0));
             }
         }
 
@@ -123,9 +108,9 @@ public class ListOfItems {
     }
 
     public void selectItemsToLoadLater(TrailerTemplate trailer) {
-        int rest = 0;
-        int pack = 0;
-        int quantity = 0;
+        int rest;
+        int pack;
+        int quantity;
         for (int i = 0; i < selectedItems.size(); ) {
             pack = trailer.getWidth() / selectedItems.get(i).getTemplate().getWidth();
             quantity = requiredItems.get(selectedItems.get(i).getTemplate());

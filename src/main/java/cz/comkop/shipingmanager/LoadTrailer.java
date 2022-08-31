@@ -1,6 +1,6 @@
 package cz.comkop.shipingmanager;
 
-import java.util.List;
+
 
 public class LoadTrailer {
 
@@ -80,12 +80,12 @@ public class LoadTrailer {
 
     private boolean doesCurrentGoodsFitForTheseCoordinates(int x, int y, int indexOfGoods, ListOfItems listOfItems, Trailer trailer) {
         ItemTemplate itemTemplate = listOfItems.getSelectedItems().get(indexOfGoods).getTemplate();
-        breakHere:
+
         if (itemTemplate.getWidth() + x <= trailer.getTemplate().getWidth() && itemTemplate.getLength() + y <= trailer.getTemplate().getLength()) {
             if (freeCoordinatesChecker2(x, (x + itemTemplate.getWidth()), y, (y + itemTemplate.getLength()),listOfItems)) {
                 return true;
             }
-            break breakHere;
+
         }
         if (itemTemplate.isCanBeRotated90Degrees() && itemTemplate.getLength() + x <= trailer.getTemplate().getWidth() && itemTemplate.getWidth() + y <= trailer.getTemplate().getLength()) {
             if (freeCoordinatesChecker2(x, (x + itemTemplate.getLength()), y, (y + itemTemplate.getWidth()),listOfItems)) {

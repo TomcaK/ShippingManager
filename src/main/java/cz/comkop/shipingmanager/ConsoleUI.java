@@ -8,13 +8,10 @@ import java.util.regex.Pattern;
 
 public class ConsoleUI {
     private static final String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
-    private static final String ITEM_REGEX_2 = "(";
     private static final String TRAILER_REGEX = "[1-5]+";
     private TrailerTemplate trailerChoice;
-    private String userInput;
     private String userChoice;
-    private Scanner scanner = new Scanner(System.in);
-    private Matcher matcher;
+    private final Scanner scanner = new Scanner(System.in);
 
     private static void printRemovedGoods(ListOfItems listOfItems) {
         for (Item item : listOfItems.getRemovedItems()
@@ -23,11 +20,7 @@ public class ConsoleUI {
         }
     }
 
-    /**
-     * Method prints centimeter sized model of trailer
-     *
-     * @param trailer
-     */
+
     private static void printTrailerModel(Trailer trailer) {
         for (int i = 0; i < trailer.getTrailerModel().length; i++) {
             for (int j = 0; j < trailer.getTrailerModel()[0].length; j++) {
@@ -42,15 +35,11 @@ public class ConsoleUI {
     }
 
     public boolean userSelection() {
-        userInput = scanner.nextLine();
+        String userInput = scanner.nextLine();
         return userInput.equals("a");
     }
 
-    /**
-     * Method prints list of available trailer and takes input from user and
-     *
-     * @param
-     */
+
     public void selectionOfTrailer() {
         List<TrailerTemplate> trailerTemplates = Arrays.stream(TrailerTemplate.values()).toList();
         System.out.println("--Please select trailer to be loaded--");
@@ -62,11 +51,7 @@ public class ConsoleUI {
         System.out.println("* Selected trailer: " + trailerChoice);
     }
 
-    /**
-     * Methods takes input from user, controls it and then creates list of goods which should be loaded
-     *
-     * @param
-     */
+
     public void selectionOfItems() {
         List<ItemTemplate> itemTemplates = Arrays.stream(ItemTemplate.values()).toList();
         System.out.println("--Please select goods and insert numbers of pieces in format \"(position number of goods).(how many pieces)\"separated by space, for example 1.2 3.5......\"--");
@@ -94,7 +79,7 @@ public class ConsoleUI {
         String input;
         Pattern pattern = Pattern.compile(regex);
         input = scanner.nextLine();
-        matcher = pattern.matcher(input);
+        Matcher matcher = pattern.matcher(input);
         while (!matcher.matches()) {
             System.out.println("--Wrong format inserted, try again--");
             input = scanner.nextLine();
@@ -103,11 +88,7 @@ public class ConsoleUI {
         return input;
     }
 
-    /**
-     * Method prints info for debugging
-     *
-     * @param trailer
-     */
+
     public void printDebugReport(Trailer trailer, ListOfItems listOfItems) {
         System.out.println("--REPORT--");
         double centimetersToMeters = trailer.getFreeSquareCentimeters() / 100;
@@ -145,7 +126,7 @@ public class ConsoleUI {
         }
         System.out.println();
         System.out.println("--Probable storage of goods--");
-       // trailer.printOutlineOfTrailer();
+        trailer.printOutlineOfTrailer();
         printRemovedGoods(listOfItems);
     }
 

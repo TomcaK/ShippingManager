@@ -21,7 +21,7 @@ public class Main {
                 consoleUI.printRequiredItems(listOfItems);
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
-            listOfItems.createSelectedItems(consoleUI.getTrailerChoice());
+            listOfItems.createSelectedItems();
             listOfItems.sortSelectedItemsByArea();
             listOfItems.selectItemsToLoadLater(consoleUI.getTrailerChoice());
             loadTrailer.loading(listOfItems, trailer);
