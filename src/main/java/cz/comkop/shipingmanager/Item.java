@@ -1,123 +1,73 @@
 package cz.comkop.shipingmanager;
 
 public class Item {
-    private String name = "";
-    private char fullCharName;
-    private int quantity = 0;//TODO setting explicit values are unnecessary
-    private boolean loadLast = false;
-    private boolean turnAble = false;
-    private boolean turnGoods = false;
-
-    private int width = 0;
-    private int length = 0;
-    private int weight = 0;
-
-    private int x = 0;
-    private int y = 0;
+    private final ItemTemplate template;
+    private int area;
+    private char codeName;
+    private boolean loadLater = false;
+    private boolean turnItem90Degrees = false;
+    private int x,y;
 
 
-    public Item(String name, int width, int length, int weight, boolean turnAble) {
-        this.name = name;
-        this.width = width;
-        this.length = length;
-        this.weight = weight;
-        this.turnAble = turnAble;
+
+
+
+
+    public Item(ItemTemplate template, char codeName, int x, int y) {
+        this.template = template;
+        area = template.getLength() * template.getWidth();
+        this.codeName = codeName;
+        this.x = x;
+        this.y = y;
+    }
+
+    public Item(ItemTemplate template){
+        this.template = template;
     }
 
 
-    public Item(String name, int width, int length) {
-        this.name = name;
-        this.width = width;
-        this.length = length;
 
 
+    public ItemTemplate getTemplate() {
+        return template;
     }
 
-    public Item(String name, int width, int length, int weight) {
-        this.name = name;
-        this.width = width;
-        this.length = length;
-        this.weight = weight;
-
-
+    public char getCodeName() {
+        return codeName;
     }
 
-    public Item(Item goods) {
-        this.name = goods.name;
-        this.width = goods.width;
-        this.length = goods.length;
-        this.weight = goods.weight;
-        this.turnAble = goods.turnAble;
+    public boolean isLoadLater() {
+        return loadLater;
     }
 
-
-    public String getName() {
-        return name;
+    public void setLoadLater(boolean loadLater) {
+        this.loadLater = loadLater;
     }
 
-
-    public int getWidth() {
-        return width;
-    }
-
-
-    public int getLength() {
-        return length;
+    public int getArea() {
+        return area;
     }
 
     public int getX() {
         return x;
     }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
     }
-
-    public void setY(int y) {
-        this.y = y;
+    public boolean isTurnItem90Degrees() {
+        return turnItem90Degrees;
     }
 
-    public int getWeight() {
-        return weight;
+    public void setTurnItem90Degrees(boolean turnItem90Degrees) {
+        this.turnItem90Degrees = turnItem90Degrees;
     }
 
-    public char getFullCharName() {
-        return fullCharName;
+    @Override
+    public String toString() {
+        return  template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
+                " cm, weight: " + template.getWeight() + " kg, height: " + template.getHeight() ;
+
     }
 
-    public void setFullCharName(char fullCharName) {
-        this.fullCharName = fullCharName;
-    }
 
-    public boolean isTurnAble() {
-        return turnAble;
-    }
-
-    public boolean isTurnGoods() {
-        return turnGoods;
-    }
-
-    public void setTurnGoods(boolean turnGoods) {
-        this.turnGoods = turnGoods;
-    }
-
-    public boolean isLoadLast() {
-        return loadLast;
-    }
-
-    public void setLoadLast(boolean loadLast) {
-        this.loadLast = loadLast;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }
