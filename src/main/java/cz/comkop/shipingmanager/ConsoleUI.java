@@ -87,7 +87,7 @@ public class ConsoleUI {
         }
         return input;
     }
-
+//TODO create new search method which will take name of bands and create list of requested items
 
     public void printDebugReport(Trailer trailer, ListOfItems listOfItems) {
         System.out.println("--REPORT--");

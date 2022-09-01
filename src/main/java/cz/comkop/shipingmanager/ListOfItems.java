@@ -85,7 +85,7 @@ public class ListOfItems {
 
             return itemTemplates;
         }*/
-    public void getItemsFromInput(String itemsChoice) {
+    public void getItemsFromInput(String itemsChoice) {//TODO change method to method which will take key and create selected goods. Key will be created from ConsoleUI from new searching method
         List<ItemTemplate> list = Arrays.stream(ItemTemplate.values()).toList();
         String[] arrItemsChoice = itemsChoice.split("\\s");
         for (String s : arrItemsChoice) {

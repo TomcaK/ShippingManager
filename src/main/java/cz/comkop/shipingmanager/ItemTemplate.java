@@ -26,11 +26,20 @@ public enum ItemTemplate {
     BS_600X1000_HORIZONTAL_X("600x1000 Horizontal X", 198, 434,1, 5678),
     BS_440_CALIBER_X_CNC_SHI("440 Caliber X-CNC/SHI", 203, 256,1, 3115),
     BS_440_HORIZONT_SHI_X("440 Horizont SHI/X", 176, 350,1, 2080),
-    RT_RDL_RDR("RDL/RDR", 100, 110,1, 200),
-    M_OZ_300("OZ", 15, 300,1, 30),
-    PALLET_120X80("Pallet 120 cm x 80 cm", 80, 120,1),
-    PALLET_80X60("Half pallet 80 cm x 60 cm", 80, 60, 1),
-    RT_R290("R290", 60, 60, 1,12);
+    BS_THOR_5("THOR 5", 220, 374,258, 7735),
+    RT_RDL_RDR("RDL/RDR", 100, 110,80, 200),
+    M_OZ_3000("OZ 3000", 10, 300,10, 30,true),
+    PALLET_120X80("Pallet 120 cm x 80 cm", 80, 120,50,100,true),
+    PALLET_80X60("Half pallet 80 cm x 60 cm", 80, 60, 50,100,true),
+    RT_R290("R290", 60, 60, 80,12),
+    RT_RDT_1000_350("RDT 2000/350", 55, 205, 80,151, true),
+    RT_RDZ_1000_350("RDZ 1000/350", 95, 110, 80,100, true),
+    RT_RDT_2000_450("RDT 2000/450", 65, 205, 80,158,true),
+    RT_RDT_2000_520("RDT 2000/520", 70, 205, 80,164,true),
+    RT_RDT_2000_620("RDT 2000/620", 90, 205, 80,221,true),
+    RT_RDT_2000_800("RDT 2000/800", 105, 205, 80,270,true),
+    RT_RDP_800("RDP 800", 90, 90, 80,230);
+
 
 
     private final String name;

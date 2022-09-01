@@ -7,7 +7,7 @@ public class LoadTrailer {
     private int checkpointY;
     private int checkpointX;
 
-    public void loading(ListOfItems listOfItems, Trailer trailer) {
+    public void loading(ListOfItems listOfItems, Trailer trailer) { //TODO tvorba algoritmu, který se primárně zaměří na využití celé šířky auta.
         int round = 0;
         while (listOfItems.getSelectedItems().size() != 0) {
             for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
@@ -16,7 +16,7 @@ public class LoadTrailer {
                         addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
                         i--;
                     } else if (round == 2) {
-                        listOfItems.getRemovedItems().add(new Item(listOfItems.getLoadedItems().get(i).getTemplate()));
+                        listOfItems.getRemovedItems().add(new Item(listOfItems.getSelectedItems().get(i).getTemplate()));
                         listOfItems.getSelectedItems().remove(i);
                         i--;
                     }

@@ -241,7 +241,7 @@ public class Trailer {
 
 
 
-    public void printOutlineOfTrailer() {
+    public void printOutlineOfTrailer() {//TODO create new printOutline method
         String usedCharnames = "";
         String foundCharnames = "";
         int count = 0;
