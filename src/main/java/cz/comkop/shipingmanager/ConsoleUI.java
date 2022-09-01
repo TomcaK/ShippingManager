@@ -44,8 +44,8 @@ public class ConsoleUI {
         List<TrailerTemplate> trailerTemplates = Arrays.stream(TrailerTemplate.values()).toList();
         System.out.println("--Please select trailer to be loaded--");
         int i = 1;
-        for ( TrailerTemplate template : trailerTemplates) {
-            System.out.println((i ++) + "." + template.getName());
+        for (TrailerTemplate template : trailerTemplates) {
+            System.out.println((i++) + "." + template.getName());
         }
         trailerChoice = trailerTemplates.get(Integer.parseInt(inputControl(TRAILER_REGEX)) - 1);
         System.out.println("* Selected trailer: " + trailerChoice);
@@ -57,8 +57,8 @@ public class ConsoleUI {
         System.out.println("--Please select goods and insert numbers of pieces in format \"(position number of goods).(how many pieces)\"separated by space, for example 1.2 3.5......\"--");
         System.out.println();
         int i = 1;
-        for ( ItemTemplate template: itemTemplates) {
-            System.out.println((i ++) + "." + template.getName());
+        for (ItemTemplate template : itemTemplates) {
+            System.out.println((i++) + "." + template.getName());
         }
         userChoice = inputControl(ITEM_REGEX);
     }
@@ -106,7 +106,7 @@ public class ConsoleUI {
 
     public void printEmailData(Trailer trailer, ListOfItems listOfItems) {
         System.out.println("--Email Data--");
-        System.out.println( trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
+        System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println();
         System.out.println("List of loaded goods");
         int i = 1;
@@ -117,12 +117,12 @@ public class ConsoleUI {
 
     public void printFinalReport(Trailer trailer, ListOfItems listOfItems) {
         System.out.println("--Final REPORT--");
-        System.out.println( trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
+        System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println();
         System.out.println("--List of loaded goods--");
         int i = 1;
         for (Item item : listOfItems.getLoadedItems()) {
-            System.out.println((i++) + ". " + item.getTemplate().getName() +" codename: " + item.getCodeName());
+            System.out.println((i++) + ". " + item.getTemplate().getName() + " codename: " + item.getCodeName());
         }
         System.out.println();
         System.out.println("--Probable storage of goods--");

@@ -6,11 +6,7 @@ public class Item {
     private char codeName;
     private boolean loadLater = false;
     private boolean turnItem90Degrees = false;
-    private int x,y;
-
-
-
-
+    private int x, y;
 
 
     public Item(ItemTemplate template, char codeName, int x, int y) {
@@ -21,11 +17,9 @@ public class Item {
         this.y = y;
     }
 
-    public Item(ItemTemplate template){
+    public Item(ItemTemplate template) {
         this.template = template;
     }
-
-
 
 
     public ItemTemplate getTemplate() {
@@ -51,9 +45,11 @@ public class Item {
     public int getX() {
         return x;
     }
+
     public int getY() {
         return y;
     }
+
     public boolean isTurnItem90Degrees() {
         return turnItem90Degrees;
     }
@@ -64,8 +60,8 @@ public class Item {
 
     @Override
     public String toString() {
-        return  template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
-                " cm, weight: " + template.getWeight() + " kg, height: " + template.getHeight() ;
+        return template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
+                " cm, weight: " + template.getWeight() + " kg, height: " + template.getHeight();
 
     }
 

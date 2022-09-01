@@ -14,8 +14,7 @@ public enum TrailerTemplate {
     private final int height;
 
 
-
-    TrailerTemplate(String name, int width, int length,int height) {
+    TrailerTemplate(String name, int width, int length, int height) {
         this.name = name;
         this.width = width;
         this.length = length;
@@ -36,8 +35,8 @@ public enum TrailerTemplate {
 
     @Override
     public String toString() {
-        return  name + "," +
-                " width: " + (double)(width / 100) + " m, length: " +
-                (double)(length / 100) + " m, height: " + (double)(height / 100) + " m *";
+        return name + "," +
+                " width: " + (double) (width / 100) + " m, length: " +
+                (double) (length / 100) + " m, height: " + (double) (height / 100) + " m *";
     }
 }
