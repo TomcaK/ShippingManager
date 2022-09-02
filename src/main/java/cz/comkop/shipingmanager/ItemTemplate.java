@@ -5,6 +5,7 @@ public enum ItemTemplate {//TODO check all dimensions, add height, loading by cr
     TEST_HALF_MACHINE("Test-Half machine", 2, 3, 1, 320, true),
     TEST_BIG_MACHINE("Test-Big machine", 3, 5, 1, 420),
     TEST_OZ("Test-OZ", 1, 1, 1, 20, true),
+    TEST_NEW("Test-OZ", 2, 4, 1, 20, true),
     TEST_MUST_TURN_MACHINE("Test-MustturnMachine", 3, 2, 1, 320, true),
     BS_220X250_GH_LR("220x250 GH-LR", 60, 141, 1, 235, true,true),
     BS_230X280_GH_LR("230x280 GH-LR", 77, 144, 1, 320, true,true),
@@ -121,8 +122,11 @@ public enum ItemTemplate {//TODO check all dimensions, add height, loading by cr
         return height;
     }
 
+    public boolean isPreferedNotToBeRotated() {
+        return preferedNotToBeRotated;
+    }
 
-//      440 x600 Horizontal X - NC - BS 290 160 214 2000
+    //      440 x600 Horizontal X - NC - BS 290 160 214 2000
 //            500 x750 Horizontal X 310 176 221 2120
 //            600 Camel X 432 136 220
 //            400 x400 Herkules X - CNC 326 233 221 3560

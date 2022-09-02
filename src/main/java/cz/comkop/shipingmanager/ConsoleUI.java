@@ -104,7 +104,7 @@ public class ConsoleUI {
         return trailerChoice;
     }
 
-    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {
+    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {//TODO pridat poznamku, o tom, ze nektere stroje vyzaduji manipulaci s jerabem
         System.out.println("--Email Data--");
         System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println();

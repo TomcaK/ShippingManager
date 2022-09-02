@@ -23,7 +23,7 @@ public class Main {
             listOfItems.createSelectedItems();
             listOfItems.sortSelectedItemsByArea();
             listOfItems.selectItemsToLoadLater(consoleUI.getTrailerChoice());
-            loadTrailer.loading(listOfItems, trailer);
+            loadTrailer.firstLoading(listOfItems, trailer);
             consoleUI.printDebugReport(trailer, listOfItems);
             consoleUI.printFinalReport(trailer, listOfItems);
             consoleUI.printEmailData(trailer, listOfItems);

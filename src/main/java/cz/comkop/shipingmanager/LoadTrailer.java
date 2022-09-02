@@ -29,24 +29,59 @@ public class LoadTrailer {
         trailer.countLDM();
     }
 
-    public void firstLoading(ListOfItems listOfItems, Trailer trailer) {
+    public void loading2(ListOfItems listOfItems, Trailer trailer) {//TODO check of height, //TODO tvorba algoritmu, který se primárně zaměří na využití celé šířky auta.
+        int round = 0;
+        while (listOfItems.getSelectedItems().size() != 0) {
             for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
-                int rest;
-                int pack;
-                List<Item> itemsPack = new ArrayList<>();
-                pack = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(i).getTemplate().getWidth();
-                rest = listOfItems.getRequiredItems().get(listOfItems.getSelectedItems().get(i).getTemplate()) % pack;
-                if (rest == 0) {
-                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
-                    i--;
-                    checkpointY += listOfItems.getSelectedItems().get(i).getTemplate().getLength() - 1;
-                }
-                if (rest > 0){
-                    for (int j = 0; j < listOfItems.getSelectedItems().size(); j++) {
-
+                if (!listOfItems.getSelectedItems().get(i).isLoadLater() || listOfItems.getSelectedItems().get(i).isLoadLater() && round > 0) {
+                    if (isFreeSpaceOnTrailer(i, listOfItems, trailer) && /*searchFreeSpaceCharacterOnTrailer(i, selectedItems)*/ searchFreeSpaceOnTrailer2(i, listOfItems, trailer)) {
+                        addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+                        i--;
+                    } else if (round == 2) {
+                        listOfItems.getRemovedItems().add(new Item(listOfItems.getSelectedItems().get(i).getTemplate()));
+                        listOfItems.getSelectedItems().remove(i);
+                        i--;
                     }
                 }
             }
+            round++;
+        }
+        trailer.countLDM();
+    }
+
+    public void firstLoading(ListOfItems listOfItems, Trailer trailer) {//TODO vyresit problem 2 palety 120x80
+        for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
+            int rest, pack, quantity;
+            List<Item> itemsPack = new ArrayList<>();
+            quantity = listOfItems.getRequiredItems().get(listOfItems.getSelectedItems().get(i).getTemplate());
+            pack = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(i).getTemplate().getWidth();
+            rest = quantity % pack;
+            if (pack == quantity) {
+                int w = listOfItems.getSelectedItems().get(i).getTemplate().getWidth() * quantity;
+                int l = listOfItems.getSelectedItems().get(i).getTemplate().getLength() ;
+                if (listOfItems.getSelectedItems().get(i).getTemplate().isPreferedNotToBeRotated() || w > l && l <= trailer.getTemplate().getWidth()) {
+                    for (int j = i; j < i + quantity; j++) {
+                        addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+                        checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
+                    }
+                    checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
+                }else {
+                    for (int j = i; j < i + quantity; j++) {
+                        addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+                        checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
+                    }
+                    checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
+
+                }
+                checkpointX = 0;
+                i--;
+            }
+            if (rest > 0) {
+
+            } else {
+
+            }
+        }
 
     }
 
