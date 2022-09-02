@@ -61,7 +61,7 @@ public class Item {
     @Override
     public String toString() {
         return template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
-                " cm, weight: " + template.getWeight() + " kg, height: " + template.getHeight();
+                " cm, height: " + template.getHeight() + " cm, weight: " + template.getWeight() + " kg";
 
     }
 

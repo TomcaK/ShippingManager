@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 public class ConsoleUI {
     private static final String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
     private static final String TRAILER_REGEX = "[1-5]+";
+    private final Scanner scanner = new Scanner(System.in);
     private TrailerTemplate trailerChoice;
     private String userChoice;
-    private final Scanner scanner = new Scanner(System.in);
 
     private static void printRemovedGoods(ListOfItems listOfItems) {
         for (Item item : listOfItems.getRemovedItems()
@@ -53,14 +53,14 @@ public class ConsoleUI {
 
 
     public void selectionOfItems() {
-        List<ItemTemplate> itemTemplates = Arrays.stream(ItemTemplate.values()).toList();
-        System.out.println("--Please select goods and insert numbers of pieces in format \"(position number of goods).(how many pieces)\"separated by space, for example 1.2 3.5......\"--");
-        System.out.println();
-        int i = 1;
-        for (ItemTemplate template : itemTemplates) {
-            System.out.println((i++) + "." + template.getName());
-        }
-        userChoice = inputControl(ITEM_REGEX);
+            List<ItemTemplate> itemTemplates = Arrays.stream(ItemTemplate.values()).toList();
+            System.out.println("--Please select goods and insert numbers of pieces in format \"(position number of goods).(how many pieces)\"separated by space, for example 1.2 3.5......\"--");
+            System.out.println();
+            int i = 1;
+            for (ItemTemplate template : itemTemplates) {
+                System.out.println((i++) + "." + template.getName());
+            }
+            userChoice = inputControl(ITEM_REGEX);
     }
 
     public String getUserChoice() {

@@ -7,7 +7,7 @@ public class Main {
     static LoadTrailer loadTrailer = new LoadTrailer();
     //static RequiredItemList requiredItems = new RequiredItemList();
 
-
+//TODO test 19.1 11.1 26.1 32.1 33.1 34.1 35.2 36.1 37.1 38.1 29.2
     public static void main(String[] args) {
 
         consoleUI.welcome();
@@ -38,5 +38,6 @@ public class Main {
         //new trailers, list of items
 
         listOfItems = new ListOfItems();
+
     }
 }

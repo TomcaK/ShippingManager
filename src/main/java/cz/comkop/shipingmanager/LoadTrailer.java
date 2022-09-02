@@ -1,6 +1,9 @@
 package cz.comkop.shipingmanager;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LoadTrailer {
 
     private int checkpointY;
@@ -25,6 +28,28 @@ public class LoadTrailer {
         }
         trailer.countLDM();
     }
+
+    public void firstLoading(ListOfItems listOfItems, Trailer trailer) {
+            for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
+                int rest;
+                int pack;
+                List<Item> itemsPack = new ArrayList<>();
+                pack = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(i).getTemplate().getWidth();
+                rest = listOfItems.getRequiredItems().get(listOfItems.getSelectedItems().get(i).getTemplate()) % pack;
+                if (rest == 0) {
+                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+                    i--;
+                    checkpointY += listOfItems.getSelectedItems().get(i).getTemplate().getLength() - 1;
+                }
+                if (rest > 0){
+                    for (int j = 0; j < listOfItems.getSelectedItems().size(); j++) {
+
+                    }
+                }
+            }
+
+    }
+
 
     private void addItemToTrailer(int indexOfItem, int cX, int cY, ListOfItems listOfItems, Trailer trailer) {
         int maxLength, maxWidth;
@@ -76,6 +101,39 @@ public class LoadTrailer {
         }
         return true;
     }
+
+////    public boolean inspectItem(ListOfItems listOfItems, Trailer trailer, Item item) {
+//        int rest;
+//        int pack;
+//        int quantity;
+//        List<Item> itemsPack = new ArrayList<>();
+//        pack = trailer.getTemplate().getWidth() / item.getTemplate().getWidth();
+//        rest = listOfItems.getRequiredItems().get(item.getTemplate()) % pack;
+//
+//        if (rest == 0) {
+//            return true; //loadItem
+//        }
+//        if (listOfItems.getRequiredItems().get(listOfItems.getSelectedItems().get(inderOfItem).getTemplate())) {
+//
+//        }
+//
+//
+//        for (int i = 0; i < selectedItems.size(); ) {
+//            pack = trailer.getWidth() / selectedItems.get(i).getTemplate().getWidth();
+//
+//
+//            quantity = requiredItems.get(selectedItems.get(i).getTemplate());
+//            rest = quantity % pack;
+//            for (int j = i; j < i + quantity; j++) {
+//                if (j < i + rest) {
+//                    selectedItems.get(i).setLoadLater(true);
+//                }
+//            }
+//            i += quantity;
+//        }
+//
+//        return false;
+////    }
 
     private boolean doesCurrentItemFitForTheseCoordinates(int x, int y, int indexOfGoods, ListOfItems listOfItems, Trailer trailer) {
         ItemTemplate itemTemplate = listOfItems.getSelectedItems().get(indexOfGoods).getTemplate();

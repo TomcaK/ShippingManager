@@ -107,6 +107,8 @@ public class Trailer {
         return template;
     }
 
+
+
     @Override
     public String toString() {
         return "Needed LDM: " + LDM + " m, free LDM: " + freeLDM + " m, total weight: " + totalWeight + " kg";
