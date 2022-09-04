@@ -51,36 +51,87 @@ public class LoadTrailer {
 
     public void firstLoading(ListOfItems listOfItems, Trailer trailer) {//TODO vyresit problem 2 palety 120x80
         for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
-            int rest, pack, quantity;
-            List<Item> itemsPack = new ArrayList<>();
-            quantity = listOfItems.getRequiredItems().get(listOfItems.getSelectedItems().get(i).getTemplate());
-            pack = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(i).getTemplate().getWidth();
-            rest = quantity % pack;
-            if (pack == quantity) {
-                int w = listOfItems.getSelectedItems().get(i).getTemplate().getWidth() * quantity;
-                int l = listOfItems.getSelectedItems().get(i).getTemplate().getLength() ;
-                if (listOfItems.getSelectedItems().get(i).getTemplate().isPreferedNotToBeRotated() || w > l && l <= trailer.getTemplate().getWidth()) {
-                    for (int j = i; j < i + quantity; j++) {
-                        addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
-                        checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
-                    }
-                    checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
-                }else {
-                    for (int j = i; j < i + quantity; j++) {
-                        addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
-                        checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
-                    }
-                    checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
 
+            List<Item> itemsPack = new ArrayList<>();
+
+            if (listOfItems.getSelectedItems().get(i).getTemplate().isPreferedNotToBeRotated() || w > l && l <= trailer.getTemplate().getWidth()) {
+                for (int j = i; j < i + quantity; j++) {
+                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+                    checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
                 }
-                checkpointX = 0;
-                i--;
+                checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
+            } else {
+                for (int j = i; j < i + quantity; j++) {
+                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+                    checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
+                }
+                checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
+
             }
+            checkpointX = 0;
+            i--;
+
             if (rest > 0) {
 
             } else {
 
             }
+        }
+
+    }
+
+    private void createBestPackOfItems(ListOfItems listOfItems, Trailer trailer, int indexOfItem) {
+        //vem vybraný item, udělej součet šířek a délek aby součet byl menší než šířka návěsu, mám 2, 3 , 4 palety
+        int numberOfItemsWidth, numberOfItemsLength, widthOfItems, lengthOfItems, rowW, rowL, w, l, incrementW, incrementL;
+        int restW, restL, pack, quantity;
+        quantity = listOfItems.getRequiredItems().get(listOfItems.getSelectedItems().get(indexOfItem).getTemplate());
+        // rest = quantity % pack;
+        if (listOfItems.getSelectedItems().get(indexOfItem).isTurnItem90Degrees() &&
+                !listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isPreferedNotToBeRotated()) {//kontrola, zda je mozne item otocit,
+            numberOfItemsWidth = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth();//3 kolik se vejde itemu na sirku do navesu
+            numberOfItemsLength = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength();//2
+            if (quantity < numberOfItemsWidth) {
+                rowW = 1;
+            } else {
+                rowW = quantity / numberOfItemsWidth;
+                restW = quantity % numberOfItemsWidth;
+            }
+            if (quantity < numberOfItemsLength) {
+                rowL = 1;
+            } else {
+                rowL = quantity / numberOfItemsLength;
+                restL = quantity % numberOfItemsLength;
+            }
+            if (restW != 0) {
+                restW = 1;
+            } else {
+             restW =0;
+            }
+            if (restL != 0) {
+                restL = 1;
+            } else {
+                restL =0;
+            }
+
+
+            w = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength() * (rowW + restW);
+            l = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth() * (rowW + restW);
+
+            areaL = widthOfItems * ((quantity / numberOfItemsWidth) * listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength());
+            for (int i = 0; i <; i++) {
+
+            }
+            widthOfItems = numberOfItemsWidth * listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth();
+            lengthOfItems = numberOfItemsLength * listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength();
+        }
+
+
+//        int w = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth() * quantity
+//        int l = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength();
+
+        if (listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isCanBeRotated90Degrees() && !listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isPreferedNotToBeRotated()
+        ) {
+
         }
 
     }
