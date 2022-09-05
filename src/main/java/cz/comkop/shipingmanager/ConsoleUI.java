@@ -1,5 +1,8 @@
 package cz.comkop.shipingmanager;
 
+import javax.swing.text.DateFormatter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +12,10 @@ import java.util.regex.Pattern;
 public class ConsoleUI {
     private static final String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
     private static final String TRAILER_REGEX = "[1-5]+";
+    private static final String DATE_REGEX = "\\d+\\.\\d+\\.\\d\\d\\d\\d";
     private final Scanner scanner = new Scanner(System.in);
+    private String orders,date;
+    private LocalDate shipingDate;
     private TrailerTemplate trailerChoice;
     private String userChoice;
 
@@ -49,6 +55,18 @@ public class ConsoleUI {
         }
         trailerChoice = trailerTemplates.get(Integer.parseInt(inputControl(TRAILER_REGEX)) - 1);
         System.out.println("* Selected trailer: " + trailerChoice);
+    }
+
+    public void selectionOfDate() {
+        System.out.println("--Please select date of shiping in format \"day.month.year\"--");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
+        shipingDate = LocalDate.parse(inputControl(DATE_REGEX),formatter);
+        System.out.println("* Selected trailer: " + shipingDate);
+    }
+
+    public void selectionOfOrder() {
+        System.out.println("--Please insert customer orders--");
+        orders = scanner.nextLine();
     }
 
 
@@ -104,8 +122,10 @@ public class ConsoleUI {
         return trailerChoice;
     }
 
-    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {//TODO pridat poznamku, o tom, ze nektere stroje vyzaduji manipulaci s jerabem
+    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {//TODO dodelat datum pro expedici,čísla objednávek,pridat poznamku, o tom, ze nektere stroje vyzaduji manipulaci s jerabem
         System.out.println("--Email Data--");
+        System.out.println("Hi,");
+        System.out.println("your order " + orders + " will be ready on " + shipingDate.getDayOfWeek() + ", " + shipingDate);
         System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println();
         System.out.println("List of loaded goods");

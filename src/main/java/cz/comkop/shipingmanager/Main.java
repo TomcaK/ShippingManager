@@ -16,14 +16,16 @@ public class Main {
             trailer = new Trailer(consoleUI.getTrailerChoice());
             do {
                 consoleUI.selectionOfItems();
+//                consoleUI.selectionOfOrder();
+//                consoleUI.selectionOfDate();
                 listOfItems.getItemsFromInput(consoleUI.getUserChoice());
                 consoleUI.printRequiredItems(listOfItems);
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
             listOfItems.createSelectedItems();
             listOfItems.sortSelectedItemsByArea();
-            listOfItems.selectItemsToLoadLater(consoleUI.getTrailerChoice());
-            loadTrailer.firstLoading(listOfItems, trailer);
+          //  listOfItems.selectItemsToLoadLater(consoleUI.getTrailerChoice());
+            loadTrailer.loading2(listOfItems, trailer);
             consoleUI.printDebugReport(trailer, listOfItems);
             consoleUI.printFinalReport(trailer, listOfItems);
             consoleUI.printEmailData(trailer, listOfItems);

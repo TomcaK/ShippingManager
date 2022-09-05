@@ -1,8 +1,8 @@
 package cz.comkop.shipingmanager;
 
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LoadTrailer {
 
@@ -33,108 +33,96 @@ public class LoadTrailer {
         int round = 0;
         while (listOfItems.getSelectedItems().size() != 0) {
             for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
-                if (!listOfItems.getSelectedItems().get(i).isLoadLater() || listOfItems.getSelectedItems().get(i).isLoadLater() && round > 0) {
-                    if (isFreeSpaceOnTrailer(i, listOfItems, trailer) && /*searchFreeSpaceCharacterOnTrailer(i, selectedItems)*/ searchFreeSpaceOnTrailer2(i, listOfItems, trailer)) {
-                        addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
-                        i--;
-                    } else if (round == 2) {
-                        listOfItems.getRemovedItems().add(new Item(listOfItems.getSelectedItems().get(i).getTemplate()));
-                        listOfItems.getSelectedItems().remove(i);
-                        i--;
-                    }
+                createPackOfItems(listOfItems, trailer, i);
+
+                if (/*searchFreeSpaceCharacterOnTrailer(i, selectedItems)*/ searchFreeSpaceOnTrailer2(i, listOfItems, trailer)) {
+                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+                    i--;
+                } else if (round == 2) {
+                    listOfItems.getRemovedItems().add(new Item(listOfItems.getSelectedItems().get(i).getTemplate()));
+                    listOfItems.getSelectedItems().remove(i);
+                    i--;
                 }
             }
+
             round++;
         }
         trailer.countLDM();
     }
 
-    public void firstLoading(ListOfItems listOfItems, Trailer trailer) {//TODO vyresit problem 2 palety 120x80
-        for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
-
-            List<Item> itemsPack = new ArrayList<>();
-
-            if (listOfItems.getSelectedItems().get(i).getTemplate().isPreferedNotToBeRotated() || w > l && l <= trailer.getTemplate().getWidth()) {
-                for (int j = i; j < i + quantity; j++) {
-                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
-                    checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
-                }
-                checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
-            } else {
-                for (int j = i; j < i + quantity; j++) {
-                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
-                    checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
-                }
-                checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
-
-            }
-            checkpointX = 0;
-            i--;
-
-            if (rest > 0) {
-
-            } else {
-
-            }
-        }
-
-    }
-
-    private void createBestPackOfItems(ListOfItems listOfItems, Trailer trailer, int indexOfItem) {
-        //vem vybraný item, udělej součet šířek a délek aby součet byl menší než šířka návěsu, mám 2, 3 , 4 palety
-        int numberOfItemsWidth, numberOfItemsLength, widthOfItems, lengthOfItems, rowW, rowL, w, l, incrementW, incrementL;
-        int restW, restL, pack, quantity;
+    private void createPackOfItems(ListOfItems listOfItems, Trailer trailer, int indexOfItem) {
+        int quantity, numberOfItemsWidth, numberOfItemsLength = 0, packW = 0, packL = 0,deviation = 10, restW, restL;
         quantity = listOfItems.getRequiredItems().get(listOfItems.getSelectedItems().get(indexOfItem).getTemplate());
         // rest = quantity % pack;
-        if (listOfItems.getSelectedItems().get(indexOfItem).isTurnItem90Degrees() &&
-                !listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isPreferedNotToBeRotated()) {//kontrola, zda je mozne item otocit,
-            numberOfItemsWidth = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth();//3 kolik se vejde itemu na sirku do navesu
+        numberOfItemsWidth = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth();
+        packW = quantity / numberOfItemsWidth;
+
+        if (listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isCanBeRotated90Degrees() &&
+                !listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isPreferedNotToBeRotated()) {
             numberOfItemsLength = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength();//2
-            if (quantity < numberOfItemsWidth) {
-                rowW = 1;
-            } else {
-                rowW = quantity / numberOfItemsWidth;
-                restW = quantity % numberOfItemsWidth;
-            }
-            if (quantity < numberOfItemsLength) {
-                rowL = 1;
-            } else {
-                rowL = quantity / numberOfItemsLength;
-                restL = quantity % numberOfItemsLength;
-            }
-            if (restW != 0) {
-                restW = 1;
-            } else {
-             restW =0;
-            }
-            if (restL != 0) {
-                restL = 1;
-            } else {
-                restL =0;
-            }
-
-
-            w = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength() * (rowW + restW);
-            l = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth() * (rowW + restW);
-
-            areaL = widthOfItems * ((quantity / numberOfItemsWidth) * listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength());
-            for (int i = 0; i <; i++) {
-
-            }
-            widthOfItems = numberOfItemsWidth * listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth();
-            lengthOfItems = numberOfItemsLength * listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength();
+            packL = quantity / numberOfItemsLength;
         }
 
+        int numberOfRowsW, numberOfRowsL, w, l;
 
-//        int w = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth() * quantity
-//        int l = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength();
+        //3 kolik se vejde itemu na sirku do navesu
+        numberOfRowsW = quantity / numberOfItemsWidth;
+        restW = quantity % numberOfItemsWidth;
+        numberOfRowsL = quantity / numberOfItemsLength;
+        restL = quantity % numberOfItemsLength;
+        restW = restW != 0 ? 1 : 0;
+        restL = restL != 0 ? 1 : 0;
+        w = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength() * (numberOfRowsW + restW );
+        l = listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth() * (numberOfRowsL + restL);
 
-        if (listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isCanBeRotated90Degrees() && !listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isPreferedNotToBeRotated()
-        ) {
+        if (w < l) {
+            for (int i = 0; i < quantity * numberOfRowsW; i++) {
 
+                addItemToTrailer(0, checkpointX, checkpointY, listOfItems, trailer);
+                checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
+            }
+        } else {
+            for (int i = 0; i < quantity * numberOfRowsL; i++) {
+                listOfItems.getSelectedItems().get(0).setTurnItem90Degrees(true);
+                addItemToTrailer(0,  checkpointX, checkpointY, listOfItems, trailer);
+                checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
+            }
         }
+
+        List<Item> similarItems = listOfItems.getSelectedItems().stream().filter(item -> item.getTemplate().getWidth() > item.getTemplate().getWidth() + deviation || item.getTemplate().getWidth() > item.getTemplate().getWidth() + deviation).collect(Collectors.toList());
 
     }
+
+//    public void firstLoading(ListOfItems listOfItems, Trailer trailer) {//TODO vyresit problem 2 palety 120x80
+//        for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
+//
+//            List<Item> itemsPack = new ArrayList<>();
+//
+//            if (listOfItems.getSelectedItems().get(i).getTemplate().isPreferedNotToBeRotated() || w > l && l <= trailer.getTemplate().getWidth()) {
+//                for (int j = i; j < i + quantity; j++) {
+//                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+//                    checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
+//                }
+//                checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
+//            } else {
+//                for (int j = i; j < i + quantity; j++) {
+//                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+//                    checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
+//                }
+//                checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
+//
+//            }
+//            checkpointX = 0;
+//            i--;
+//
+//            if (rest > 0) {
+//
+//            } else {
+//
+//            }
+//        }
+//
+//    }
 
 
     private void addItemToTrailer(int indexOfItem, int cX, int cY, ListOfItems listOfItems, Trailer trailer) {
@@ -161,7 +149,7 @@ public class LoadTrailer {
     }
 
 
-    private boolean isFreeSpaceOnTrailer(int indexOfGoods, ListOfItems listOfItems, Trailer trailer) {
+    private boolean isFreeSpaceOnTrailer(int indexOfGoods, ListOfItems listOfItems, Trailer trailer) { //TODO muze vrasti true i kdyz se uz rozmerove nevejde
         return listOfItems.getSelectedItems().get(indexOfGoods).getTemplate().getWidth() * listOfItems.getSelectedItems().get(indexOfGoods).getTemplate().getLength() <= trailer.getFreeSquareCentimeters();
     }
 
