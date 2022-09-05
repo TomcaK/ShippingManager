@@ -61,7 +61,7 @@ public class ConsoleUI {
         System.out.println("--Please select date of shiping in format \"day.month.year\"--");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
         shipingDate = LocalDate.parse(inputControl(DATE_REGEX),formatter);
-        System.out.println("* Selected trailer: " + shipingDate);
+
     }
 
     public void selectionOfOrder() {
@@ -125,7 +125,7 @@ public class ConsoleUI {
     public void printEmailData(Trailer trailer, ListOfItems listOfItems) {//TODO dodelat datum pro expedici,čísla objednávek,pridat poznamku, o tom, ze nektere stroje vyzaduji manipulaci s jerabem
         System.out.println("--Email Data--");
         System.out.println("Hi,");
-        System.out.println("your order " + orders + " will be ready on " + shipingDate.getDayOfWeek() + ", " + shipingDate);
+        System.out.println("your order " + orders + " will be ready on " + shipingDate.getDayOfWeek() + ", " + shipingDate.format(DateTimeFormatter.ofPattern("d.M.yyyy")));
         System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println();
         System.out.println("List of loaded goods");

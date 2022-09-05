@@ -63,4 +63,67 @@ public class ListOfItems {
             i += quantity;
         }
     }
+
+    public void createPacks(TrailerTemplate trailerTemplate) {
+        int count = 1, index = 0;
+        for (int i = 0; i < selectedItems.size(); i++) {
+
+            int quantity, numberOfItemsWidth, numberOfItemsLength = 0, deviation = 10, restW, restL, numberOfRowsW, numberOfRowsL, w, l;
+            quantity = requiredItems.get(selectedItems.get(i).getTemplate());
+
+
+            // rest = quantity % pack;
+            numberOfItemsWidth = trailerTemplate.getWidth() / selectedItems.get(i).getTemplate().getWidth();
+
+
+            //3 kolik se vejde itemu na sirku do navesu
+            numberOfRowsW = quantity / numberOfItemsWidth;
+            restW = quantity % numberOfItemsWidth;
+
+            numberOfRowsW += restW != 0 ? 1 : 0;
+
+            w = selectedItems.get(i).getTemplate().getLength() * (numberOfRowsW);
+
+            if (selectedItems.get(i).getTemplate().isCanBeRotated90Degrees() &&
+                    !selectedItems.get(i).getTemplate().isPreferedNotToBeRotated()) {
+                numberOfItemsLength = trailerTemplate.getWidth() / selectedItems.get(i).getTemplate().getLength();
+                numberOfRowsL = quantity / numberOfItemsLength;
+                restL = quantity % numberOfItemsLength;
+                numberOfRowsL += restL != 0 ? 1 : 0;
+                l = selectedItems.get(i).getTemplate().getWidth() * (numberOfRowsL);//2
+
+                if (w < l) {
+                    for (int j = i; j < i + (quantity * numberOfRowsW); j++) {
+
+
+                        selectedItems.get(j).setInPack(count);
+                        index = j;
+                    }
+                    count++;
+
+                } else {
+                    for (int j = i; j < i + (quantity * numberOfRowsW); j++) {
+                        selectedItems.get(j).setInPack(count);
+                        selectedItems.get(j).setTurnItem90Degrees(true);
+                        index = j;
+                    }
+                    count++;
+
+                }
+            }
+            else {
+                selectedItems.get(i).setInPack(count++);
+
+            }
+
+
+//           while (width <= trailerTemplate.getWidth()) {
+//               List<Item> similarItems = selectedItems.stream().filter(item -> item.getTemplate().getWidth() <= width )
+//                width += selectedItems.get(i).getTemplate().getWidth();
+//            }
+//
+            i = index;
+        }
+
+    }
 }

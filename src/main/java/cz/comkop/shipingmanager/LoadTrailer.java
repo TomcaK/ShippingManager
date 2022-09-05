@@ -9,33 +9,14 @@ public class LoadTrailer {
     private int checkpointY;
     private int checkpointX;
 
+
     public void loading(ListOfItems listOfItems, Trailer trailer) {//TODO check of height, //TODO tvorba algoritmu, který se primárně zaměří na využití celé šířky auta.
         int round = 0;
         while (listOfItems.getSelectedItems().size() != 0) {
             for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
-                if (!listOfItems.getSelectedItems().get(i).isLoadLater() || listOfItems.getSelectedItems().get(i).isLoadLater() && round > 0) {
-                    if (isFreeSpaceOnTrailer(i, listOfItems, trailer) && /*searchFreeSpaceCharacterOnTrailer(i, selectedItems)*/ searchFreeSpaceOnTrailer2(i, listOfItems, trailer)) {
-                        addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
-                        i--;
-                    } else if (round == 2) {
-                        listOfItems.getRemovedItems().add(new Item(listOfItems.getSelectedItems().get(i).getTemplate()));
-                        listOfItems.getSelectedItems().remove(i);
-                        i--;
-                    }
-                }
-            }
-            round++;
-        }
-        trailer.countLDM();
-    }
+               // createPackOfItems(listOfItems, trailer, i);
 
-    public void loading2(ListOfItems listOfItems, Trailer trailer) {//TODO check of height, //TODO tvorba algoritmu, který se primárně zaměří na využití celé šířky auta.
-        int round = 0;
-        while (listOfItems.getSelectedItems().size() != 0) {
-            for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
-                createPackOfItems(listOfItems, trailer, i);
-
-                if (/*searchFreeSpaceCharacterOnTrailer(i, selectedItems)*/ searchFreeSpaceOnTrailer2(i, listOfItems, trailer)) {
+                if (/*searchFreeSpaceCharacterOnTrailer(i, selectedItems)*/ searchFreeSpaceOnTrailer(i, listOfItems, trailer)) {
                     addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
                     i--;
                 } else if (round == 2) {
@@ -50,9 +31,44 @@ public class LoadTrailer {
         trailer.countLDM();
     }
 
-    private void createPackOfItems(ListOfItems listOfItems, Trailer trailer, int indexOfItem) {
+    public void loading2(ListOfItems listOfItems, Trailer trailer) {//TODO check of height, //TODO tvorba algoritmu, který se primárně zaměří na využití celé šířky auta.
+        int round = 0, lastPack = 0;
+        for (Item item:listOfItems.getSelectedItems()) {
+            if (lastPack < item.getInPack()){
+                lastPack = item.getInPack();
+            }
+        }
+
+        while (listOfItems.getSelectedItems().size() != 0) {
+            for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
+                              if ( searchFreeSpaceOnTrailer(i, listOfItems, trailer)) {
+                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
+                    i--;
+                } else if (round == 2) {
+                    listOfItems.getRemovedItems().add(new Item(listOfItems.getSelectedItems().get(i).getTemplate()));
+                    listOfItems.getSelectedItems().remove(i);
+                    i--;
+                }
+            }
+
+            round++;
+        }
+        trailer.countLDM();
+    }
+
+    private void createPackOfItems(int x, int y, ListOfItems listOfItems, Trailer trailer, int indexOfItem) {
         int quantity, numberOfItemsWidth, numberOfItemsLength = 0, packW = 0, packL = 0,deviation = 10, restW, restL;
         quantity = listOfItems.getRequiredItems().get(listOfItems.getSelectedItems().get(indexOfItem).getTemplate());
+
+        if (listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isCanBeRotated90Degrees() &&
+                !listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isPreferedNotToBeRotated()) {
+            numberOfItemsLength = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength();//2
+            packL = quantity / numberOfItemsLength;
+        }
+
+
+
+
         // rest = quantity % pack;
         numberOfItemsWidth = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth();
         packW = quantity / numberOfItemsWidth;
@@ -149,11 +165,9 @@ public class LoadTrailer {
     }
 
 
-    private boolean isFreeSpaceOnTrailer(int indexOfGoods, ListOfItems listOfItems, Trailer trailer) { //TODO muze vrasti true i kdyz se uz rozmerove nevejde
-        return listOfItems.getSelectedItems().get(indexOfGoods).getTemplate().getWidth() * listOfItems.getSelectedItems().get(indexOfGoods).getTemplate().getLength() <= trailer.getFreeSquareCentimeters();
-    }
 
-    private boolean searchFreeSpaceOnTrailer2(int indexOfGoods, ListOfItems listOfItems, Trailer trailer) {
+
+    private boolean searchFreeSpaceOnTrailer(int indexOfGoods, ListOfItems listOfItems, Trailer trailer) {
         if (listOfItems.getLoadedItems().size() != 0) {
             for (int y = 0; y < trailer.getTemplate().getLength(); y++) {
                 for (int x = 0; x < trailer.getTemplate().getWidth(); ) {
@@ -176,50 +190,18 @@ public class LoadTrailer {
         return true;
     }
 
-////    public boolean inspectItem(ListOfItems listOfItems, Trailer trailer, Item item) {
-//        int rest;
-//        int pack;
-//        int quantity;
-//        List<Item> itemsPack = new ArrayList<>();
-//        pack = trailer.getTemplate().getWidth() / item.getTemplate().getWidth();
-//        rest = listOfItems.getRequiredItems().get(item.getTemplate()) % pack;
-//
-//        if (rest == 0) {
-//            return true; //loadItem
-//        }
-//        if (listOfItems.getRequiredItems().get(listOfItems.getSelectedItems().get(inderOfItem).getTemplate())) {
-//
-//        }
-//
-//
-//        for (int i = 0; i < selectedItems.size(); ) {
-//            pack = trailer.getWidth() / selectedItems.get(i).getTemplate().getWidth();
-//
-//
-//            quantity = requiredItems.get(selectedItems.get(i).getTemplate());
-//            rest = quantity % pack;
-//            for (int j = i; j < i + quantity; j++) {
-//                if (j < i + rest) {
-//                    selectedItems.get(i).setLoadLater(true);
-//                }
-//            }
-//            i += quantity;
-//        }
-//
-//        return false;
-////    }
 
     private boolean doesCurrentItemFitForTheseCoordinates(int x, int y, int indexOfGoods, ListOfItems listOfItems, Trailer trailer) {
         ItemTemplate itemTemplate = listOfItems.getSelectedItems().get(indexOfGoods).getTemplate();
 
         if (itemTemplate.getWidth() + x <= trailer.getTemplate().getWidth() && itemTemplate.getLength() + y <= trailer.getTemplate().getLength()) {
-            if (freeCoordinatesChecker2(x, (x + itemTemplate.getWidth()), y, (y + itemTemplate.getLength()), listOfItems)) {
+            if (freeCoordinatesChecker(x, (x + itemTemplate.getWidth()), y, (y + itemTemplate.getLength()), listOfItems)) {
                 return true;
             }
 
         }
         if (itemTemplate.isCanBeRotated90Degrees() && itemTemplate.getLength() + x <= trailer.getTemplate().getWidth() && itemTemplate.getWidth() + y <= trailer.getTemplate().getLength()) {
-            if (freeCoordinatesChecker2(x, (x + itemTemplate.getLength()), y, (y + itemTemplate.getWidth()), listOfItems)) {
+            if (freeCoordinatesChecker(x, (x + itemTemplate.getLength()), y, (y + itemTemplate.getWidth()), listOfItems)) {
                 listOfItems.getSelectedItems().get(indexOfGoods).setTurnItem90Degrees(true);
                 return true;
             }
@@ -228,7 +210,7 @@ public class LoadTrailer {
         return false;
     }
 
-    private boolean freeCoordinatesChecker2(int coordinateXStart, int coordinateXEnd, int coordinateYStart, int coordinateYEnd, ListOfItems listOfItems) {
+    private boolean freeCoordinatesChecker(int coordinateXStart, int coordinateXEnd, int coordinateYStart, int coordinateYEnd, ListOfItems listOfItems) {
         for (int y = coordinateYStart; y < coordinateYEnd; y++) {
             for (int x = coordinateXStart; x < coordinateXEnd; x++) {
                 for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
