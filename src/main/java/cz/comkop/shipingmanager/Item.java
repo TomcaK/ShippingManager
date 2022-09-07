@@ -4,8 +4,9 @@ public class Item {
     private final ItemTemplate template;
     private int area;
     private char codeName;
-    private boolean loadLater = false;
-    private boolean turnItem90Degrees = false;
+    private boolean loadLater;
+    private boolean loadFirst;
+    private boolean turnItem90Degrees;
     private int x, y;
 
 
@@ -66,5 +67,11 @@ public class Item {
 
     }
 
+    public boolean isLoadFirst() {
+        return loadFirst;
+    }
 
+    public void setLoadFirst(boolean loadFirst) {
+        this.loadFirst = loadFirst;
+    }
 }

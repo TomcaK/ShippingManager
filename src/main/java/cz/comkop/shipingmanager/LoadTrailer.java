@@ -39,8 +39,15 @@ public class LoadTrailer {
 
         while (listOfItems.getSelectedItems().size() != 0) {
             if (round <= 1) {
+                createPacks( trailer, listOfItems);
                 for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
-                    createPacks(listOfItems.getSelectedItems().get(i), trailer, i, listOfItems);
+
+
+
+
+
+
+
                 }
            } else {
                 for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
@@ -60,9 +67,11 @@ public class LoadTrailer {
         trailer.countLDM();
     }
 
-    public void createPacks(Item item, Trailer trailer, int indexOfItem, ListOfItems listOfItems) {
+    public void createPacks( Trailer trailer, ListOfItems listOfItems) {
         int count = 1, index = 0;
+        for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
 
+            Item item = listOfItems.getSelectedItems().get(i);
             List<Item> similarItems;
             //dostávám katanu
             int quantity, quantityOfItemsWidth, quantityOfItemsLength = 0, deviation = 15, restW, restL, numberOfRowsW, numberOfRowsL, w, l = 0, freeSpace;
@@ -93,10 +102,11 @@ public class LoadTrailer {
                 if (quantity < quantityOfItemsWidth) {
                     quantityOfItemsWidth = quantity;
                 }
-                similarItems = returnSimilarItems(indexOfItem, listOfItems, freeSpace, false);
+                similarItems = returnSimilarItems(i, listOfItems, freeSpace, false);
                 if (similarItems.isEmpty()) {
-                    for (int j = indexOfItem; j < indexOfItem + quantityOfItemsWidth; j++) {
-                        addItemToTrailer(indexOfItem, coordinateX, coordinateY, listOfItems, trailer);
+                    for (int j = i; j < i + quantityOfItemsWidth; j++) {
+                        listOfItems.getSelectedItems().get(j).setLoadFirst(true);
+                        addItemToTrailer(i, coordinateX, coordinateY, listOfItems, trailer);
                         coordinateX += item.getTemplate().getWidth();
                     }
                     coordinateX = 0;
@@ -112,11 +122,12 @@ public class LoadTrailer {
 
                 freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsLength * item.getTemplate().getLength());
 
-                similarItems = returnSimilarItems(indexOfItem, listOfItems, freeSpace, true);
+                similarItems = returnSimilarItems(i, listOfItems, freeSpace, true);
                 if (similarItems.isEmpty()) {
-                    for (int j = indexOfItem; j < indexOfItem + quantityOfItemsLength; j++) {
-                        listOfItems.getSelectedItems().get(indexOfItem).setTurnItem90Degrees(true);
-                        addItemToTrailer(indexOfItem, coordinateX, coordinateY, listOfItems, trailer);
+                    for (int j = i; j < i + quantityOfItemsLength; j++) {
+                        listOfItems.getSelectedItems().get(j).setTurnItem90Degrees(true);
+                        listOfItems.getSelectedItems().get(j).setLoadFirst(true);
+                        addItemToTrailer(i, coordinateX, coordinateY, listOfItems, trailer);
                         coordinateX += item.getTemplate().getLength();
                     }
                     coordinateX = 0;
@@ -147,8 +158,8 @@ public class LoadTrailer {
 //               List<Item> similarItems = selectedItems.stream().filter(item -> item.getTemplate().getWidth() <= width )
 //                width += selectedItems.get(i).getTemplate().getWidth();
 //            }
-
-
+            i--;
+        }
     }
 
     private List<Item> returnSimilarItems(int indexOfItem, ListOfItems listOfItems, int freeSpace, boolean turn) {
