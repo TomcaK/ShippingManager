@@ -24,8 +24,7 @@ public class Main {
             } while (consoleUI.userSelection());
             listOfItems.createSelectedItems();
             listOfItems.sortSelectedItemsByArea();
-            listOfItems.createPacks(consoleUI.getTrailerChoice());
-            loadTrailer.loading(listOfItems, trailer);
+            loadTrailer.loading2(listOfItems, trailer);
             consoleUI.printDebugReport(trailer, listOfItems);
             consoleUI.printFinalReport(trailer, listOfItems);
             consoleUI.printEmailData(trailer, listOfItems);

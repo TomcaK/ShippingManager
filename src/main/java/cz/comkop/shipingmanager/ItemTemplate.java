@@ -31,6 +31,7 @@ public enum ItemTemplate {//TODO check all dimensions, add height, loading by cr
     RT_RDL_RDR("RDL/RDR", 100, 110,80, 200),
     M_OZ_3000("OZ 3000", 10, 300,10, 30,true),
     PALLET_120X80("Pallet 120 cm x 80 cm", 80, 120,50,100,true),
+    PALLET_110X80("Pallet 110 cm x 80 cm", 80, 110,50,100,true),
     PALLET_80X60("Half pallet 80 cm x 60 cm", 80, 60, 50,100,true),
     RT_R290("R290", 60, 60, 80,12),
     RT_RDT_1000_350("RDT 2000/350", 55, 205, 80,151, true),

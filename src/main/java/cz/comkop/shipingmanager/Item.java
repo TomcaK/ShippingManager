@@ -7,7 +7,7 @@ public class Item {
     private boolean loadLater = false;
     private boolean turnItem90Degrees = false;
     private int x, y;
-    private int inPack;
+
 
 
     public Item(ItemTemplate template, char codeName, int x, int y) {
@@ -66,11 +66,5 @@ public class Item {
 
     }
 
-    public int getInPack() {
-        return inPack;
-    }
 
-    public void setInPack(int inPack) {
-        this.inPack = inPack;
-    }
 }

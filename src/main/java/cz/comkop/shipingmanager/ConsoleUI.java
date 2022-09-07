@@ -15,7 +15,7 @@ public class ConsoleUI {
     private static final String DATE_REGEX = "\\d+\\.\\d+\\.\\d\\d\\d\\d";
     private final Scanner scanner = new Scanner(System.in);
     private String orders,date;
-    private LocalDate shipingDate;
+    private LocalDate shipingDate = LocalDate.now();
     private TrailerTemplate trailerChoice;
     private String userChoice;
 
