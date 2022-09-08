@@ -4,19 +4,20 @@ public class Item {
     private final ItemTemplate template;
     private int area;
     private char codeName;
-    private boolean loadLater;
-    private boolean loadFirst;
+
+    private int  inPack;
     private boolean turnItem90Degrees;
     private int x, y;
 
 
 
-    public Item(ItemTemplate template, char codeName, int x, int y) {
+    public Item(ItemTemplate template, char codeName, int x, int y, boolean turnItem90Degrees) {
         this.template = template;
         area = template.getLength() * template.getWidth();
         this.codeName = codeName;
         this.x = x;
         this.y = y;
+        this.turnItem90Degrees = turnItem90Degrees;
     }
 
     public Item(ItemTemplate template) {
@@ -32,13 +33,7 @@ public class Item {
         return codeName;
     }
 
-    public boolean isLoadLater() {
-        return loadLater;
-    }
 
-    public void setLoadLater(boolean loadLater) {
-        this.loadLater = loadLater;
-    }
 
     public int getArea() {
         return area;
@@ -60,6 +55,14 @@ public class Item {
         this.turnItem90Degrees = turnItem90Degrees;
     }
 
+    public void setInPack(int inPack) {
+        this.inPack = inPack;
+    }
+
+    public int getInPack() {
+        return inPack;
+    }
+
     @Override
     public String toString() {
         return template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
@@ -67,11 +70,5 @@ public class Item {
 
     }
 
-    public boolean isLoadFirst() {
-        return loadFirst;
-    }
 
-    public void setLoadFirst(boolean loadFirst) {
-        this.loadFirst = loadFirst;
-    }
 }

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class ConsoleUI {
     private static final String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
-    private static final String TRAILER_REGEX = "[1-5]+";
+    private static final String TRAILER_REGEX = "[1-5]";
     private static final String DATE_REGEX = "\\d+\\.\\d+\\.\\d\\d\\d\\d";
     private final Scanner scanner = new Scanner(System.in);
     private String orders,date;
@@ -122,7 +122,7 @@ public class ConsoleUI {
         return trailerChoice;
     }
 
-    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {//TODO dodelat datum pro expedici,čísla objednávek,pridat poznamku, o tom, ze nektere stroje vyzaduji manipulaci s jerabem
+    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {//TODO pridat poznamku, o tom, ze nektere stroje vyzaduji manipulaci s jerabem
         System.out.println("--Email Data--");
         System.out.println("Hi,");
         System.out.println("your order " + orders + " will be ready on " + shipingDate.getDayOfWeek() + ", " + shipingDate.format(DateTimeFormatter.ofPattern("d.M.yyyy")));

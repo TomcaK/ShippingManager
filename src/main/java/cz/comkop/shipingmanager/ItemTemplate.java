@@ -13,8 +13,8 @@ public enum ItemTemplate {//TODO check all dimensions, add height, loading by cr
     BS_230X280_A_CNC_R("230x280 A-CNC-R", 231, 226, 1, 780, true,true),
     BS_3000X320_GH_LR("300x320 GH-LR", 205, 117, 1, 605, true,true),
     BS_300X320_SHI_LR("300x320 SHI-LR", 117, 205, 1, 650, true,true),
-    BS_BOX_220X250_GH_LR_230X280_GH_LR("Box 220x250 GH-LR/230x280 GH-LR", 80, 165, 1, 320, true,true),
-    BS_CAGE_300X320_GH_LR_230X280_SHI_LR("Cage 300x320/230x280 SHI-LR", 117, 231, 1, 650, true,true),
+    BS_BOX_220X250_GH_LR_230X280_GH_LR("Box 220x250 GH-LR/230x280 GH-LR", 80, 165, 1, 320, true),
+    BS_CAGE_300X320_GH_LR_230X280_SHI_LR("Cage 300x320/230x280 SHI-LR", 117, 231, 1, 650, true),
     BS_300X320_A_CNC_R("300x320 A-CNC-R", 231, 190, 1, 904, true,true),
     BS_360X500_GH_LR("360x500 GH-LR", 108, 280, 1, 682, true,true),
     BS_360X500_SHI_LR("360x500 SHI-LR", 108, 280, 1, 740, true,true),
@@ -31,7 +31,7 @@ public enum ItemTemplate {//TODO check all dimensions, add height, loading by cr
     RT_RDL_RDR("RDL/RDR", 100, 110,80, 200),
     M_OZ_3000("OZ 3000", 10, 300,10, 30,true),
     PALLET_120X80("Pallet 120 cm x 80 cm", 80, 120,50,100,true),
-    PALLET_110X80("Pallet 110 cm x 80 cm", 80, 110,50,100,true),
+    PALLET_120X70("Pallet 120 cm x 70 cm", 70, 120,50,100,true),
     PALLET_80X60("Half pallet 80 cm x 60 cm", 80, 60, 50,100,true),
     RT_R290("R290", 60, 60, 80,12),
     RT_RDT_1000_350("RDT 2000/350", 55, 205, 80,151, true),
@@ -45,21 +45,21 @@ public enum ItemTemplate {//TODO check all dimensions, add height, loading by cr
 
     private final String name;
     private boolean canBeRotated90Degrees;
-    private boolean preferedNotToBeRotated;
+    private boolean preferNotToBeRotated;
     private final int width;
     private final int length;
     private int weight;
     private final int height;
 
 
-    ItemTemplate(String name, int width, int length, int height, int weight, boolean canBeRotated90Degrees, boolean preferedNotToBeRotated) {
+    ItemTemplate(String name, int width, int length, int height, int weight, boolean canBeRotated90Degrees, boolean preferNotToBeRotated) {
         this.name = name;
         this.width = width;
         this.length = length;
         this.height = height;
         this.weight = weight;
         this.canBeRotated90Degrees = canBeRotated90Degrees;
-        this.preferedNotToBeRotated = preferedNotToBeRotated;
+        this.preferNotToBeRotated = preferNotToBeRotated;
 
 
     }
@@ -123,8 +123,8 @@ public enum ItemTemplate {//TODO check all dimensions, add height, loading by cr
         return height;
     }
 
-    public boolean isPreferedNotToBeRotated() {
-        return preferedNotToBeRotated;
+    public boolean isPreferNotToBeRotated() {
+        return preferNotToBeRotated;
     }
 
     //      440 x600 Horizontal X - NC - BS 290 160 214 2000
