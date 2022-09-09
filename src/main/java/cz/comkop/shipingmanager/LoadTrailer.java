@@ -42,7 +42,6 @@ public class LoadTrailer {
         }
         while (listOfItems.getSelectedItems().size() != 0) {
             if (round <= 1) {
-
                 for (int i = 1; i <= highestPack; i++) {
                     for (int j = 0; j < listOfItems.getSelectedItems().size(); j++) {
                         if (listOfItems.getSelectedItems().get(j).getInPack() == i) {
@@ -65,14 +64,13 @@ public class LoadTrailer {
                     i--;
                 }
             }
-
             round++;
         }
         trailer.countLDM();
     }
 
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
-        int pack = 1, totalLength = 0;
+        int pack = 1, totalTakenLength = 0;
         for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
             Item item = listOfItems.getSelectedItems().get(i);
             List<Item> similarItems;
@@ -95,8 +93,12 @@ public class LoadTrailer {
             if (l == 0) {
                 l = item.getTemplate().getLength();
             }
-            if (w < l) {
-                if (totalLength + listOfItems.getSelectedItems().get(i).getTemplate().getLength() <= trailer.getTemplate().getLength()) {
+            while (w >  trailer.getTemplate().getLength() - totalTakenLength || l > trailer.getTemplate().getLength() - totalTakenLength){
+           // quantity -= 1;
+
+            }
+            if (w <= l) {
+                if (totalTakenLength + listOfItems.getSelectedItems().get(i).getTemplate().getLength() <= trailer.getTemplate().getLength()) {
 
                     if (quantity < quantityOfItemsWidth) {
                         quantityOfItemsWidth = quantity;
@@ -110,9 +112,9 @@ public class LoadTrailer {
                 } else {
 
                 }
-                totalLength += listOfItems.getSelectedItems().get(i).getTemplate().getLength();
+                totalTakenLength += listOfItems.getSelectedItems().get(i).getTemplate().getLength();
                 i += quantityOfItemsWidth - 1;
-            } else if (totalLength + listOfItems.getSelectedItems().get(i).getTemplate().getWidth() <= trailer.getTemplate().getLength()) {
+            } else if (totalTakenLength + listOfItems.getSelectedItems().get(i).getTemplate().getWidth() <= trailer.getTemplate().getLength()) {
                 if (quantity < quantityOfItemsLength) {
                     quantityOfItemsLength = quantity;
                 }
@@ -126,35 +128,11 @@ public class LoadTrailer {
                 } else {
 
                 }
-                totalLength += listOfItems.getSelectedItems().get(i).getTemplate().getWidth();
+                totalTakenLength += listOfItems.getSelectedItems().get(i).getTemplate().getWidth();
                 i += quantityOfItemsLength - 1;
-
             }
-        /*else {
-            for (int i = indexOfItem; i < indexOfItem + quantity; i++) {
-                addItemToTrailer(i, coordinateX, coordinateY, listOfItems, trailer);
-                coordinateX += item.getTemplate().getLength();
-            }
-            similarItems = returnSimilarItem(indexOfItem, listOfItems, freeSpace,true);
-            if (similarItems.isEmpty()){
-                coordinateX = 0;
-                coordinateY += item.getTemplate().getLength();
-            }else {
-
-            }
-
-
-        }*/
-
-
-//           while (width <= trailerTemplate.getWidth()) {
-//               List<Item> similarItems = selectedItems.stream().filter(item -> item.getTemplate().getWidth() <= width )
-//                width += selectedItems.get(i).getTemplate().getWidth();
-//            }
-
             pack++;
         }
-
     }
 
     private List<Item> returnSimilarItems(int indexOfItem, ListOfItems listOfItems, int freeSpace, boolean turn) {

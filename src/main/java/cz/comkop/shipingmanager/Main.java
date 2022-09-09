@@ -37,7 +37,7 @@ public class Main {
 
     private static void reset() {
         //new trailers, list of items
-
+        loadTrailer = new LoadTrailer();
         listOfItems = new ListOfItems();
 
     }

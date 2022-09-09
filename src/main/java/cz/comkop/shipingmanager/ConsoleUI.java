@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -122,10 +123,14 @@ public class ConsoleUI {
         return trailerChoice;
     }
 
-    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {//TODO pridat poznamku, o tom, ze nektere stroje vyzaduji manipulaci s jerabem
+    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {
         System.out.println("--Email Data--");
         System.out.println("Hi,");
         System.out.println("your order " + orders + " will be ready on " + shipingDate.getDayOfWeek() + ", " + shipingDate.format(DateTimeFormatter.ofPattern("d.M.yyyy")));
+        Optional<Item> crane = listOfItems.getLoadedItems().stream().filter(item -> item.getTemplate().isLoadingByCrane() == true).findFirst();
+        if (crane.isPresent()){
+            System.out.println("Please pay attention that one of the items is adapted only for crane loading.");
+        }
         System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println();
         System.out.println("List of loaded goods");
