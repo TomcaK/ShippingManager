@@ -109,7 +109,7 @@ public class LoadTrailer {
 //            numberOfRowsW += quantity % quantityOfItemsWidth != 0 ? 1 : 0;
 //            w = item.getTemplate().getLength() * numberOfRowsW;
             w = findSolutionHowToLoad(trailer, listOfItems, i);
-            //  freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsWidth * item.getTemplate().getWidth());
+          //  freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsWidth * item.getTemplate().getWidth());
 //            if (item.getTemplate().isCanBeRotated90Degrees() &&
 //                    !item.getTemplate().isPreferNotToBeRotated()) {
 //                quantityOfItemsLength = trailer.getTemplate().getWidth() / item.getTemplate().getLength();
@@ -146,7 +146,7 @@ public class LoadTrailer {
                 if (quantity < quantityOfItemsLength) {
                     quantityOfItemsLength = quantity;
                 }
-                //  freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsLength * item.getTemplate().getLength());
+              //  freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsLength * item.getTemplate().getLength());
                 similarItems = returnSimilarItems(i, listOfItems, freeSpace, true);
                 if (similarItems.isEmpty()) {
                     for (int j = i; j < i + quantityOfItemsLength; j++) {
