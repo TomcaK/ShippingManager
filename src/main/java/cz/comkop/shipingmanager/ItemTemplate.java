@@ -1,5 +1,8 @@
 package cz.comkop.shipingmanager;
 
+import lombok.Getter;
+
+@Getter
 public enum ItemTemplate {//TODO check all dimensions, add height,
     TEST_QUARTER_MACHINE("Test-Quarter machine", 1, 2, 1, 235, true),
     TEST_HALF_MACHINE("Test-Half machine", 2, 3, 1, 320, true),
@@ -98,40 +101,40 @@ public enum ItemTemplate {//TODO check all dimensions, add height,
     }
 
 
-    public String getName() {
-        return name;
-    }
-
-
-    public int getWidth() {
-        return width;
-    }
-
-
-    public int getLength() {
-        return length;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-
-    public boolean isCanBeRotated90Degrees() {
-        return canBeRotated90Degrees;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public boolean isPreferNotToBeRotated() {
-        return preferNotToBeRotated;
-    }
-
-    public boolean isLoadingByCrane() {
-        return loadingByCrane;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//
+//    public int getWidth() {
+//        return width;
+//    }
+//
+//
+//    public int getLength() {
+//        return length;
+//    }
+//
+//    public int getWeight() {
+//        return weight;
+//    }
+//
+//
+//    public boolean isCanBeRotated90Degrees() {
+//        return canBeRotated90Degrees;
+//    }
+//
+//    public int getHeight() {
+//        return height;
+//    }
+//
+//    public boolean isPreferNotToBeRotated() {
+//        return preferNotToBeRotated;
+//    }
+//
+//    public boolean isLoadingByCrane() {
+//        return loadingByCrane;
+//    }
 
     //      440 x600 Horizontal X - NC - BS 290 160 214 2000
 //            500 x750 Horizontal X 310 176 221 2120

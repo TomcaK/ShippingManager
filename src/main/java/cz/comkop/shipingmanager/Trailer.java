@@ -1,5 +1,8 @@
 package cz.comkop.shipingmanager;
 
+import lombok.Getter;
+
+@Getter
 
 public class Trailer {
     private final TrailerTemplate template;
@@ -36,9 +39,9 @@ public class Trailer {
         this.totalWeight = totalWeight;
     }
 
-    public char getNextCodename() {
-        return nextCodename;
-    }
+//    public char getNextCodename() {
+//        return nextCodename;
+//    }
 
     public void setNextCodename(char nextCodename) {
         this.nextCodename = nextCodename;
@@ -47,9 +50,9 @@ public class Trailer {
 
 //
 
-    public double getLDM() {
-        return LDM;
-    }
+//    public double getLDM() {
+//        return LDM;
+//    }
 
     /**
      * Counts total length used in trailer
@@ -69,9 +72,9 @@ public class Trailer {
     }
 
 
-    public int getTotalWeight() {
-        return totalWeight;
-    }
+//    public int getTotalWeight() {
+//        return totalWeight;
+//    }
 
 
     public void printOutlineOfTrailer() {//TODO new outline method without chars
@@ -95,17 +98,17 @@ public class Trailer {
     }
 
 
-    public String[][] getTrailerModel() {
-        return trailerModel;
-    }
-
-    public double getFreeSquareCentimeters() {
-        return freeSquareCentimeters;
-    }
-
-    public TrailerTemplate getTemplate() {
-        return template;
-    }
+//    public String[][] getTrailerModel() {
+//        return trailerModel;
+//    }
+//
+//    public double getFreeSquareCentimeters() {
+//        return freeSquareCentimeters;
+//    }
+//
+//    public TrailerTemplate getTemplate() {
+//        return template;
+//    }
 
 
 

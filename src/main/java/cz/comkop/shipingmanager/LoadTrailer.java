@@ -1,6 +1,8 @@
 package cz.comkop.shipingmanager;
 
 
+import lombok.Getter;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,6 +71,11 @@ public class LoadTrailer {
         trailer.countLDM();
     }
 
+    //TODO průběh metody
+    //zjistí počet itemu
+    //spočitá zda se všechny vejdou
+    //když ne, sníží počet, tak aby se vešly,
+    //přidá similar item a opět spočitá jak otočit.
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
         int pack = 1, totalTakenLength = 0;
         for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
@@ -93,8 +100,8 @@ public class LoadTrailer {
             if (l == 0) {
                 l = item.getTemplate().getLength();
             }
-            while (w >  trailer.getTemplate().getLength() - totalTakenLength || l > trailer.getTemplate().getLength() - totalTakenLength){
-           // quantity -= 1;
+            while (w > trailer.getTemplate().getLength() - totalTakenLength || l > trailer.getTemplate().getLength() - totalTakenLength) {
+                // quantity -= 1;
 
             }
             if (w <= l) {
