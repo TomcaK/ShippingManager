@@ -1,8 +1,6 @@
 package cz.comkop.shipingmanager;
 
 
-import lombok.Getter;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,6 +69,27 @@ public class LoadTrailer {
         trailer.countLDM();
     }
 
+    private int findSolutionHowToLoad(Trailer trailer, ListOfItems listOfItems, int i) {
+        int quantity, quantityOfItems, numberOfRows;
+        quantity = (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(listOfItems.getSelectedItems().get(i).getTemplate()))
+                .filter(item1 -> item1.getInPack() == 0).count();
+        boolean doSecondOption = listOfItems.getSelectedItems().get(i).getTemplate().isCanBeRotated90Degrees() &&
+                !listOfItems.getSelectedItems().get(i).getTemplate().isPreferNotToBeRotated();
+        if (doSecondOption) {
+            quantityOfItems = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(i).getTemplate().getLength();
+        } else {
+            quantityOfItems = trailer.getTemplate().getWidth() / listOfItems.getSelectedItems().get(i).getTemplate().getWidth();
+        }
+        numberOfRows = quantity / quantityOfItems;
+        numberOfRows += quantity % quantityOfItems != 0 ? 1 : 0;
+
+        if (doSecondOption) {
+            return listOfItems.getSelectedItems().get(i).getTemplate().getWidth() * numberOfRows;
+        } else {
+            return listOfItems.getSelectedItems().get(i).getTemplate().getLength() * numberOfRows;
+        }
+    }
+
     //TODO průběh metody
     //zjistí počet itemu
     //spočitá zda se všechny vejdou
@@ -81,22 +100,24 @@ public class LoadTrailer {
         for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
             Item item = listOfItems.getSelectedItems().get(i);
             List<Item> similarItems;
-            int quantity, quantityOfItemsWidth, quantityOfItemsLength = 0, deviation = 15, restW, restL, numberOfRowsW, numberOfRowsL, w, l = 0, freeSpace;
-            quantity = (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(item.getTemplate()))
-                    .filter(item1 -> item1.getInPack() == 0).count();
-
-            quantityOfItemsWidth = trailer.getTemplate().getWidth() / item.getTemplate().getWidth();
-            numberOfRowsW = quantity / quantityOfItemsWidth;
-            numberOfRowsW += quantity % quantityOfItemsWidth != 0 ? 1 : 0;
-            w = item.getTemplate().getLength() * numberOfRowsW;
-            freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsWidth * item.getTemplate().getWidth());
-            if (item.getTemplate().isCanBeRotated90Degrees() &&
-                    !item.getTemplate().isPreferNotToBeRotated()) {
-                quantityOfItemsLength = trailer.getTemplate().getWidth() / item.getTemplate().getLength();
-                numberOfRowsL = quantity / quantityOfItemsLength;
-                numberOfRowsL += quantity % quantityOfItemsLength != 0 ? 1 : 0;
-                l = item.getTemplate().getWidth() * (numberOfRowsL);//2
-            }
+            int /*quantity, quantityOfItemsWidth, quantityOfItemsLength = 0, numberOfRowsW, numberOfRowsL,*/ w, l = 0, freeSpace;
+//            quantity = (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(item.getTemplate()))
+//                    .filter(item1 -> item1.getInPack() == 0).count();
+//
+//            quantityOfItemsWidth = trailer.getTemplate().getWidth() / item.getTemplate().getWidth();
+//            numberOfRowsW = quantity / quantityOfItemsWidth;
+//            numberOfRowsW += quantity % quantityOfItemsWidth != 0 ? 1 : 0;
+//            w = item.getTemplate().getLength() * numberOfRowsW;
+            w = findSolutionHowToLoad(trailer, listOfItems, i);
+            //  freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsWidth * item.getTemplate().getWidth());
+//            if (item.getTemplate().isCanBeRotated90Degrees() &&
+//                    !item.getTemplate().isPreferNotToBeRotated()) {
+//                quantityOfItemsLength = trailer.getTemplate().getWidth() / item.getTemplate().getLength();
+//                numberOfRowsL = quantity / quantityOfItemsLength;
+//                numberOfRowsL += quantity % quantityOfItemsLength != 0 ? 1 : 0;
+//                l = item.getTemplate().getWidth() * (numberOfRowsL);//2
+            l = findSolutionHowToLoad(trailer, listOfItems, i);
+//            }
             if (l == 0) {
                 l = item.getTemplate().getLength();
             }
@@ -125,7 +146,7 @@ public class LoadTrailer {
                 if (quantity < quantityOfItemsLength) {
                     quantityOfItemsLength = quantity;
                 }
-                freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsLength * item.getTemplate().getLength());
+                //  freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsLength * item.getTemplate().getLength());
                 similarItems = returnSimilarItems(i, listOfItems, freeSpace, true);
                 if (similarItems.isEmpty()) {
                     for (int j = i; j < i + quantityOfItemsLength; j++) {
@@ -197,7 +218,6 @@ public class LoadTrailer {
 
     private void addItemToTrailer(int indexOfItem, int cX, int cY, ListOfItems listOfItems, Trailer trailer) {
         int maxLength, maxWidth;
-
         if (listOfItems.getSelectedItems().get(indexOfItem).isTurnItem90Degrees()) {
             maxLength = cY + listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth();
             maxWidth = cX + listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength();
@@ -250,7 +270,6 @@ public class LoadTrailer {
             if (freeCoordinatesChecker(x, (x + itemTemplate.getWidth()), y, (y + itemTemplate.getLength()), listOfItems)) {
                 return true;
             }
-
         }
         if (itemTemplate.isCanBeRotated90Degrees() && itemTemplate.getLength() + x <= trailer.getTemplate().getWidth() && itemTemplate.getWidth() + y <= trailer.getTemplate().getLength()) {
             if (freeCoordinatesChecker(x, (x + itemTemplate.getLength()), y, (y + itemTemplate.getWidth()), listOfItems)) {
