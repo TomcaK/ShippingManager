@@ -9,6 +9,12 @@ public class LoadTrailer {
     private int coordinateY;
     private int coordinateX;
 
+    private static int modifyQuantity(int quantity, int quantityOfItems) {
+        if (quantity < quantityOfItems) {
+            quantityOfItems = quantity;
+        }
+        return quantityOfItems;
+    }
 
     public void loading(ListOfItems listOfItems, Trailer trailer) {
         int round = 0;
@@ -69,7 +75,6 @@ public class LoadTrailer {
         trailer.countLDM();
     }
 
-
     private int findSolutionHowToLoad(ListOfItems listOfItems, int i, int quantity, int quantityOfItems, boolean fitTurnedOver) {
         int numberOfRows;
         numberOfRows = quantity / quantityOfItems;
@@ -82,8 +87,7 @@ public class LoadTrailer {
     }
 
     private int countQuantity(ListOfItems listOfItems, int i) {
-        return (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(listOfItems.getSelectedItems().get(i).getTemplate()))
-                .filter(item1 -> item1.getInPack() == 0).count();
+        return (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(listOfItems.getSelectedItems().get(i).getTemplate())).filter(item1 -> item1.getInPack() == 0).count();
     }
 
     //TODO průběh metody
@@ -92,20 +96,18 @@ public class LoadTrailer {
         int pack = 1, totalTakenLength = 0;
         for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
             Item item = listOfItems.getSelectedItems().get(i);
-            List<Item> similarItems;
+            // List<Item> similarItems;
             int quantity, quantityOfItemsWidth, quantityOfItemsLength = 0, w, l = 0, freeSpace = 0;
-            quantity = (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(item.getTemplate()))
-                    .filter(item1 -> item1.getInPack() == 0).count();
+            quantity = (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(item.getTemplate())).filter(item1 -> item1.getInPack() == 0).count();
             quantityOfItemsWidth = trailer.getTemplate().getWidth() / item.getTemplate().getWidth();
             w = findSolutionHowToLoad(listOfItems, i, quantity, quantityOfItemsWidth, false);
-            similarItems = returnSimilarItems(i, listOfItems);
-            //  freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsWidth * item.getTemplate().getWidth());
+            // similarItems = returnSimilarItems(i, listOfItems);
             if (item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated()) {
                 quantityOfItemsLength = trailer.getTemplate().getWidth() / item.getTemplate().getLength();
                 l = findSolutionHowToLoad(listOfItems, i, quantity, quantityOfItemsLength, true);
-                similarItems = returnSimilarItems(i, listOfItems);
+                quantityOfItemsLength = modifyQuantity(quantity, quantityOfItemsLength);
             }
-
+            quantityOfItemsWidth = modifyQuantity(quantity, quantityOfItemsWidth);
             if (l == 0) {
                 l = item.getTemplate().getLength();
             }
@@ -116,23 +118,53 @@ public class LoadTrailer {
                 w = findSolutionHowToLoad(listOfItems, i, quantity, quantityOfItemsWidth, false);
                 l = findSolutionHowToLoad(listOfItems, i, quantity, quantityOfItemsLength, true);
             }
-            if (!similarItems.isEmpty()){
+            int freeSpaceW, freeSpaceL;
+            freeSpaceW = trailer.getTemplate().getWidth() - (quantityOfItemsWidth * item.getTemplate().getWidth());
+            freeSpaceL = trailer.getTemplate().getWidth() - (quantityOfItemsLength * item.getTemplate().getLength());
+            List<Item> itemsToFit = listOfItems.getSelectedItems().stream().filter(item1 -> !item1.getTemplate().equals(item.getTemplate()))
+                    .filter(item1 -> item1.getTemplate().getWidth() == item.getTemplate().getWidth() ||
+                            item1.getTemplate().getLength() == item.getTemplate().getLength() ||
+                            item1.getTemplate().getWidth() == item.getTemplate().getLength() && !item.getTemplate().isPreferNotToBeRotated() ||
+                            item1.getTemplate().getLength() == item.getTemplate().getWidth() && !item.getTemplate().isPreferNotToBeRotated())
+
+                    .filter(item1 -> item1.getTemplate().getLength() <= freeSpaceW && !item1.getTemplate().isPreferNotToBeRotated() || item1.getTemplate().getWidth() <= freeSpaceW || item1.getTemplate().getWidth() <= freeSpaceL || item1.getTemplate().getLength() <= freeSpaceL && !item1.getTemplate().isPreferNotToBeRotated()).toList();
+            if (!itemsToFit.isEmpty()) {
+                int restW, restL,selectedRest = 0;
+                Item bestItem;
+                for (int j = 0; j < itemsToFit.size(); j++) {
+                    restW = howMuchSpaceLeft(freeSpaceW, itemsToFit.get(j).getTemplate().getWidth());
+                    restL = howMuchSpaceLeft(freeSpaceL, itemsToFit.get(j).getTemplate().getLength());
+                    if (restW < restL && restW >= 0) {
+                        if (j > 0) {
+                            if (selectedRest > restW) {
+                                selectedRest = restW;
+                                bestItem = itemsToFit.get(j);
+                            }
+                        } else {
+                            selectedRest = restW;
+                            bestItem = itemsToFit.get(j);
+                        }
+                    } else if (restL >= 0) {
+                        if (j > 0) {
+                            if (selectedRest > restL) {
+                                selectedRest = restL;
+                                bestItem = itemsToFit.get(j);
+                            }
+                        } else {
+                            selectedRest = restL;
+                            bestItem = itemsToFit.get(j);
+                        }
+                    }
+                }
 
             }
-            if (w <= l) {
-                if (countQuantity(listOfItems, i) < quantityOfItemsWidth) {
-                    quantityOfItemsWidth = quantity;
-                }
+            if (w < l) {
                 for (int j = i; j < i + quantityOfItemsWidth; j++) {
                     listOfItems.getSelectedItems().get(j).setInPack(pack);
                 }
                 totalTakenLength += listOfItems.getSelectedItems().get(i).getTemplate().getLength();
                 i += quantityOfItemsWidth - 1;
             } else {
-                if (countQuantity(listOfItems, i) < quantityOfItemsLength) {
-                    quantityOfItemsLength = quantity;
-                }
-                //  freeSpace = trailer.getTemplate().getWidth() - (quantityOfItemsLength * item.getTemplate().getLength());
                 for (int j = i; j < i + quantityOfItemsLength; j++) {
                     listOfItems.getSelectedItems().get(j).setTurnItem90Degrees(true);
                     listOfItems.getSelectedItems().get(j).setInPack(pack);
@@ -145,14 +177,19 @@ public class LoadTrailer {
     }
 
     private List<Item> returnSimilarItems(int indexOfItem, ListOfItems listOfItems) {
-        List<Item> list = listOfItems.getSelectedItems().stream()
-                .filter(item -> !item.getTemplate().equals(listOfItems.getSelectedItems().get(indexOfItem).getTemplate()))
-                .filter(item -> item.getTemplate().getWidth() == listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth() || item.getTemplate().getLength() == listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength())
-                .filter(item -> item.getTemplate().getWidth() == listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength() || item.getTemplate().getLength() == listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth())
+        List<Item> list = listOfItems.getSelectedItems().stream().filter(item -> !item.getTemplate().equals(listOfItems.getSelectedItems().get(indexOfItem).getTemplate()))
+                .filter(item -> item.getTemplate().getWidth() == listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth() ||
+                        item.getTemplate().getLength() == listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength() ||
+                        item.getTemplate().getWidth() == listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getLength() && !listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isPreferNotToBeRotated() ||
+                        item.getTemplate().getLength() == listOfItems.getSelectedItems().get(indexOfItem).getTemplate().getWidth() && !listOfItems.getSelectedItems().get(indexOfItem).getTemplate().isPreferNotToBeRotated())
                 .collect(Collectors.toList());
-
         return list;
     }
+
+    private int howMuchSpaceLeft(int takenSpace, int item) {
+        return takenSpace - item;
+    }
+
 
     private void setCoordinates() {
 
