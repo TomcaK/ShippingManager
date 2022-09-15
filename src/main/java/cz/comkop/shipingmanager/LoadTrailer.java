@@ -110,9 +110,7 @@ public class LoadTrailer {
         }
     }
 
-    private int countQuantity(ListOfItems listOfItems, int i) {
-        return (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(listOfItems.getSelectedItems().get(i).getTemplate())).filter(item1 -> item1.getInPack() == 0).count();
-    }
+
 
     //TODO průběh metody
     //přidá similar item a opět spočitá jak otočit.
