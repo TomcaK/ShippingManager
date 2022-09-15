@@ -24,6 +24,10 @@ public class Item {
         this.template = template;
     }
 
+    public Item(ItemTemplate template, boolean turnItem90Degrees) {
+        this.template = template;
+        this.turnItem90Degrees = turnItem90Degrees;
+    }
 
     public ItemTemplate getTemplate() {
         return template;
