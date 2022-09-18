@@ -34,7 +34,6 @@ public class ListOfItems {
         for (String s : arrItemsChoice) {
             String[] separate = s.split("\\.");
             requiredItems.put(list.get(Integer.parseInt(separate[0]) - 1), Integer.parseInt(separate[1]));
-
         }
     }
 
@@ -45,8 +44,6 @@ public class ListOfItems {
             }
         }
     }
-    
-
 
     public void sortSelectedItemsByArea() {
         selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
