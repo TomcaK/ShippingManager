@@ -3,60 +3,51 @@ package cz.comkop.shipingmanager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import java.util.Scanner;
 
 import static cz.comkop.shipingmanager.ConsoleUI.*;
 import static cz.comkop.shipingmanager.TrailerTemplate.SEMITRAILER_2_48_M_X_13_6_M;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-
+@ExtendWith(MockitoExtension.class)
 public class UIConsoleTest {
     ConsoleUI consoleUI;
+    @Mock
+    Scanner scanner;
 
 
     @BeforeEach
     public void setUp() {
         consoleUI = new ConsoleUI();
+        consoleUI.setScanner(scanner);
     }
 
     @Test
-    public void testTrailerRightValue() {
-        Assertions.assertTrue(consoleUI.insertRightValue("2", TRAILER_REGEX));
-        Assertions.assertFalse(consoleUI.insertRightValue("2.3", TRAILER_REGEX));
-        Assertions.assertFalse(consoleUI.insertRightValue("8", TRAILER_REGEX));
+    public void testSelectionOfDate() {
+        when(scanner.nextLine()).thenReturn("20 3 2022", "20.3.2022");
+        consoleUI.selectionOfDate();
+        Assertions.assertEquals("2022-03-20", consoleUI.getShipingDate().toString());
     }
 
     @Test
-    public void testItemRightValue() {
-        Assertions.assertTrue(consoleUI.insertRightValue("1.5 2.3", ITEM_REGEX));
-        Assertions.assertTrue(consoleUI.insertRightValue("2.3", ITEM_REGEX));
-        Assertions.assertFalse(consoleUI.insertRightValue("2", ITEM_REGEX));
-    }
-
-    @Test
-    public void testDateRightValue() {
-        Assertions.assertTrue(consoleUI.insertRightValue("1.05.2022", DATE_REGEX));
-        Assertions.assertTrue(consoleUI.insertRightValue("20.3.2022", DATE_REGEX));
-        Assertions.assertTrue(consoleUI.insertRightValue("20.03.2022", DATE_REGEX));
-        Assertions.assertFalse(consoleUI.insertRightValue("20-03-2022", DATE_REGEX));
-        Assertions.assertFalse(consoleUI.insertRightValue("20 3 2022", DATE_REGEX));
-    }
-
-    @Test
-    public void testInputControl(){
-
+    public void testUserSelection() {
+        when(scanner.nextLine()).thenReturn("b", "a");
+        Assertions.assertFalse(consoleUI.userSelection());
+        Assertions.assertTrue(consoleUI.userSelection());
     }
 
 
     @Test
-    public void testSelectionOfTrailer(){
-        Scanner mockS = mock(Scanner.class);
-        when(mockS.nextLine()).thenReturn("2");
+    public void testSelectionOfTrailer() {
+        when(scanner.nextLine()).thenReturn("9", "2");
         consoleUI.selectionOfTrailer();
-        Assertions.assertEquals(SEMITRAILER_2_48_M_X_13_6_M,consoleUI.getTrailerChoice());
+        Assertions.assertEquals(SEMITRAILER_2_48_M_X_13_6_M, consoleUI.getTrailerChoice());
     }
 
 

@@ -13,9 +13,9 @@ public class ConsoleUI {
     public static final String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
     public static final String TRAILER_REGEX = "[1-5]";
     public static final String DATE_REGEX = "\\d+\\.\\d+\\.\\d\\d\\d\\d";
-    private final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
     private String orders, date;
-    private LocalDate shipingDate = LocalDate.now();
+    private LocalDate shipingDate;
     private TrailerTemplate trailerChoice;
     private String userChoice;
 
@@ -36,8 +36,8 @@ public class ConsoleUI {
         }
     }
 
-    public String nextLine() {
-        return scanner.nextLine();
+    public void setScanner(Scanner scanner) {
+         this.scanner = scanner;
     }
 
     public void welcome() {
@@ -56,8 +56,7 @@ public class ConsoleUI {
         for (int i = 0; i < trailerTemplates.size(); i++) {
             System.out.println((i + 1) + "." + trailerTemplates.get(i).getName());
         }
-        String input = scanner.nextLine();
-        input = inputControl(input,TRAILER_REGEX);
+        String input =  inputControl(scanner.nextLine(),TRAILER_REGEX);
         trailerChoice = trailerTemplates.get(Integer.parseInt(input) - 1);
         System.out.println("* Selected trailer: " + trailerChoice);
     }
@@ -65,10 +64,8 @@ public class ConsoleUI {
     public void selectionOfDate() {
         System.out.println("--Please select date of shiping in format \"day.month.year\"--");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-        String input = scanner.nextLine();
-        input = inputControl(input,DATE_REGEX);
+        String input =  inputControl(scanner.nextLine(),DATE_REGEX);
         shipingDate = LocalDate.parse(input, formatter);
-
     }
 
     public void selectionOfOrder() {
@@ -84,8 +81,7 @@ public class ConsoleUI {
         for (int i = 0; i < itemTemplates.size(); i++) {
             System.out.println((i + 1) + "." + itemTemplates.get(i).getName());
         }
-        String input = scanner.nextLine();
-        input = inputControl(input,ITEM_REGEX);
+        String input = inputControl(scanner.nextLine(),ITEM_REGEX);
         userChoice = input;
     }
 

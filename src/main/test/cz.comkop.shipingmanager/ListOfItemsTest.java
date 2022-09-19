@@ -13,18 +13,19 @@ import static org.mockito.Mockito.*;
 public class ListOfItemsTest {
 
     ListOfItems listOfItems;
-
+    int a = PALLET_120X80.ordinal() + 1;
+    int b = PALLET_80X60.ordinal() + 1;
+    String input = b + ".5 " + a + ".1";
 
     @BeforeEach
     public void setUp() {
         listOfItems = new ListOfItems();
+
     }
 
     @Test
     public void testGetItemsFromInput() {
-        int a = PALLET_120X80.ordinal() + 1;
-        int b = PALLET_80X60.ordinal() + 1;
-        String input = b + ".5 " + a + ".1";
+
         listOfItems.getItemsFromInput(input);
         Assertions.assertEquals(1, listOfItems.getRequiredItems().get(PALLET_120X80));
         Assertions.assertEquals(5, listOfItems.getRequiredItems().get(PALLET_80X60));
@@ -33,9 +34,6 @@ public class ListOfItemsTest {
 
     @Test
     public void testCreateSelectedItems() {
-        int a = PALLET_120X80.ordinal() + 1;
-        int b = PALLET_80X60.ordinal() + 1;
-        String input = b + ".5 " + a + ".1";
         listOfItems.getItemsFromInput(input);
         listOfItems.createSelectedItems();
         Assertions.assertFalse(listOfItems.getSelectedItems().isEmpty());
@@ -43,9 +41,6 @@ public class ListOfItemsTest {
 
     @Test
     public void testSortSelectedItems() {
-        int a = PALLET_120X80.ordinal() + 1;
-        int b = PALLET_80X60.ordinal() + 1;
-        String input = b + ".5 " + a + ".1";
         listOfItems.getItemsFromInput(input);
         listOfItems.createSelectedItems();
         listOfItems.sortSelectedItemsByArea();

@@ -102,25 +102,19 @@ public class LoadTrailer {
 
     public int findSolutionHowToLoad(ListOfItems listOfItems, int i, int quantityOfItems, Item item, Trailer trailer, boolean isTurnedOver) {
         int numberOfRows = 1;
-        if ((quantityOfItems * listOfItems.getSelectedItems().get(i).getTemplate().getWidth()) + item.getTemplate().getWidth() > trailer.getTemplate().getWidth()) {
-            numberOfRows++;
-        }
         if (isTurnedOver) {
             if ((quantityOfItems * listOfItems.getSelectedItems().get(i).getTemplate().getLength(
             )) + item.getTemplate().getLength() > trailer.getTemplate().getWidth()) {
                 numberOfRows++;
             }
-        }
-        if (isTurnedOver) {
             return listOfItems.getSelectedItems().get(i).getTemplate().getWidth() * numberOfRows;
-        } else {
-            return listOfItems.getSelectedItems().get(i).getTemplate().getLength() * numberOfRows;
         }
+        if ((quantityOfItems * listOfItems.getSelectedItems().get(i).getTemplate().getWidth()) + item.getTemplate().getWidth() > trailer.getTemplate().getWidth()) {
+            numberOfRows++;
+        }
+        return listOfItems.getSelectedItems().get(i).getTemplate().getLength() * numberOfRows;
     }
 
-    private int countQuantity(ListOfItems listOfItems, int i) {
-        return (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(listOfItems.getSelectedItems().get(i).getTemplate())).filter(item1 -> item1.getInPack() == 0).count();
-    }
 
     //TODO průběh metody,dodělat podmínku, že pouze jeden objekt se bude nakládat v druhé vlně
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
@@ -155,10 +149,10 @@ public class LoadTrailer {
             Item bestItem = null;
             int chosenFreeSpace;
             if (freeSpaceW > freeSpaceL) {
-                itemsToFit = getItemsToFit(listOfItems, item, freeSpaceW, item.getTemplate().getLength(),i);
+                itemsToFit = getItemsToFit(listOfItems, item, freeSpaceW, item.getTemplate().getLength(), i);
                 chosenFreeSpace = freeSpaceW;
             } else {
-                itemsToFit = getItemsToFit(listOfItems, item, freeSpaceL, item.getTemplate().getWidth(),i);
+                itemsToFit = getItemsToFit(listOfItems, item, freeSpaceL, item.getTemplate().getWidth(), i);
                 chosenFreeSpace = freeSpaceL;
             }
             if (!itemsToFit.isEmpty()) {
