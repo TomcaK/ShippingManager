@@ -1,3 +1,5 @@
+package cz.comkop.shipingmanager;
+
 import cz.comkop.shipingmanager.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +21,7 @@ public class ListOfItemsTest {
     }
 
     @Test
-    public void TestGetItemsFromInput() {
+    public void testGetItemsFromInput() {
         int a = PALLET_120X80.ordinal() + 1;
         int b = PALLET_80X60.ordinal() + 1;
         String input = b + ".5 " + a + ".1";
@@ -30,7 +32,7 @@ public class ListOfItemsTest {
 
 
     @Test
-    public void TestCreateSelectedItems() {
+    public void testCreateSelectedItems() {
         int a = PALLET_120X80.ordinal() + 1;
         int b = PALLET_80X60.ordinal() + 1;
         String input = b + ".5 " + a + ".1";
@@ -40,7 +42,7 @@ public class ListOfItemsTest {
     }
 
     @Test
-    public void TestSortSelectedItems() {
+    public void testSortSelectedItems() {
         int a = PALLET_120X80.ordinal() + 1;
         int b = PALLET_80X60.ordinal() + 1;
         String input = b + ".5 " + a + ".1";

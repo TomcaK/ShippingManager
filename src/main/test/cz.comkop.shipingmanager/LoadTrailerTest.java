@@ -1,3 +1,5 @@
+package cz.comkop.shipingmanager;
+
 import cz.comkop.shipingmanager.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +29,7 @@ public class LoadTrailerTest {
 
 
     @Test
-    public void TestFindSolutionHowToLoadW() {
+    public void testFindSolutionHowToLoadW() {
         int a = PALLET_120X80.ordinal() + 1;
         String input = a + ".2";
         trailer = SEMITRAILER_2_48_M_X_13_6_M;
@@ -43,7 +45,7 @@ public class LoadTrailerTest {
     }
 
     @Test
-    public void TestFindSolutionHowToLoadL() {
+    public void testFindSolutionHowToLoadL() {
         int a = PALLET_120X80.ordinal() + 1;
         String input = a + ".2";
         trailer = SEMITRAILER_2_48_M_X_13_6_M;
