@@ -4,11 +4,9 @@ public class Item {
     private final ItemTemplate template;
     private int area;
     private char codeName;
-
-    private int  inPack;
+    private int inPack;
     private boolean turnItem90Degrees;
     private int x, y;
-
 
 
     public Item(ItemTemplate template, char codeName, int x, int y, boolean turnItem90Degrees) {
@@ -38,7 +36,6 @@ public class Item {
     }
 
 
-
     public int getArea() {
         return area;
     }
@@ -59,19 +56,18 @@ public class Item {
         this.turnItem90Degrees = turnItem90Degrees;
     }
 
-    public void setInPack(int inPack) {
-        this.inPack = inPack;
-    }
-
     public int getInPack() {
         return inPack;
+    }
+
+    public void setInPack(int inPack) {
+        this.inPack = inPack;
     }
 
     @Override
     public String toString() {
         return template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
                 " cm, height: " + template.getHeight() + " cm, weight: " + template.getWeight() + " kg";
-
     }
 
 

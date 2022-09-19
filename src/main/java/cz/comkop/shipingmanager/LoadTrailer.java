@@ -52,9 +52,8 @@ public class LoadTrailer {
         trailer.countLDM();
     }
 
-    public void loading2(ListOfItems listOfItems, Trailer trailer) {//TODO check of height, //TODO tvorba algoritmu, který se primárně zaměří na využití celé šířky auta.
+    public void loading2(ListOfItems listOfItems, Trailer trailer) {
         int round = 1, highestPack = 0;
-
         createPacks(trailer, listOfItems);
         for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
             if (highestPack < listOfItems.getSelectedItems().get(i).getInPack()) {
@@ -123,8 +122,7 @@ public class LoadTrailer {
         return (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(listOfItems.getSelectedItems().get(i).getTemplate())).filter(item1 -> item1.getInPack() == 0).count();
     }
 
-    //TODO průběh metody
-    //přidá similar item a opět spočitá jak otočit.
+    //TODO průběh metody,dodělat podmínku, že pouze jeden objekt se bude nakládat v druhé vlně
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
         int pack = 1, totalTakenLength = 0;
         for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
