@@ -36,6 +36,16 @@ public class UIConsoleTest {
     }
 
     @Test
+    public void testSelectionOfItem() {
+        when(scanner.nextLine()).thenReturn("2", "2.2");
+        consoleUI.selectionOfItems();
+        Assertions.assertEquals("2.2", consoleUI.getUserChoice());
+        when(scanner.nextLine()).thenReturn("2.2 3.5");
+        consoleUI.selectionOfItems();
+        Assertions.assertEquals("2.2 3.5", consoleUI.getUserChoice());
+    }
+
+    @Test
     public void testUserSelection() {
         when(scanner.nextLine()).thenReturn("b", "a");
         Assertions.assertFalse(consoleUI.userSelection());
@@ -49,6 +59,7 @@ public class UIConsoleTest {
         consoleUI.selectionOfTrailer();
         Assertions.assertEquals(SEMITRAILER_2_48_M_X_13_6_M, consoleUI.getTrailerChoice());
     }
+
 
 
 }
