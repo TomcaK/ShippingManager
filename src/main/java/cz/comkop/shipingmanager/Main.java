@@ -5,7 +5,6 @@ public class Main {
     static ListOfItems listOfItems = new ListOfItems();
     static Trailer trailer;
     static LoadTrailer loadTrailer = new LoadTrailer();
-    //static RequiredItemList requiredItems = new RequiredItemList();
 
     //TODO test 19.1 11.1 26.1 32.1 33.1 34.1 35.2 36.1 37.1 38.1 29.2
     public static void main(String[] args) {
@@ -31,8 +30,6 @@ public class Main {
             System.out.println("--Write \"a\" to start again or write another key to finish.--");
             reset();
         } while (consoleUI.userSelection());
-
-
     }
 
     private static void reset() {

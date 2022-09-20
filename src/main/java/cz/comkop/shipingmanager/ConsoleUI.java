@@ -15,7 +15,7 @@ public class ConsoleUI {
     public static final String DATE_REGEX = "\\d+\\.\\d+\\.\\d\\d\\d\\d";
     private Scanner scanner = new Scanner(System.in);
     private String orders, date;
-    private LocalDate shipingDate;
+    private LocalDate shipingDate = LocalDate.now();
     private TrailerTemplate trailerChoice;
     private String userChoice;
 
@@ -152,7 +152,8 @@ public class ConsoleUI {
         System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println("\n--List of loaded goods--");
         for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
-            System.out.println((i + 1) + ". " + listOfItems.getLoadedItems().get(i).getTemplate().getName() + " codename: " + listOfItems.getLoadedItems().get(i).getCodeName());
+            String turned = listOfItems.getLoadedItems().get(i).isTurnItem90Degrees() ? ", turned over" : "";
+            System.out.println((i + 1) + ". " + listOfItems.getLoadedItems().get(i).getTemplate().getName() + " codename: " + listOfItems.getLoadedItems().get(i).getCodeName() + turned);
         }
         System.out.println("\n--Probable storage of goods--");
         trailer.printOutlineOfTrailer();

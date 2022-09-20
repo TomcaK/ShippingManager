@@ -40,13 +40,23 @@ public class ListOfItems {
     public void createSelectedItems() {
         for (ItemTemplate template : requiredItems.keySet()) {
             for (int i = 0; i < requiredItems.get(template); i++) {
-                selectedItems.add(new Item(template, ' ', 0, 0,false));
+                selectedItems.add(new Item(template));
             }
         }
     }
 
     public void sortSelectedItemsByArea() {
         selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
+    }
+
+    public void moveItemfromSelectedToLoaded (int i,int x, int y, char codename){
+        loadedItems.add(new Item(selectedItems.get(i).getTemplate(),codename,x,y,selectedItems.get(i).isTurnItem90Degrees()));
+        selectedItems.remove(i);
+    }
+
+    public void removeItem(int i){
+        removedItems.add(new Item(selectedItems.get(i).getTemplate()));
+        selectedItems.remove(i);
     }
 
 

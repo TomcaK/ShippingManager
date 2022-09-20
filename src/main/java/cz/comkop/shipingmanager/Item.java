@@ -26,7 +26,6 @@ public class Item {
         this.template = template;
         this.turnItem90Degrees = turnItem90Degrees;
     }
-
     public ItemTemplate getTemplate() {
         return template;
     }
@@ -69,6 +68,4 @@ public class Item {
         return template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
                 " cm, height: " + template.getHeight() + " cm, weight: " + template.getWeight() + " kg";
     }
-
-
 }
