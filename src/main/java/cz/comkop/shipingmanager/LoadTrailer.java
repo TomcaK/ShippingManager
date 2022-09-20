@@ -90,7 +90,7 @@ public class LoadTrailer {
         }
         trailer.countLDM();
     }
-//TODO upravit parametry
+
     public int findSolutionHowToLoad(ItemTemplate itemTemplate, int quantity, int itemsInRow, boolean isTurnedOver) {
         int numberOfRows;
         numberOfRows = quantity / itemsInRow;
@@ -102,7 +102,7 @@ public class LoadTrailer {
 
     }
 
-    //TODO upravit parametry
+
     public int findSolutionHowToLoad(ItemTemplate itemTemplate1, int itemsInRow, ItemTemplate itemTemplate2, TrailerTemplate trailerTemplate, boolean isTurnedOver) {
         int numberOfRows = 1;
         if (isTurnedOver) {
