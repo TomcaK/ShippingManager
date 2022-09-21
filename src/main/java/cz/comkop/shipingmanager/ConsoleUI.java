@@ -102,7 +102,7 @@ public class ConsoleUI {
         Pattern pattern = Pattern.compile(LETTERS_REGEX);
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()){
-            input = searchItems(input);
+            input = stringConverter(input);
         }
         while (!insertRightValue(input, RegEX)){
             input = scanner.nextLine();
@@ -166,10 +166,14 @@ public class ConsoleUI {
         printRemovedGoods(listOfItems);
     }
 
-    public String StringConverter(String input){
+    public String stringConverter(String input){
         System.out.println("inside searchItemMethods");
         String[] arr = input.split("\\s");
+        List<ItemTemplate> values = Arrays.stream(ItemTemplate.values()).toList();
         StringBuilder stringBuilder = new StringBuilder();
+        for (ItemTemplate t: values) {
+
+        }
 
         String items = null;
 
