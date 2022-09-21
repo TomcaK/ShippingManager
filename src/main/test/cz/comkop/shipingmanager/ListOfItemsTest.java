@@ -12,7 +12,6 @@ public class ListOfItemsTest {
     ListOfItems listOfItems;
 
 
-
     @BeforeEach
     public void setUp() {
         listOfItems = new ListOfItems();
@@ -20,6 +19,7 @@ public class ListOfItemsTest {
 
     @Test
     public void testGetItemsFromInput() {
+        listOfItems = new ListOfItems();
         listOfItems.getItemsFromInput("33.1 30.2");
         Assertions.assertEquals(2, listOfItems.getRequiredItems().get(PALLET_120X80));
         Assertions.assertEquals(1, listOfItems.getRequiredItems().get(PALLET_80X60));
@@ -30,15 +30,7 @@ public class ListOfItemsTest {
     public void testCreateSelectedItems() {
         listOfItems.getItemsFromInput("33.1 30.2");
         listOfItems.createSelectedItems();
-        Assertions.assertFalse(listOfItems.getSelectedItems().isEmpty());
-    }
-
-    @Test
-    public void testSortSelectedItems() {
-        listOfItems.getItemsFromInput("33.1 30.2");
-        listOfItems.createSelectedItems();
-        listOfItems.sortSelectedItemsByArea();
-        Assertions.assertEquals(PALLET_120X80, listOfItems.getSelectedItems().get(0).getTemplate());
+        Assertions.assertEquals(3, listOfItems.getSelectedItems().size());
     }
 
     @Test
@@ -47,7 +39,7 @@ public class ListOfItemsTest {
         listOfItems.createSelectedItems();
         Item item = listOfItems.getSelectedItems().get(0);
         item.setTurnItem90Degrees(true);
-        listOfItems.moveItemfromSelectedToLoaded(0, 25, 123, 'A');
+        listOfItems.moveItemFromSelectedToLoaded(0, 25, 123, 'A');
         Assertions.assertEquals(25, listOfItems.getLoadedItems().get(0).getX());
         Assertions.assertEquals(123, listOfItems.getLoadedItems().get(0).getY());
         Assertions.assertEquals(1, listOfItems.getLoadedItems().size());
@@ -56,11 +48,11 @@ public class ListOfItemsTest {
 
     @Test
     public void testRemoveItem() {
-        listOfItems.getItemsFromInput("33.1 30.2");
+        listOfItems.getItemsFromInput("30.1");
         listOfItems.createSelectedItems();
         listOfItems.removeItem(0);
-        Assertions.assertEquals(PALLET_80X60, listOfItems.getRemovedItems().get(0).getTemplate());
-        Assertions.assertFalse( listOfItems.getRemovedItems().isEmpty());
+        Assertions.assertTrue(listOfItems.getSelectedItems().isEmpty());
+        Assertions.assertFalse(listOfItems.getRemovedItems().isEmpty());
     }
 
 }

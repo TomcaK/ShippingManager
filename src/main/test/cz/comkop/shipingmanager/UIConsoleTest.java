@@ -60,6 +60,14 @@ public class UIConsoleTest {
         Assertions.assertEquals(SEMITRAILER_2_48_M_X_13_6_M, consoleUI.getTrailerChoice());
     }
 
+    @Test
+    public void testStringConverter(){
+        when(scanner.nextLine()).thenReturn("300x320 SHI.2");
+        consoleUI.selectionOfItems();
+
+        Assertions.assertEquals("12.2",consoleUI.getUserChoice());
+    }
+
 
 
 }
