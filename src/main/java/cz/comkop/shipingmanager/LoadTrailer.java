@@ -298,7 +298,7 @@ public class LoadTrailer {
             }
         }
         trailer.setTotalWeight(trailer.getTotalWeight() + item.getTemplate().getWeight());
-        listOfItems.moveItemfromSelectedToLoaded(indexOfItem, cX, cY, trailer.getNextCodename());
+        listOfItems.moveItemFromSelectedToLoaded(indexOfItem, cX, cY, trailer.getNextCodename());
         trailer.setFreeSquareCentimeters(trailer.getFreeSquareCentimeters() - listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength() * listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth());
         trailer.setNextCodename((char) (trailer.getNextCodename() + 1));
     }

@@ -45,11 +45,11 @@ public class ListOfItems {
         }
     }
 
-    public void sortSelectedItemsByArea() {
-        selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
-    }
+//    public void sortSelectedItemsByArea() {
+//        selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
+//    }
 
-    public void moveItemfromSelectedToLoaded (int i,int x, int y, char codename){
+    public void moveItemFromSelectedToLoaded (int i,int x, int y, char codename){
         loadedItems.add(new Item(selectedItems.get(i).getTemplate(),codename,x,y,selectedItems.get(i).isTurnItem90Degrees()));
         selectedItems.remove(i);
     }

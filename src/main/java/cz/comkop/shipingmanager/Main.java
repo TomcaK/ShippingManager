@@ -22,7 +22,7 @@ public class Main {
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
             listOfItems.createSelectedItems();
-            listOfItems.sortSelectedItemsByArea();
+            //listOfItems.sortSelectedItemsByArea();
             loadTrailer.loading2(listOfItems, trailer);
             consoleUI.printDebugReport(trailer, listOfItems);
             consoleUI.printFinalReport(trailer, listOfItems);

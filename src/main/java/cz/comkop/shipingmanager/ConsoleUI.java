@@ -12,9 +12,10 @@ import java.util.regex.Pattern;
 public class ConsoleUI {
     public static final String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
     public static final String TRAILER_REGEX = "[1-5]";
+    public static final String LETTERS_REGEX = "[a-zA-Z]+";
     public static final String DATE_REGEX = "\\d+\\.\\d+\\.\\d\\d\\d\\d";
     private Scanner scanner = new Scanner(System.in);
-    private String orders, date;
+    private String orders;
     private LocalDate shipingDate = LocalDate.now();
     private TrailerTemplate trailerChoice;
     private String userChoice;
@@ -91,13 +92,18 @@ public class ConsoleUI {
 
     public void printRequiredItems(ListOfItems listOfItems) {
         System.out.println("* Selected goods *");
-        int i = 0;
+        int i = 1;
         for (ItemTemplate itemTemplate : listOfItems.getRequiredItems().keySet()) {
-            System.out.println((i + 1 + ". " + itemTemplate.getName() + ", number of pieces: " + listOfItems.getRequiredItems().get(itemTemplate)));
+            System.out.println(i++ + ". " + itemTemplate.getName() + ", number of pieces: " + listOfItems.getRequiredItems().get(itemTemplate));
         }
     }
 
     public String inputControl(String input, String RegEX){
+        Pattern pattern = Pattern.compile(LETTERS_REGEX);
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.find()){
+            input = searchItems(input);
+        }
         while (!insertRightValue(input, RegEX)){
             input = scanner.nextLine();
         }
@@ -158,6 +164,16 @@ public class ConsoleUI {
         System.out.println("\n--Probable storage of goods--");
         trailer.printOutlineOfTrailer();
         printRemovedGoods(listOfItems);
+    }
+
+    public String StringConverter(String input){
+        System.out.println("inside searchItemMethods");
+        String[] arr = input.split("\\s");
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String items = null;
+
+        return items;
     }
 
 
