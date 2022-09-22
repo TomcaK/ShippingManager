@@ -9,10 +9,9 @@ public class LoadTrailer {
     private int coordinateY;
     private int coordinateX;
 
-    public  List<Item> getItemsToFit(List<Item> similarItems, ItemTemplate itemToFit, int freeSpace) {
-        return similarItems.stream().filter(item -> !item.getTemplate().equals(itemToFit))
-                .filter(item1 -> item1.getInPack() == 0)
-                         .filter(item -> item.getTemplate().getWidth() <= freeSpace || item.getTemplate().getLength() <= freeSpace && !itemToFit.isPreferNotToBeRotated())
+    public List<Item> getItemsToFit(List<Item> similarItems, int freeSpace) {
+        return similarItems.stream().filter(item1 -> item1.getInPack() == 0)
+                .filter(item -> item.getTemplate().getWidth() <= freeSpace || item.getTemplate().getLength() <= freeSpace && item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated())
                 .collect(Collectors.toList());
 //        if (index == 0) {
 //            return list;
@@ -21,15 +20,15 @@ public class LoadTrailer {
     }
 
     public List<Item> getSimilarItems(List<Item> selectedItems, ItemTemplate similarToThisItem) {
-       return selectedItems.stream().filter(item -> !item.getTemplate().equals(similarToThisItem))
+        return selectedItems.stream().filter(item -> !item.getTemplate().equals(similarToThisItem))
                 .filter(item -> item.getInPack() == 0)
-                .filter(item -> item.getTemplate().getLength() == similarToThisItem.getLength() || item.getTemplate().getWidth() == similarToThisItem.getWidth() || item.getTemplate().getWidth() == similarToThisItem.getLength() && !similarToThisItem.isPreferNotToBeRotated()
+                .filter(item -> item.getTemplate().getLength() == similarToThisItem.getLength() || item.getTemplate().getWidth() == similarToThisItem.getWidth() || item.getTemplate().getWidth() == similarToThisItem.getLength() && !item.getTemplate().isPreferNotToBeRotated() && item.getTemplate().isCanBeRotated90Degrees()
                         || item.getTemplate().getLength() == similarToThisItem.getWidth() && !similarToThisItem.isPreferNotToBeRotated()).collect(Collectors.toList());
 
-       // if (index == 0) {
-         //   return list;
-       // }
-      //  return list;
+        // if (index == 0) {
+        //   return list;
+        // }
+        //  return list;
     }
 
     public void loading(ListOfItems listOfItems, Trailer trailer) {
@@ -119,12 +118,13 @@ public class LoadTrailer {
     }
 
 
-    //TODO průběh metody,dodělat podmínku, že pouze jeden objekt se bude nakládat v druhé vlně
+    //TODO průběh metody,dodělat podmínku, že item, quanity 1 se bude nakládat v druhé vlně, pokud se nenajde podobný objekt s jednou stejnou proporcí
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
         int pack = 1;
         int totalTakenLength = 0;
 
-        for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
+        for (int i = 0; i < listOfItems.getSelectedItems().size(); ) {
+
             int quantity;
             int itemsInRowWidth;
             int itemsInRowLength = 0;
@@ -134,7 +134,7 @@ public class LoadTrailer {
             int chosenFreeSpace;
             List<Item> itemsToFit;
             ItemTemplate selectedItem = listOfItems.getSelectedItems().get(i).getTemplate();
-            List<Item> similarItems = getSimilarItems(listOfItems.getSelectedItems(),selectedItem);
+            List<Item> similarItems = getSimilarItems(listOfItems.getSelectedItems(), selectedItem);
             quantity = (int) listOfItems.getSelectedItems().stream().filter(item1 -> item1.getTemplate().equals(selectedItem)).filter(item1 -> item1.getInPack() == 0).count();
             itemsInRowWidth = trailer.getTemplate().getWidth() / selectedItem.getWidth();
             w = findSolutionHowToLoad(selectedItem, quantity, itemsInRowWidth, false);
@@ -148,59 +148,66 @@ public class LoadTrailer {
                 l = selectedItem.getLength();
             }
             while (w > trailer.getTemplate().getLength() - totalTakenLength && l > trailer.getTemplate().getLength() - totalTakenLength) {
-                listOfItems.removeItem(i);
+                listOfItems.moveItem(listOfItems.getSelectedItems(),listOfItems.getRemovedItems(),i,0,0,' ');
                 quantity -= 1;
                 w = findSolutionHowToLoad(selectedItem, quantity, itemsInRowWidth, false);
-                l = findSolutionHowToLoad(selectedItem, quantity, itemsInRowLength, true);
+                l = selectedItem.isCanBeRotated90Degrees() && !selectedItem.isPreferNotToBeRotated() ? findSolutionHowToLoad(selectedItem, quantity, itemsInRowLength, true) :  selectedItem.getLength();
             }
             int freeSpaceW, freeSpaceL;
             freeSpaceW = trailer.getTemplate().getWidth() - (itemsInRowWidth * selectedItem.getWidth());
             freeSpaceL = trailer.getTemplate().getWidth() - (itemsInRowLength * selectedItem.getLength());
-            if (freeSpaceW > freeSpaceL) {
-                itemsToFit = getItemsToFit(similarItems, selectedItem, freeSpaceW);
+            if (freeSpaceW > freeSpaceL || freeSpaceL != trailer.getTemplate().getWidth()) {
+                itemsToFit = getItemsToFit(similarItems, freeSpaceW);
                 chosenFreeSpace = freeSpaceW;
             } else {
-                itemsToFit = getItemsToFit(similarItems, selectedItem, freeSpaceL);
+                itemsToFit = getItemsToFit(similarItems, freeSpaceL);
                 chosenFreeSpace = freeSpaceL;
             }
-            if (!itemsToFit.isEmpty()) {
-                bestItem = getBestItem(chosenFreeSpace, itemsToFit);
-                w = findSolutionHowToLoad(selectedItem, itemsInRowWidth, bestItem.getTemplate(), trailer.getTemplate(), false);
-                l = findSolutionHowToLoad(selectedItem, itemsInRowLength, bestItem.getTemplate(), trailer.getTemplate(), true);
-            }
-            if (l >= w) {
-                for (int j = i; j < i + itemsInRowWidth; j++) {
-                    listOfItems.getSelectedItems().get(j).setInPack(pack);
-                }
-                if (bestItem != null) {
-                    for (Item it : listOfItems.getSelectedItems()) {
-                        if (it.getTemplate().equals(bestItem.getTemplate())) {
-                            it.setInPack(pack);
-                        }
+            if (!itemsToFit.isEmpty() && quantity == 1 || quantity > 1) {
+                    bestItem = getBestItem(chosenFreeSpace, itemsToFit);
+                    w = findSolutionHowToLoad(selectedItem, itemsInRowWidth, bestItem.getTemplate(), trailer.getTemplate(), false);
+                    l = selectedItem.isCanBeRotated90Degrees() && !selectedItem.isPreferNotToBeRotated() ? findSolutionHowToLoad(selectedItem, itemsInRowLength, bestItem.getTemplate(), trailer.getTemplate(), true) : selectedItem.getLength();
+                if (l > w) {
+                    for (int j = i; j < i + itemsInRowWidth; j++) {
+                        listOfItems.getSelectedItems().get(j).setInPack(pack);
                     }
-                    i++;
-                }
-                totalTakenLength += listOfItems.getSelectedItems().get(i).getTemplate().getLength();
-                i += itemsInRowWidth - 1;
-            } else {
-                for (int j = i; j < i + itemsInRowLength; j++) {
-                    listOfItems.getSelectedItems().get(j).setTurnItem90Degrees(true);
-                    listOfItems.getSelectedItems().get(j).setInPack(pack);
-                }
-                if (bestItem != null) {
-                    for (Item it : listOfItems.getSelectedItems()) {
-                        if (it.getTemplate().equals(bestItem.getTemplate())) {
-                            it.setInPack(pack);
-                            it.setTurnItem90Degrees(true);
+                    if (bestItem != null) {
+                        for (Item it : listOfItems.getSelectedItems()) {
+                            if (it.getTemplate().equals(bestItem.getTemplate())) {
+                                it.setInPack(pack);
+                                break;
+                            }
                         }
+                        //i++;
                     }
-                    i++;
+                    totalTakenLength += listOfItems.getSelectedItems().get(i).getTemplate().getLength();
+                    // i += itemsInRowWidth - 1;
+                } else {
+                    for (int j = i; j < i + itemsInRowLength; j++) {
+                        listOfItems.getSelectedItems().get(j).setTurnItem90Degrees(true);
+                        listOfItems.getSelectedItems().get(j).setInPack(pack);
+                    }
+                    if (bestItem != null) {
+                        for (Item it : listOfItems.getSelectedItems()) {
+                            if (it.getTemplate().equals(bestItem.getTemplate())) {
+                                it.setInPack(pack);
+                                it.setTurnItem90Degrees(true);
+                            }
+                        }
+                        // i++;
+                    }
+                    totalTakenLength += listOfItems.getSelectedItems().get(i).getTemplate().getWidth();
+                    // i += itemsInRowLength - 1;
                 }
-                totalTakenLength += listOfItems.getSelectedItems().get(i).getTemplate().getWidth();
-                i += itemsInRowLength - 1;
+                pack++;
+
+                }
+            i++;
+            while (i < listOfItems.getSelectedItems().size() && listOfItems.getSelectedItems().get(i).getInPack() != 0) {
+                i++;
             }
-            pack++;
         }
+
     }
 
     private Item getBestItem(int freeSpace, List<Item> itemsToFit) {
@@ -298,7 +305,7 @@ public class LoadTrailer {
             }
         }
         trailer.setTotalWeight(trailer.getTotalWeight() + item.getTemplate().getWeight());
-        listOfItems.moveItemFromSelectedToLoaded(indexOfItem, cX, cY, trailer.getNextCodename());
+        listOfItems.moveItem(listOfItems.getSelectedItems(),listOfItems.getLoadedItems(),indexOfItem, cX, cY, trailer.getNextCodename());
         trailer.setFreeSquareCentimeters(trailer.getFreeSquareCentimeters() - listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength() * listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth());
         trailer.setNextCodename((char) (trailer.getNextCodename() + 1));
     }

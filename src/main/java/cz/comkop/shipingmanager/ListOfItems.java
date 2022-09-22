@@ -4,11 +4,12 @@ import lombok.Getter;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 @Getter
 public class ListOfItems {
-    private List<Item> selectedItems = new ArrayList<>();
     private final List<Item> removedItems = new ArrayList<>();
     private final List<Item> loadedItems = new ArrayList<>();
+    private List<Item> selectedItems = new ArrayList<>();
     private Map<ItemTemplate, Integer> requiredItems;
 //TODO zabezpečit manipulaci mimo třídu (vytvořit metody)
 //    public List<Item> getSelectedItems() {
@@ -43,23 +44,17 @@ public class ListOfItems {
                 selectedItems.add(new Item(template));
             }
         }
+        selectedItems = sortSelectedItemsByArea();
     }
 
-//    public void sortSelectedItemsByArea() {
-//        selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
-//    }
+    public List<Item> sortSelectedItemsByArea() {
+        return selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
+    }
 
-    public void moveItemFromSelectedToLoaded (int i,int x, int y, char codename){
-        loadedItems.add(new Item(selectedItems.get(i).getTemplate(),codename,x,y,selectedItems.get(i).isTurnItem90Degrees()));
+    public void moveItem(List<Item> selectedItems, List<Item> listOfItemsForMove, int i,int x, int y, char codename ) {
+        listOfItemsForMove.add(new Item(selectedItems.get(i).getTemplate(), codename, x, y, selectedItems.get(i).isTurnItem90Degrees()));
         selectedItems.remove(i);
     }
-
-    public void removeItem(int i){
-        removedItems.add(new Item(selectedItems.get(i).getTemplate()));
-        selectedItems.remove(i);
-    }
-
-
 
 
 }
