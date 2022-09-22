@@ -33,12 +33,16 @@ public class LoadTrailerTest {
 
     @Test
     public void testCreatePack(){
-        listOfItems.getItemsFromInput("27.1 20.1 12.1 28.1 35.1 36.1 37.1 39.1 40.1 41.1 42.1");
+        listOfItems.getItemsFromInput("27.1 20.1 12.1 28.1 35.1 37.1 39.2 40.1 41.1 42.1");
         listOfItems.createSelectedItems();
         Trailer trailer = new Trailer(SEMITRAILER_2_48_M_X_13_6_M);
         loadTrailer.createPacks(trailer,listOfItems);
         Assertions.assertEquals(0,listOfItems.getSelectedItems().get(0).getInPack());
         Assertions.assertEquals(0,listOfItems.getSelectedItems().get(1).getInPack());
+        Assertions.assertEquals(0,listOfItems.getSelectedItems().get(2).getInPack());
+        Assertions.assertEquals(1,listOfItems.getSelectedItems().get(3).getInPack());
+        Assertions.assertEquals(1,listOfItems.getSelectedItems().get(4).getInPack());
+        Assertions.assertEquals(0,listOfItems.getSelectedItems().get(2).getInPack());
         Assertions.assertEquals(0,listOfItems.getSelectedItems().get(2).getInPack());
     }
 }

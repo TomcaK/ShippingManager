@@ -25,6 +25,7 @@ public class ConsoleUI {
         ) {
             System.out.println(item.getTemplate().getName() + " NOT LOADED");
         }
+        System.out.println();
     }
 
 
@@ -149,11 +150,19 @@ public class ConsoleUI {
         System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println("\nList of loaded goods");
         for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
-            System.out.println((i + 1) + ". " + listOfItems.getLoadedItems().get(i));
+            int count = 0;
+            for (Item it: listOfItems.getLoadedItems()) {
+                if (it.getTemplate().equals(listOfItems.getLoadedItems().get(i).getTemplate())){
+                    count++;
+                }
+            }
+            String quantity = count > 1 ? count +"x " : "";
+            System.out.println((i + 1) + ". "+ quantity + listOfItems.getLoadedItems().get(i));
+            i+=count - 1;
         }
     }
 
-    public void printFinalReport(Trailer trailer, ListOfItems listOfItems) {
+    public void printShipingReport(Trailer trailer, ListOfItems listOfItems) {
         System.out.println("--Final REPORT--");
         System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println("\n--List of loaded goods--");
