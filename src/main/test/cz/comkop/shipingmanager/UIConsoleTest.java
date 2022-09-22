@@ -64,7 +64,6 @@ public class UIConsoleTest {
     public void testStringConverter(){
         when(scanner.nextLine()).thenReturn("300x320 SHI.2");
         consoleUI.selectionOfItems();
-
         Assertions.assertEquals("12.2",consoleUI.getUserChoice());
     }
 

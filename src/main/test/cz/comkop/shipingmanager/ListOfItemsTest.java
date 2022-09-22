@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static cz.comkop.shipingmanager.ItemTemplate.PALLET_120X80;
-import static cz.comkop.shipingmanager.ItemTemplate.PALLET_80X60;
+import static cz.comkop.shipingmanager.ItemTemplate.*;
 
 public class ListOfItemsTest {
 
@@ -19,7 +18,6 @@ public class ListOfItemsTest {
 
     @Test
     public void testGetItemsFromInput() {
-        listOfItems = new ListOfItems();
         listOfItems.getItemsFromInput("33.1 30.2");
         Assertions.assertEquals(2, listOfItems.getRequiredItems().get(PALLET_120X80));
         Assertions.assertEquals(1, listOfItems.getRequiredItems().get(PALLET_80X60));
@@ -31,6 +29,14 @@ public class ListOfItemsTest {
         listOfItems.getItemsFromInput("33.1 30.2");
         listOfItems.createSelectedItems();
         Assertions.assertEquals(3, listOfItems.getSelectedItems().size());
+        Assertions.assertEquals(PALLET_120X80, listOfItems.getSelectedItems().get(0).getTemplate());
+    }
+
+    @Test
+    public void testSortSelectedItemsByArea(){
+        listOfItems.getItemsFromInput("1.1 33.1 30.2");
+        listOfItems.createSelectedItems();
+        Assertions.assertEquals(TEST_QUARTER_MACHINE, listOfItems.getSelectedItems().get(3).getTemplate());
     }
 
     @Test
@@ -39,7 +45,7 @@ public class ListOfItemsTest {
         listOfItems.createSelectedItems();
         Item item = listOfItems.getSelectedItems().get(0);
         item.setTurnItem90Degrees(true);
-        listOfItems.moveItemFromSelectedToLoaded(0, 25, 123, 'A');
+        listOfItems.moveItem(listOfItems.getSelectedItems(),listOfItems.getLoadedItems(),0, 25, 123, 'A');
         Assertions.assertEquals(25, listOfItems.getLoadedItems().get(0).getX());
         Assertions.assertEquals(123, listOfItems.getLoadedItems().get(0).getY());
         Assertions.assertEquals(1, listOfItems.getLoadedItems().size());
@@ -47,12 +53,12 @@ public class ListOfItemsTest {
     }
 
     @Test
-    public void testRemoveItem() {
-        listOfItems.getItemsFromInput("30.1");
+    public void testMoveItemFromSelectedToRemoved() {
+        listOfItems.getItemsFromInput("30.1 33.1");
         listOfItems.createSelectedItems();
-        listOfItems.removeItem(0);
-        Assertions.assertTrue(listOfItems.getSelectedItems().isEmpty());
-        Assertions.assertFalse(listOfItems.getRemovedItems().isEmpty());
+        listOfItems.moveItem(listOfItems.getSelectedItems(),listOfItems.getRemovedItems(),0, 0, 0, ' ');
+        Assertions.assertEquals(PALLET_80X60,listOfItems.getSelectedItems().get(0).getTemplate());
+        Assertions.assertEquals(PALLET_120X80,listOfItems.getRemovedItems().get(0).getTemplate());
     }
 
 }
