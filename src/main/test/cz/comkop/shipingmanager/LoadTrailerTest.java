@@ -34,6 +34,7 @@ public class LoadTrailerTest {
     @Test
     public void testCreatePack(){
         listOfItems.getItemsFromInput("27.1 20.1 12.1 28.1 35.1 37.1 39.2 40.1 41.1 42.1");
+        //27.1 20.1 38.1 12.2 8.5
         listOfItems.createSelectedItems();
         Trailer trailer = new Trailer(SEMITRAILER_2_48_M_X_13_6_M);
         loadTrailer.createPacks(trailer,listOfItems);

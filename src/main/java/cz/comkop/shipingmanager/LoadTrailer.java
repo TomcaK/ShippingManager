@@ -326,9 +326,16 @@ public class LoadTrailer {
                 for (int x = 0; x < trailer.getTemplate().getWidth(); ) {
                     for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
                         Item item = listOfItems.getLoadedItems().get(i);
-                        if (!item.isTurnItem90Degrees() && x >= item.getX() && x <= item.getX() + item.getTemplate().getWidth() - 1 && y >= item.getY() && y <= item.getY() + item.getTemplate().getLength() - 1) {
+                        if (!item.isTurnItem90Degrees() && x >= item.getX()
+                                && x <= item.getX() + item.getTemplate().getWidth() - 1
+                                && x + item.getTemplate().getWidth() <= trailer.getTemplate().getWidth()
+                                && y >= item.getY() && y <= item.getY() + item.getTemplate().getLength() - 1
+                                && y + item.getTemplate().getLength() <= trailer.getTemplate().getLength()) {
                             x += item.getTemplate().getWidth();
-                        } else if (x >= item.getX() && x <= item.getX() + item.getTemplate().getLength() - 1 && y >= item.getY() && y <= item.getY() + item.getTemplate().getWidth() - 1) {
+                        } else if (x >= item.getX() && x <= item.getX() + item.getTemplate().getLength() - 1
+                                && x + item.getTemplate().getLength() <= trailer.getTemplate().getWidth()
+                                && y >= item.getY() && y <= item.getY() + item.getTemplate().getWidth() - 1
+                                && y + item.getTemplate().getWidth() <= trailer.getTemplate().getLength()) {
                             x += item.getTemplate().getLength();
                         }
                     }
@@ -376,11 +383,17 @@ public class LoadTrailer {
         for (int y = coordinateYStart; y < coordinateYEnd; y++) {
             for (int x = coordinateXStart; x < coordinateXEnd; x++) {
                 for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
-                    if (!listOfItems.getLoadedItems().get(i).isTurnItem90Degrees() && x >= listOfItems.getLoadedItems().get(i).getX() && x <= listOfItems.getLoadedItems().get(i).getX() + listOfItems.getLoadedItems().get(i).getTemplate().getWidth() - 1 && y >= listOfItems.getLoadedItems().get(i).getY() && y <= listOfItems.getLoadedItems().get(i).getY() + listOfItems.getLoadedItems().get(i).getTemplate().getLength() - 1) {
-                        return false;
-                    } else if (x >= listOfItems.getLoadedItems().get(i).getX() && x <= listOfItems.getLoadedItems().get(i).getX() + listOfItems.getLoadedItems().get(i).getTemplate().getLength() - 1 && y >= listOfItems.getLoadedItems().get(i).getY() && y <= listOfItems.getLoadedItems().get(i).getY() + listOfItems.getLoadedItems().get(i).getTemplate().getWidth() - 1) {
-                        return false;
+                    Item item = listOfItems.getLoadedItems().get(i);
+                    if (!item.isTurnItem90Degrees()) {
+                        if (x >= item.getX() && x <= item.getX() + item.getTemplate().getWidth() - 1 && y >= item.getY() && y <= item.getY() + item.getTemplate().getLength() - 1) {
+                            return false;
+                        }
+                    } else if (x >= item.getX() && x <= item.getX() + item.getTemplate().getLength() - 1 && y >= item.getY() && y <= item.getY() + item.getTemplate().getWidth() - 1) {
+                        {
+                            return false;
+                        }
                     }
+
                 }
             }
         }
