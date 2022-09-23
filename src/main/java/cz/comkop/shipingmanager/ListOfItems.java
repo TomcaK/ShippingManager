@@ -15,18 +15,7 @@ public class ListOfItems {
 //    public List<Item> getSelectedItems() {
 //        return selectedItems;
 //    }
-//
-//    public List<Item> getRemovedItems() {
-//        return removedItems;
-//    }
-//
-//    public List<Item> getLoadedItems() {
-//        return loadedItems;
-//    }
-//
-//    public Map<ItemTemplate, Integer> getRequiredItems() {
-//        return requiredItems;
-//    }
+
 
     public void getItemsFromInput(String itemsChoice) {//TODO change method to method which will take key and create selected goods. Key will be created from ConsoleUI from new searching method
         List<ItemTemplate> list = Arrays.stream(ItemTemplate.values()).toList();
@@ -51,9 +40,28 @@ public class ListOfItems {
         return selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
     }
 
-    public void moveItem(List<Item> selectedItems, List<Item> listOfItemsForMove, int i,int x, int y, char codename ) {
+    public void moveItem(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, int x, int y, char codename) {
         listOfItemsForMove.add(new Item(selectedItems.get(i).getTemplate(), codename, x, y, selectedItems.get(i).isTurnItem90Degrees()));
+        if (listOfItemsForMove.hashCode() == removedItems.hashCode()) {
+            requiredItems.put(selectedItems.get(i).getTemplate(), requiredItems.get(selectedItems.get(i).getTemplate()) - 1);
+            if (requiredItems.get(selectedItems.get(i).getTemplate()) == 0)
+                requiredItems.remove(selectedItems.get(i).getTemplate());
+        }
         selectedItems.remove(i);
+
+        // ;
+    }
+
+    public void removeDuplicates() {
+        for (int i = 0; i < loadedItems.size(); i++) {
+            for (int j = i + 1; j < loadedItems.size(); j++) {
+                if (loadedItems.get(i).getTemplate().equals(loadedItems.get(j).getTemplate())) {
+                    loadedItems.remove(j);
+                    j--;
+                }
+            }
+
+        }
     }
 
 

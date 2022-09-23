@@ -1,5 +1,9 @@
 package cz.comkop.shipingmanager;
 
+import lombok.Getter;
+
+@Getter
+
 public class Item {
     private final ItemTemplate template;
     private int area;
@@ -28,36 +32,9 @@ public class Item {
         area = template.getLength() * template.getWidth();
         this.turnItem90Degrees = turnItem90Degrees;
     }
-    public ItemTemplate getTemplate() {
-        return template;
-    }
-
-    public char getCodeName() {
-        return codeName;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getArea() {
-        return area;
-    }
-
-    public boolean isTurnItem90Degrees() {
-        return turnItem90Degrees;
-    }
 
     public void setTurnItem90Degrees(boolean turnItem90Degrees) {
         this.turnItem90Degrees = turnItem90Degrees;
-    }
-
-    public int getInPack() {
-        return inPack;
     }
 
     public void setInPack(int inPack) {

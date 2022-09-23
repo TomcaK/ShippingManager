@@ -6,8 +6,8 @@ public class Main {
     static Trailer trailer;
     static LoadTrailer loadTrailer = new LoadTrailer();
 
-    //TODO test 19.1 11.1 26.1 32.1 33.1 34.1 35.2 36.1 37.1 38.1 29.2
-    //27.1 20.1 12.1 28.1 35.1 37.1 39.2 40.1 41.1 42.1
+    //TODO test 27.1 20.1 12.1 28.1 35.1 37.1 39.2 40.1 41.1 42.1
+
     public static void main(String[] args) {
         consoleUI.welcome();
         do {
@@ -22,7 +22,6 @@ public class Main {
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
             listOfItems.createSelectedItems();
-          //  listOfItems.sortSelectedItemsByArea();
             loadTrailer.loading2(listOfItems, trailer);
             consoleUI.printDebugReport(trailer, listOfItems);
             consoleUI.printShipingReport(trailer, listOfItems);
@@ -33,7 +32,6 @@ public class Main {
     }
 
     private static void reset() {
-        //new trailers, list of items
         loadTrailer = new LoadTrailer();
         listOfItems = new ListOfItems();
 

@@ -31,13 +31,13 @@ public enum ItemTemplate {//TODO check all dimensions, add height,
     BS_440_CALIBER_X_CNC_SHI("440 Caliber X-CNC/SHI", 203, 256, 1, 3115, false, false, true),
     BS_440_HORIZONT_SHI_X("440 Horizont SHI/X", 176, 350, 1, 2080),
     THOR_5("THOR 5", 220, 394, 258, 7735, false, false, true),
-    RT_RDL_RDR("RDL/RDR", 100, 110, 80, 200,true),
+    RT_RDL_RDR("RDL/RDR", 100, 110, 80, 200, true),
     M_OZ_3000("OZ 3000", 10, 300, 10, 30, true),
     PALLET_120X80("Pallet 120 cm x 80 cm", 80, 120, 50, 100, true),
     PALLET_120X70("Pallet 120 cm x 70 cm", 70, 120, 50, 100, true),
     PALLET_120X50("Pallet 120 cm x 50 cm", 50, 120, 50, 100, true),
     PALLET_80X60("Half pallet 80 cm x 60 cm", 80, 60, 50, 100, true),
-    RT_R290("R290", 60, 60, 80, 12,true),
+    RT_R290("R290", 60, 60, 80, 12, true),
     RT_RDT_2000_350("RDT 2000/350", 55, 205, 80, 151, true),
     RT_RDZ_1000_350("RDZ 1000/350", 55, 105, 80, 100, true),
     RT_RDT_2000_450("RDT 2000/450", 65, 205, 80, 158, true),
@@ -45,7 +45,7 @@ public enum ItemTemplate {//TODO check all dimensions, add height,
     RT_RDT_2000_520("RDT 2000/520", 70, 205, 80, 164, true),
     RT_RDT_2000_620("RDT 2000/620", 90, 205, 80, 221, true),
     RT_RDT_2000_800("RDT 2000/800", 105, 205, 80, 270, true),
-    RT_RDP_800("RDP 800", 90, 90, 80, 230,true);
+    RT_RDP_800("RDP 800", 90, 90, 80, 230, true);
 
 
     private final String name;
@@ -94,41 +94,6 @@ public enum ItemTemplate {//TODO check all dimensions, add height,
         this.weight = weight;
     }
 
-
-//    public String getName() {
-//        return name;
-//    }
-//
-//
-//    public int getWidth() {
-//        return width;
-//    }
-//
-//
-//    public int getLength() {
-//        return length;
-//    }
-//
-//    public int getWeight() {
-//        return weight;
-//    }
-//
-//
-//    public boolean isCanBeRotated90Degrees() {
-//        return canBeRotated90Degrees;
-//    }
-//
-//    public int getHeight() {
-//        return height;
-//    }
-//
-//    public boolean isPreferNotToBeRotated() {
-//        return preferNotToBeRotated;
-//    }
-//
-//    public boolean isLoadingByCrane() {
-//        return loadingByCrane;
-//    }
 
     //      440 x600 Horizontal X - NC - BS 290 160 214 2000
 //            500 x750 Horizontal X 310 176 221 2120

@@ -24,18 +24,6 @@ public enum TrailerTemplate {
         this.height = height;
     }
 
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public int getWidth() {
-//        return width;
-//    }
-//
-//    public int getLength() {
-//        return length;
-//    }
-
     @Override
     public String toString() {
         return name + "," +

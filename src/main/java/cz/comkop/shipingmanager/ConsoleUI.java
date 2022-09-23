@@ -4,10 +4,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -152,16 +149,10 @@ public class ConsoleUI {
         }
         System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println("\nList of loaded goods");
+        listOfItems.removeDuplicates();
         for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
-            int count = 0;
-            for (Item it : listOfItems.getLoadedItems()) {
-                if (it.getTemplate().equals(listOfItems.getLoadedItems().get(i).getTemplate())) {
-                    count++;
-                }
-            }
-            String quantity = count > 1 ? count + "x " : "";
-            System.out.println(quantity + listOfItems.getLoadedItems().get(i));
-            i += count - 1;
+            String quantity = listOfItems.getRequiredItems().get(listOfItems.getLoadedItems().get(i).getTemplate()) > 1 ? listOfItems.getRequiredItems().get(listOfItems.getLoadedItems().get(i).getTemplate()) + "x " : "";
+            System.out.println((i + 1) + ". " + quantity + listOfItems.getLoadedItems().get(i));
         }
     }
 
