@@ -1,4 +1,4 @@
-# Shiping manager 1.1
+# Shiping manager 1.0
 Shiping manager is software in development which takes list of itemTemplates, their parameters (dimensions, weight), and calculates needed space for export to customer and provides additional information for e-mail communication with customer.
 
 
