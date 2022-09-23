@@ -4,7 +4,10 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +42,7 @@ public class ConsoleUI {
     }
 
     public void setScanner(Scanner scanner) {
-         this.scanner = scanner;
+        this.scanner = scanner;
     }
 
     public void welcome() {
@@ -58,7 +61,7 @@ public class ConsoleUI {
         for (int i = 0; i < trailerTemplates.size(); i++) {
             System.out.println((i + 1) + "." + trailerTemplates.get(i).getName());
         }
-        String input =  inputControl(scanner.nextLine(),TRAILER_REGEX);
+        String input = inputControl(scanner.nextLine(), TRAILER_REGEX);
         trailerChoice = trailerTemplates.get(Integer.parseInt(input) - 1);
         System.out.println("* Selected trailer: " + trailerChoice);
     }
@@ -66,7 +69,7 @@ public class ConsoleUI {
     public void selectionOfDate() {
         System.out.println("--Please select date of shiping in format \"day.month.year\"--");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-        String input =  inputControl(scanner.nextLine(),DATE_REGEX);
+        String input = inputControl(scanner.nextLine(), DATE_REGEX);
         shipingDate = LocalDate.parse(input, formatter);
     }
 
@@ -83,7 +86,7 @@ public class ConsoleUI {
         for (int i = 0; i < itemTemplates.size(); i++) {
             System.out.println((i + 1) + "." + itemTemplates.get(i).getName());
         }
-        String input = inputControl(scanner.nextLine(),ITEM_REGEX);
+        String input = inputControl(scanner.nextLine(), ITEM_REGEX);
         userChoice = input;
     }
 
@@ -99,13 +102,13 @@ public class ConsoleUI {
         }
     }
 
-    public String inputControl(String input, String RegEX){
-        Pattern pattern = Pattern.compile(LETTERS_REGEX);
-        Matcher matcher = pattern.matcher(input);
-        if (matcher.find()){
-            input = stringConverter(input);
-        }
-        while (!insertRightValue(input, RegEX)){
+    public String inputControl(String input, String RegEX) {
+//        Pattern pattern = Pattern.compile(LETTERS_REGEX);
+//        Matcher matcher = pattern.matcher(input);
+//        if (matcher.find()) {
+//            input = stringConverter(input);
+//        }
+        while (!insertRightValue(input, RegEX)) {
             input = scanner.nextLine();
         }
         return input;
@@ -139,7 +142,7 @@ public class ConsoleUI {
         return trailerChoice;
     }
 
-    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {
+    public void printEmailData(Trailer trailer, ListOfItems listOfItems) {//TODO doladit výstup ohledně stejných itemů
         System.out.println("--Email Data--");
         System.out.println("Hi,");
         System.out.println("your order " + orders + " will be ready on " + shipingDate.getDayOfWeek() + ", " + shipingDate.format(DateTimeFormatter.ofPattern("d.M.yyyy")));
@@ -151,14 +154,14 @@ public class ConsoleUI {
         System.out.println("\nList of loaded goods");
         for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
             int count = 0;
-            for (Item it: listOfItems.getLoadedItems()) {
-                if (it.getTemplate().equals(listOfItems.getLoadedItems().get(i).getTemplate())){
+            for (Item it : listOfItems.getLoadedItems()) {
+                if (it.getTemplate().equals(listOfItems.getLoadedItems().get(i).getTemplate())) {
                     count++;
                 }
             }
-            String quantity = count > 1 ? count +"x " : "";
-            System.out.println((i + 1) + ". "+ quantity + listOfItems.getLoadedItems().get(i));
-            i+=count - 1;
+            String quantity = count > 1 ? count + "x " : "";
+            System.out.println(quantity + listOfItems.getLoadedItems().get(i));
+            i += count - 1;
         }
     }
 
@@ -175,12 +178,12 @@ public class ConsoleUI {
         printRemovedGoods(listOfItems);
     }
 
-    public String stringConverter(String input){
+    public String stringConverter(String input) {
         System.out.println("inside searchItemMethods");
         String[] arr = input.split("\\s");
         List<ItemTemplate> values = Arrays.stream(ItemTemplate.values()).toList();
         StringBuilder stringBuilder = new StringBuilder();
-        for (ItemTemplate t: values) {
+        for (ItemTemplate t : values) {
 
         }
 
