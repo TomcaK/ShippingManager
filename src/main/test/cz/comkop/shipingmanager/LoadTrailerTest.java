@@ -41,8 +41,7 @@ public class LoadTrailerTest {
         Assertions.assertEquals(0,listOfItems.getSelectedItems().get(1).getInPack());
         Assertions.assertEquals(0,listOfItems.getSelectedItems().get(2).getInPack());
         Assertions.assertEquals(1,listOfItems.getSelectedItems().get(3).getInPack());
-        Assertions.assertEquals(1,listOfItems.getSelectedItems().get(4).getInPack());
-        Assertions.assertEquals(0,listOfItems.getSelectedItems().get(2).getInPack());
-        Assertions.assertEquals(0,listOfItems.getSelectedItems().get(2).getInPack());
+
     }
+
 }
