@@ -20,8 +20,6 @@ public class UIConsoleTest {
     ConsoleUI consoleUI;
     @Mock
     Scanner scanner;
-
-
     @BeforeEach
     public void setUp() {
         consoleUI = new ConsoleUI();

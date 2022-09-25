@@ -33,11 +33,7 @@ public class ListOfItems {
                 selectedItems.add(new Item(template));
             }
         }
-        selectedItems = sortSelectedItemsByArea();
-    }
-
-    public List<Item> sortSelectedItemsByArea() {
-        return selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
+        selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
     }
 
     public void moveItem(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, int x, int y, char codename) {
@@ -48,8 +44,6 @@ public class ListOfItems {
                 requiredItems.remove(selectedItems.get(i).getTemplate());
         }
         selectedItems.remove(i);
-
-        // ;
     }
 
     public void removeDuplicates() {

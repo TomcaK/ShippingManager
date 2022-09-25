@@ -13,19 +13,26 @@ public class LoadTrailer {
         return similarItems.stream().filter(item1 -> item1.getInPack() == 0)
                 .filter(item -> item.getTemplate().getWidth() <= freeSpace || item.getTemplate().getLength() <= freeSpace && item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated())
                 .collect(Collectors.toList());
-//        if (index == 0) {
-//            return list;
-//        }
-//        return list.stream().filter(item1 -> item1.getInPack() == 0).collect(Collectors.toList());
     }
 
     public List<Item> getSimilarItems(List<Item> selectedItems, ItemTemplate similarToThisItem, int difference) {
         return selectedItems.stream().filter(item -> !item.getTemplate().equals(similarToThisItem))
                 .filter(item -> item.getInPack() == 0)
-                .filter(item -> item.getTemplate().getLength() == similarToThisItem.getLength() && item.getTemplate().getWidth() >= similarToThisItem.getWidth() - difference
+                .filter(item -> item.getTemplate().getLength() == similarToThisItem.getLength()
+                        && item.getTemplate().getWidth() >= similarToThisItem.getWidth() - difference
                         && item.getTemplate().getWidth() <= similarToThisItem.getWidth() + difference
                         || item.getTemplate().getWidth() == similarToThisItem.getWidth() && item.getTemplate().getLength() >= similarToThisItem.getLength() - difference
                         && item.getTemplate().getLength() <= similarToThisItem.getLength() + difference)
+                .collect(Collectors.toList());
+    }
+
+    public List<Item> getItemWithOneSameDimension(List<Item> selectedItems, ItemTemplate similarToThisItem) {
+        return selectedItems.stream().filter(item -> !item.getTemplate().equals(similarToThisItem))
+                .filter(item -> item.getInPack() == 0)
+                .filter(item -> item.getTemplate().getLength() == similarToThisItem.getLength()
+                        || item.getTemplate().getWidth() == similarToThisItem.getWidth()
+                        || item.getTemplate().getWidth() == similarToThisItem.getLength() && item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated()
+                        || item.getTemplate().getLength() == similarToThisItem.getWidth() && item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated())
                 .collect(Collectors.toList());
     }
 
@@ -110,8 +117,7 @@ public class LoadTrailer {
     public int findSolutionHowToLoad(ItemTemplate itemTemplate1, int itemsInRow, ItemTemplate itemTemplate2, TrailerTemplate trailerTemplate, boolean isTurnedOver) {
         int numberOfRows = 1;
         if (isTurnedOver) {
-            if ((itemsInRow * itemTemplate1.getLength(
-            )) + itemTemplate2.getLength() > trailerTemplate.getWidth()) {
+            if ((itemsInRow * itemTemplate1.getLength()) + itemTemplate2.getLength() > trailerTemplate.getWidth()) {
                 numberOfRows++;
             }
             return itemTemplate1.getWidth() * numberOfRows;
@@ -123,7 +129,7 @@ public class LoadTrailer {
     }
 
 
-    //TODO zjistit, co se tane když se oddělá difference
+   //TODO improve difference
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
         int pack = 1;
         int totalTakenLength = 0;
@@ -132,7 +138,7 @@ public class LoadTrailer {
             int quantity;
             int itemsInRowWidth;
             int itemsInRowLength = 0;
-            int w = 0;
+            int w;
             int l = 0;
             int difference = 15;
             Item bestItem = null;
@@ -218,7 +224,7 @@ public class LoadTrailer {
 
     }
 
-    private Item getBestItem(int freeSpace, List<Item> itemsToFit) {
+    public Item getBestItem(int freeSpace, List<Item> itemsToFit) {
         int restW = 0, restL = 0, lowestRest = 0;
         Item item = null;
         for (int i = 0; i < itemsToFit.size(); i++) {
