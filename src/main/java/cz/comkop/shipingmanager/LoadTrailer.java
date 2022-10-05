@@ -129,7 +129,7 @@ public class LoadTrailer {
     }
 
 
-   //TODO improve difference
+   //TODO improve difference for choosing more similar items
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
         int pack = 1;
         int totalTakenLength = 0;
