@@ -1,73 +1,49 @@
 package cz.comkop.shipingmanager;
 
+import lombok.Getter;
+
+@Getter
+
 public class Item {
     private final ItemTemplate template;
     private int area;
     private char codeName;
-    private boolean loadLater = false;
-    private boolean turnItem90Degrees = false;
-    private int x,y;
+    private int inPack;
+    private boolean turnItem90Degrees;
+    private int x, y;
 
 
-
-
-
-
-    public Item(ItemTemplate template, char codeName, int x, int y) {
+    public Item(ItemTemplate template, char codeName, int x, int y, boolean turnItem90Degrees) {
         this.template = template;
         area = template.getLength() * template.getWidth();
         this.codeName = codeName;
         this.x = x;
         this.y = y;
+        this.turnItem90Degrees = turnItem90Degrees;
     }
 
-    public Item(ItemTemplate template){
+    public Item(ItemTemplate template) {
         this.template = template;
+        area = template.getLength() * template.getWidth();
     }
 
-
-
-
-    public ItemTemplate getTemplate() {
-        return template;
-    }
-
-    public char getCodeName() {
-        return codeName;
-    }
-
-    public boolean isLoadLater() {
-        return loadLater;
-    }
-
-    public void setLoadLater(boolean loadLater) {
-        this.loadLater = loadLater;
-    }
-
-    public int getArea() {
-        return area;
-    }
-
-    public int getX() {
-        return x;
-    }
-    public int getY() {
-        return y;
-    }
-    public boolean isTurnItem90Degrees() {
-        return turnItem90Degrees;
+    public Item(ItemTemplate template, boolean turnItem90Degrees) {
+        this.template = template;
+        area = template.getLength() * template.getWidth();
+        this.turnItem90Degrees = turnItem90Degrees;
     }
 
     public void setTurnItem90Degrees(boolean turnItem90Degrees) {
         this.turnItem90Degrees = turnItem90Degrees;
     }
 
-    @Override
-    public String toString() {
-        return  template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
-                " cm, weight: " + template.getWeight() + " kg, height: " + template.getHeight() ;
-
+    public void setInPack(int inPack) {
+        this.inPack = inPack;
     }
 
-
+    @Override
+    public String toString() {
+        return template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
+                " cm, height: " + template.getHeight() + " cm, weight: " + template.getWeight() + " kg";
+    }
 }

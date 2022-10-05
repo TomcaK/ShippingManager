@@ -8,6 +8,7 @@ class Main
 class ConsoleUI
 
 Main : main()
+
 Main -> ListOfItems
 Trailer -> TrailerTemplate
 ListOfItems -> Item
@@ -15,23 +16,43 @@ Main -> ConsoleUI
 Main -> Trailer
 Item -> ItemTemplate
 
-ListOfItems : List<Item> selectedItems
-ListOfItems : List<Item> removedItems
-ListOfItems : List<Item> loadedItems
-ListOfItems : List<Item> requiredItems
+ListOfItems : List<Item> selectedItems;
+ListOfItems : List<Item> removedItems;
+ListOfItems : List<Item> loadedItems;
+ListOfItems : List<Item> requiredItems;
 
-ItemTemplate : String name
-ItemTemplate : boolean canBeTurnedAround
-ItemTemplate : int width
-ItemTemplate : int length
-ItemTemplate : int weight
-
-
-TrailerTemplate : String name
-TrailerTemplate : int width
-TrailerTemplate : int length
+ItemTemplate : String name;
+ItemTemplate : boolean canBeTurnedAround;
+ItemTemplate : int width;
+ItemTemplate : int length;
+ItemTemplate : int weight;
 
 
+TrailerTemplate : String name;
+TrailerTemplate : int width;
+TrailerTemplate : int length;
+
+    Trailer : TrailerTemplate template;
+    Trailer : String[][] trailerModel;
+    Trailer : char nextCodename = 'A';
+    Trailer : double freeSquareCentimeters;
+    Trailer : double LDM;
+     Trailer : double freeLDM;
+    Trailer : int totalWeight;
+
+    Item : ItemTemplate template;
+    Item : int area;
+    Item : char codeName;
+    Item : boolean loadLater;
+    Item : boolean turnItem90Degrees;
+    Item : int x;
+    Item : int y;
+
+    ConsoleUI : String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
+    ConsoleUI : String TRAILER_REGEX = "[1-5]+";
+    ConsoleUI : TrailerTemplate trailerChoice;
+    ConsoleUI : String userChoice;
+    ConsoleUI : Scanner scanner = new Scanner(System.in);
 
 
 @enduml

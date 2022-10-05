@@ -1,5 +1,8 @@
 package cz.comkop.shipingmanager;
 
+import lombok.Getter;
+
+@Getter
 
 public enum TrailerTemplate {
     TEST_4_CM_X_10_CM("TEST 4 cm x 10 cm", 4, 10, 1),
@@ -14,30 +17,17 @@ public enum TrailerTemplate {
     private final int height;
 
 
-
-    TrailerTemplate(String name, int width, int length,int height) {
+    TrailerTemplate(String name, int width, int length, int height) {
         this.name = name;
         this.width = width;
         this.length = length;
         this.height = height;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
     @Override
     public String toString() {
-        return  name + "," +
-                " width: " + (double)(width / 100) + " m, length: " +
-                (double)(length / 100) + " m, height: " + (double)(height / 100) + " m *";
+        return name + "," +
+                " width: " + (double) (width / 100) + " m, length: " +
+                (double) (length / 100) + " m, height: " + (double) (height / 100) + " m *";
     }
 }
