@@ -178,7 +178,7 @@ public class LoadTrailer {
                 itemsToFit = getItemsToFit(similarItems, freeSpaceL);
                 chosenFreeSpace = freeSpaceL;
             }
-            if (!itemsToFit.isEmpty() || quantity != 1) {
+            if (!itemsToFit.isEmpty() || quantity > 1) {
                 if (!itemsToFit.isEmpty()) {
                     bestItem = getBestItem(chosenFreeSpace, itemsToFit);
                     w = findSolutionHowToLoad(selectedItem, itemsInRowWidth, bestItem.getTemplate(), trailer.getTemplate(), false);
@@ -186,7 +186,7 @@ public class LoadTrailer {
                 }
                 if (l > w || itemsInRowLength == 0) {
                     for (int j = i; j < i + itemsInRowWidth; j++) {
-                        listOfItems.getSelectedItems().get(j).setInPack(pack);
+                            listOfItems.getSelectedItems().get(j).setInPack(pack);
                     }
                     if (bestItem != null) {
                         for (Item it : listOfItems.getSelectedItems()) {
@@ -201,16 +201,16 @@ public class LoadTrailer {
                     // i += itemsInRowWidth - 1;
                 } else {
                     for (int j = i; j < i + itemsInRowLength; j++) {
-                        listOfItems.getSelectedItems().get(j).setTurnItem90Degrees(true);
-                        listOfItems.getSelectedItems().get(j).setInPack(pack);
+                        if (listOfItems.getSelectedItems().size() > j) {
+                            listOfItems.getSelectedItems().get(j).setTurnItem90Degrees(true);
+                            listOfItems.getSelectedItems().get(j).setInPack(pack);
+                        }
                     }
                     if (bestItem != null) {
                         for (Item it : listOfItems.getSelectedItems()) {
-                            if (it.getTemplate().equals(bestItem.getTemplate())) {
                                 it.setInPack(pack);
                                 it.setTurnItem90Degrees(true);
                                 break;
-                            }
                         }
                         // i++;
                     }
