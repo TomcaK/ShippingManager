@@ -1,4 +1,4 @@
-package cz.comkop.shipingmanager;
+package cz.comkop.shippingmanager;
 
 import lombok.Getter;
 
@@ -16,7 +16,10 @@ public class ListOfItems {
 //        return selectedItems;
 //    }
 
-
+    /**
+     *
+     * @param itemsChoice
+     */
     public void getItemsFromInput(String itemsChoice) {//TODO change method to method which will take key and create selected goods. Key will be created from ConsoleUI from new searching method
         List<ItemTemplate> list = Arrays.stream(ItemTemplate.values()).toList();
         String[] arrItemsChoice = itemsChoice.split("\\s");
@@ -36,7 +39,7 @@ public class ListOfItems {
         selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
     }
 
-    public void moveItem(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, int x, int y, char codename) {
+    public void moveItemToAnotherList(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, int x, int y, char codename) {
         listOfItemsForMove.add(new Item(selectedItems.get(i).getTemplate(), codename, x, y, selectedItems.get(i).isTurnItem90Degrees()));
         if (listOfItemsForMove.hashCode() == removedItems.hashCode()) {
             requiredItems.put(selectedItems.get(i).getTemplate(), requiredItems.get(selectedItems.get(i).getTemplate()) - 1);

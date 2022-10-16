@@ -1,12 +1,10 @@
-package cz.comkop.shipingmanager;
+package cz.comkop.shippingmanager;
 
 public class Main {
     static ConsoleUI consoleUI = new ConsoleUI();
     static ListOfItems listOfItems = new ListOfItems();
     static Trailer trailer;
     static LoadTrailer loadTrailer = new LoadTrailer();
-
-    //TODO test 27.1 20.1 12.1 28.1 35.1 37.1 39.2 40.1 41.1 42.1
 
     public static void main(String[] args) {
         consoleUI.welcome();

@@ -1,4 +1,4 @@
-package cz.comkop.shipingmanager;
+package cz.comkop.shippingmanager;
 
 import lombok.Getter;
 
@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 @Getter
 public class ConsoleUI {
     public static final String ITEM_REGEX = "([1-9]+\\d*\\.+\\d+ *)+";
-    public static final String TRAILER_REGEX = "[1-5]";
+    public static final String TRAILER_REGEX = "[1-6]";
     public static final String LETTERS_REGEX = "[a-zA-Z]+";
     public static final String DATE_REGEX = "\\d+\\.\\d+\\.\\d\\d\\d\\d";
     private Scanner scanner = new Scanner(System.in);

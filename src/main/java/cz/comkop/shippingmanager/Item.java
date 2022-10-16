@@ -1,4 +1,4 @@
-package cz.comkop.shipingmanager;
+package cz.comkop.shippingmanager;
 
 import lombok.Getter;
 

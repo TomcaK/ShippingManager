@@ -1,4 +1,4 @@
-package cz.comkop.shipingmanager;
+package cz.comkop.shippingmanager;
 
 import lombok.Getter;
 
@@ -32,6 +32,7 @@ public enum ItemTemplate {//TODO check all dimensions, add height,
     BS_440_HORIZONT_SHI_X("440 Horizont SHI/X", 176, 350, 1, 2080),
     THOR_5("THOR 5", 220, 394, 258, 7735, false, false, true),
     RT_RDL_RDR("RDL/RDR", 100, 110, 80, 200, true),
+    RT_RDL_RDR_100_80("RDL/RDR 100 cm x 80 cm", 80, 100, 80, 200, true),
     M_OZ_3000("OZ 3000", 10, 300, 10, 30, true),
     PALLET_120X80("Pallet 120 cm x 80 cm", 80, 120, 50, 100, true),
     PALLET_120X70("Pallet 120 cm x 70 cm", 70, 120, 50, 100, true),
