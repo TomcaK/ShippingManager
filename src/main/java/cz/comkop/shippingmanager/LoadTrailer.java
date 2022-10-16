@@ -128,7 +128,7 @@ public class LoadTrailer {
     }
 
 
-    //TODO improve difference for choosing more similar items
+    //TODO improve difference for choosing more similar items, implement new idea of space scanning
     //refactor
     // 7.1 29.2 debug  items
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
