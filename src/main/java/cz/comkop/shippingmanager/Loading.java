@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class LoadTrailer {
+public class Loading {
 
     private int coordinateY;
     private int coordinateX;
@@ -134,12 +134,12 @@ public class LoadTrailer {
 
     //TODO implement new idea of space scanning
     private void packCreator(List<Item> loadedItem){
-        setOccupiedArea(loadedItem);
+
     }
 
     private void setOccupiedArea(List<Item> loadedItem){
         loadedItem.forEach(item -> {
-            occupiedArea.add(item.getCoordinates());
+
         });
     }
 
@@ -284,44 +284,6 @@ public class LoadTrailer {
         return item;
     }
 
-    private void setCoordinates() {
-
-//                }
-//                checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
-    }
-
-//    public void firstLoading(ListOfItems listOfItems, Trailer trailer) {
-//        for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
-//
-//            List<Item> itemsPack = new ArrayList<>();
-//
-//            if (listOfItems.getSelectedItems().get(i).getTemplate().isPreferedNotToBeRotated() || w > l && l <= trailer.getTemplate().getWidth()) {
-//                for (int j = i; j < i + quantity; j++) {
-//                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
-//                    checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
-//                }
-//                checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
-//            } else {
-//                for (int j = i; j < i + quantity; j++) {
-//                    addItemToTrailer(i, checkpointX, checkpointY, listOfItems, trailer);
-//                    checkpointX += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength();
-//                }
-//                checkpointY += listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth();
-//
-//            }
-//            checkpointX = 0;
-//            i--;
-//
-//            if (rest > 0) {
-//
-//            } else {
-//
-//            }
-//        }
-//
-//    }
-
-
     private void addItemToTrailer(int indexOfItem, int cX, int cY, ListOfItems listOfItems, Trailer trailer) {
         int maxLength, maxWidth;
         Item item = listOfItems.getSelectedItems().get(indexOfItem);
@@ -332,7 +294,7 @@ public class LoadTrailer {
             maxLength = cY + item.getTemplate().getLength();
             maxWidth = cX + item.getTemplate().getWidth();
         }
-        System.out.println("");
+        System.out.println();
         for (int y = cY; y < maxLength; y++) {
             for (int x = cX; x < maxWidth; x++) {
                 trailer.getTrailerModel()[y][x] = String.valueOf(trailer.getNextCodename());
@@ -342,6 +304,7 @@ public class LoadTrailer {
         listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(), listOfItems.getLoadedItems(), indexOfItem, new Coordinates(cX,cY), trailer.getNextCodename());
         trailer.setFreeSquareCentimeters(trailer.getFreeSquareCentimeters() - listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength() * listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth());
         trailer.setNextCodename((char) (trailer.getNextCodename() + 1));
+        occupiedArea.add(item.getCoordinates());
     }
 
 
@@ -381,7 +344,7 @@ public class LoadTrailer {
     }
 
 
-    private boolean doesCurrentItemFitForTheseCoordinates(int x, int y, int indexOfGoods, ListOfItems//TODO rework to turt object if its possible and take it less space in length
+    private boolean doesCurrentItemFitForTheseCoordinates(int x, int y, int indexOfGoods, ListOfItems
             listOfItems, Trailer trailer) {
         ItemTemplate itemTemplate = listOfItems.getSelectedItems().get(indexOfGoods).getTemplate();
         int w = 0;
@@ -422,7 +385,6 @@ public class LoadTrailer {
                             return false;
                         }
                     }
-
                 }
             }
         }

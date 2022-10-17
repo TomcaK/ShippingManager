@@ -4,7 +4,7 @@ public class Main {
     static ConsoleUI consoleUI = new ConsoleUI();
     static ListOfItems listOfItems = new ListOfItems();
     static Trailer trailer;
-    static LoadTrailer loadTrailer = new LoadTrailer();
+    static Loading loading = new Loading();
 
     public static void main(String[] args) {
         consoleUI.welcome();
@@ -20,7 +20,7 @@ public class Main {
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
             listOfItems.createSelectedItems();
-            loadTrailer.loading(listOfItems, trailer);
+            loading.loading(listOfItems, trailer);
             consoleUI.printDebugReport(trailer, listOfItems);
             consoleUI.printShipingReport(trailer, listOfItems);
             consoleUI.printEmailData(trailer, listOfItems);
@@ -30,7 +30,7 @@ public class Main {
     }
 
     private static void reset() {
-        loadTrailer = new LoadTrailer();
+        loading = new Loading();
         listOfItems = new ListOfItems();
 
     }
