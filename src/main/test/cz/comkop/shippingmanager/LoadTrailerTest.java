@@ -92,5 +92,10 @@ public class LoadTrailerTest {
 //        Assertions.assertEquals(1,listOfItems.getSelectedItems().get(3).getInPack());
 
     }
+    //TODO TDD
+    @Test
+    public void testPackCreator(){
+
+    }
 
 }
