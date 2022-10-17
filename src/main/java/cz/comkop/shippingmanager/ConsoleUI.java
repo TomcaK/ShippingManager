@@ -43,7 +43,7 @@ public class ConsoleUI {
     }
 
     public void welcome() {
-        System.out.println("--Welcome to Shiping manager--");
+        System.out.println("--Welcome to Shipping manager--");
     }
 
     public boolean userSelection() {
