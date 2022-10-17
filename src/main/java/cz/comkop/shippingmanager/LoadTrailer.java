@@ -1,13 +1,19 @@
 package cz.comkop.shippingmanager;
 
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class LoadTrailer {
 
     private int coordinateY;
     private int coordinateX;
+
+    private Set<Coordinates> occupiedArea = new LinkedHashSet<>();
+
+
 
     public List<Item> getItemsToFit(List<Item> similarItems, int freeSpace) {
         return similarItems.stream().filter(item1 -> item1.getInPack() == 0)
@@ -36,28 +42,28 @@ public class LoadTrailer {
     }
 
 
+//    public void loading(ListOfItems listOfItems, Trailer trailer) {
+//        int round = 0;
+//        while (listOfItems.getSelectedItems().size() != 0) {
+//            for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
+//                // createPackOfItems(listOfItems, trailer, i);
+//
+//                if (/*searchFreeSpaceCharacterOnTrailer(i, selectedItems)*/ searchFreeSpaceOnTrailer(i, listOfItems, trailer)) {
+//                    addItemToTrailer(i, coordinateX, coordinateY, listOfItems, trailer);
+//                    i--;
+//                } else if (round == 2) {
+//                    listOfItems.getRemovedItems().add(new Item(listOfItems.getSelectedItems().get(i).getTemplate()));
+//                    listOfItems.getSelectedItems().remove(i);
+//                    i--;
+//                }
+//            }
+//
+//            round++;
+//        }
+//        trailer.countLDM();
+//    }
+
     public void loading(ListOfItems listOfItems, Trailer trailer) {
-        int round = 0;
-        while (listOfItems.getSelectedItems().size() != 0) {
-            for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
-                // createPackOfItems(listOfItems, trailer, i);
-
-                if (/*searchFreeSpaceCharacterOnTrailer(i, selectedItems)*/ searchFreeSpaceOnTrailer(i, listOfItems, trailer)) {
-                    addItemToTrailer(i, coordinateX, coordinateY, listOfItems, trailer);
-                    i--;
-                } else if (round == 2) {
-                    listOfItems.getRemovedItems().add(new Item(listOfItems.getSelectedItems().get(i).getTemplate()));
-                    listOfItems.getSelectedItems().remove(i);
-                    i--;
-                }
-            }
-
-            round++;
-        }
-        trailer.countLDM();
-    }
-
-    public void loading2(ListOfItems listOfItems, Trailer trailer) {
         int round = 1, highestPack = 0;
         createPacks(trailer, listOfItems);
         for (int i = 0; i < listOfItems.getSelectedItems().size(); i++) {
@@ -126,13 +132,19 @@ public class LoadTrailer {
         return itemTemplate1.getLength() * numberOfRows;
     }
 
-    private void packCreator(){
+    //TODO implement new idea of space scanning
+    private void packCreator(List<Item> loadedItem){
+        setOccupiedArea(loadedItem);
+    }
 
+    private void setOccupiedArea(List<Item> loadedItem){
+        loadedItem.forEach(item -> {
+            occupiedArea.add(item.getCoordinates());
+        });
     }
 
 
-    //TODO improve difference for choosing more similar items, implement new idea of space scanning
-    //refactor
+    //TODO improve difference for choosing more similar items,refactoring
     // 7.1 29.2 debug  items
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
         int pack = 1;
@@ -163,7 +175,7 @@ public class LoadTrailer {
                 l = selectedItem.getLength();
             }
             while (w > trailer.getTemplate().getLength() - totalTakenLength && l > trailer.getTemplate().getLength() - totalTakenLength && quantity != 0) {
-                listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(), listOfItems.getRemovedItems(), i, 0, 0, ' ');
+                listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(), listOfItems.getRemovedItems(), i, new Coordinates(), ' ');
                 quantity -= 1;
                     w = findSolutionHowToLoad(selectedItem, quantity, itemsInRowWidth, false);
                     l = selectedItem.isCanBeRotated90Degrees() && !selectedItem.isPreferNotToBeRotated() ? findSolutionHowToLoad(selectedItem, quantity, itemsInRowLength, true) : selectedItem.getLength();
@@ -327,7 +339,7 @@ public class LoadTrailer {
             }
         }
         trailer.setTotalWeight(trailer.getTotalWeight() + item.getTemplate().getWeight());
-        listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(), listOfItems.getLoadedItems(), indexOfItem, cX, cY, trailer.getNextCodename());
+        listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(), listOfItems.getLoadedItems(), indexOfItem, new Coordinates(cX,cY), trailer.getNextCodename());
         trailer.setFreeSquareCentimeters(trailer.getFreeSquareCentimeters() - listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getLength() * listOfItems.getLoadedItems().get(listOfItems.getLoadedItems().size() - 1).getTemplate().getWidth());
         trailer.setNextCodename((char) (trailer.getNextCodename() + 1));
     }
@@ -339,15 +351,17 @@ public class LoadTrailer {
                 for (int x = 0; x < trailer.getTemplate().getWidth(); ) {
                     for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
                         Item item = listOfItems.getLoadedItems().get(i);
-                        if (!item.isTurnItem90Degrees() && x >= item.getX()
-                                && x <= item.getX() + item.getTemplate().getWidth() - 1
+                        int itemX = item.getCoordinates(Coordinates.Type.X);
+                        int itemY = item.getCoordinates(Coordinates.Type.Y);
+                        if (!item.isTurnItem90Degrees() && x >= itemX
+                                && x <= itemX + item.getTemplate().getWidth() - 1
                                 && x + item.getTemplate().getWidth() <= trailer.getTemplate().getWidth()
-                                && y >= item.getY() && y <= item.getY() + item.getTemplate().getLength() - 1
+                                && y >= itemY && y <= itemY + item.getTemplate().getLength() - 1
                                 && y + item.getTemplate().getLength() <= trailer.getTemplate().getLength()) {
                             x += item.getTemplate().getWidth();
-                        } else if (x >= item.getX() && x <= item.getX() + item.getTemplate().getLength() - 1
+                        } else if (x >= itemX && x <= itemX + item.getTemplate().getLength() - 1
                                 && x + item.getTemplate().getLength() <= trailer.getTemplate().getWidth()
-                                && y >= item.getY() && y <= item.getY() + item.getTemplate().getWidth() - 1
+                                && y >= itemY && y <= itemY + item.getTemplate().getWidth() - 1
                                 && y + item.getTemplate().getWidth() <= trailer.getTemplate().getLength()) {
                             x += item.getTemplate().getLength();
                         }
@@ -397,11 +411,13 @@ public class LoadTrailer {
             for (int x = coordinateXStart; x < coordinateXEnd; x++) {
                 for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
                     Item item = listOfItems.getLoadedItems().get(i);
+                    int itemX = item.getCoordinates(Coordinates.Type.X);
+                    int itemY = item.getCoordinates(Coordinates.Type.Y);
                     if (!item.isTurnItem90Degrees()) {
-                        if (x >= item.getX() && x <= item.getX() + item.getTemplate().getWidth() - 1 && y >= item.getY() && y <= item.getY() + item.getTemplate().getLength() - 1) {
+                        if (x >= itemX && x <= itemX + item.getTemplate().getWidth() - 1 && y >= itemY && y <= itemY + item.getTemplate().getLength() - 1) {
                             return false;
                         }
-                    } else if (x >= item.getX() && x <= item.getX() + item.getTemplate().getLength() - 1 && y >= item.getY() && y <= item.getY() + item.getTemplate().getWidth() - 1) {
+                    } else if (x >= itemX && x <= itemX + item.getTemplate().getLength() - 1 && y >= itemY && y <= itemY + item.getTemplate().getWidth() - 1) {
                         {
                             return false;
                         }

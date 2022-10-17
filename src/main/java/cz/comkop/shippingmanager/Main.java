@@ -20,7 +20,7 @@ public class Main {
                 System.out.println("--Write \"a\" to select items again or press enter to continue.--");
             } while (consoleUI.userSelection());
             listOfItems.createSelectedItems();
-            loadTrailer.loading2(listOfItems, trailer);
+            loadTrailer.loading(listOfItems, trailer);
             consoleUI.printDebugReport(trailer, listOfItems);
             consoleUI.printShipingReport(trailer, listOfItems);
             consoleUI.printEmailData(trailer, listOfItems);

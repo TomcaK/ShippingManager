@@ -45,9 +45,9 @@ public class ListOfItemsTest {
         listOfItems.createSelectedItems();
         Item item = listOfItems.getSelectedItems().get(0);
         item.setTurnItem90Degrees(true);
-        listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(),listOfItems.getLoadedItems(),0, 25, 123, 'A');
-        Assertions.assertEquals(25, listOfItems.getLoadedItems().get(0).getX());
-        Assertions.assertEquals(123, listOfItems.getLoadedItems().get(0).getY());
+        listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(),listOfItems.getLoadedItems(),0, new Coordinates(25,123), 'A');
+        Assertions.assertEquals(25, listOfItems.getLoadedItems().get(0).getCoordinates(Coordinates.Type.X));
+        Assertions.assertEquals(123, listOfItems.getLoadedItems().get(0).getCoordinates(Coordinates.Type.Y));
         Assertions.assertEquals(1, listOfItems.getLoadedItems().size());
         Assertions.assertTrue(listOfItems.getLoadedItems().get(0).isTurnItem90Degrees());
     }
@@ -56,7 +56,7 @@ public class ListOfItemsTest {
     public void testMoveItemFromSelectedToRemoved() {
         listOfItems.getItemsFromInput("30.1 33.1");
         listOfItems.createSelectedItems();
-        listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(),listOfItems.getRemovedItems(),0, 0, 0, ' ');
+        listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(),listOfItems.getRemovedItems(),0, new Coordinates(), ' ');
         Assertions.assertEquals(PALLET_80X60,listOfItems.getSelectedItems().get(0).getTemplate());
         Assertions.assertEquals(PALLET_120X80,listOfItems.getRemovedItems().get(0).getTemplate());
     }

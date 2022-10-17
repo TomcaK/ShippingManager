@@ -39,8 +39,8 @@ public class ListOfItems {
         selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
     }
 
-    public void moveItemToAnotherList(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, int x, int y, char codename) {
-        listOfItemsForMove.add(new Item(selectedItems.get(i).getTemplate(), codename, x, y, selectedItems.get(i).isTurnItem90Degrees()));
+    public void moveItemToAnotherList(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, Coordinates coordinates, char codename) {
+        listOfItemsForMove.add(new Item(selectedItems.get(i).getTemplate(), codename, coordinates, selectedItems.get(i).isTurnItem90Degrees()));
         if (listOfItemsForMove.hashCode() == removedItems.hashCode()) {
             requiredItems.put(selectedItems.get(i).getTemplate(), requiredItems.get(selectedItems.get(i).getTemplate()) - 1);
             if (requiredItems.get(selectedItems.get(i).getTemplate()) == 0)

@@ -130,7 +130,7 @@ public class ConsoleUI {
         printTrailerModel(trailer);
         System.out.println("Free meters in trailer: " + centimetersToMeters + ", needed LDM: " + trailer.getLDM() + ", number of pieces: " + listOfItems.getLoadedItems().size());
         for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
-            System.out.println("Goods in coordinates X: " + listOfItems.getLoadedItems().get(i).getX() + ",Y: " + listOfItems.getLoadedItems().get(i).getY() + ", " +
+            System.out.println("Goods in coordinates X: " + listOfItems.getLoadedItems().get(i).getCoordinates(Coordinates.Type.X) + ",Y: " + listOfItems.getLoadedItems().get(i).getCoordinates(Coordinates.Type.Y) + ", " +
                     listOfItems.getLoadedItems().get(i).getTemplate().getName() + ",code: " + listOfItems.getLoadedItems().get(i).getCodeName());
         }
     }

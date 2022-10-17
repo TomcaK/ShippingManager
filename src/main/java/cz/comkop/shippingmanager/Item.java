@@ -10,15 +10,14 @@ public class Item {
     private char codeName;
     private int inPack;
     private boolean turnItem90Degrees;
-    private int x, y;
+    private Coordinates coordinates;
 
 
-    public Item(ItemTemplate template, char codeName, int x, int y, boolean turnItem90Degrees) {
+    public Item(ItemTemplate template, char codeName, Coordinates coordinates, boolean turnItem90Degrees) {
         this.template = template;
         area = template.getLength() * template.getWidth();
         this.codeName = codeName;
-        this.x = x;
-        this.y = y;
+        this.coordinates = coordinates;
         this.turnItem90Degrees = turnItem90Degrees;
     }
 
@@ -45,5 +44,9 @@ public class Item {
     public String toString() {
         return template.getName() + ", width: " + template.getWidth() + " cm, length: " + template.getLength() +
                 " cm, height: " + template.getHeight() + " cm, weight: " + template.getWeight() + " kg";
+    }
+
+    public int getCoordinates(Coordinates.Type type) {
+        return coordinates.getCoordinates(type);
     }
 }
