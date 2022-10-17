@@ -15,24 +15,23 @@ public class LoadTrailer {
                 .collect(Collectors.toList());
     }
 
-    public List<Item> getSimilarItems(List<Item> selectedItems, ItemTemplate similarToThisItem, int difference) {
-        return selectedItems.stream().filter(item -> !item.getTemplate().equals(similarToThisItem))
+    public List<Item> getSimilarItems(List<Item> selectedItems, ItemTemplate comparedItem, int difference) {
+        return selectedItems.stream().filter(item -> !item.getTemplate().equals(comparedItem))
                 .filter(item -> item.getInPack() == 0)
-                .filter(item -> item.getTemplate().getLength() == similarToThisItem.getLength()
-                        && item.getTemplate().getWidth() >= similarToThisItem.getWidth() - difference
-                        && item.getTemplate().getWidth() <= similarToThisItem.getWidth() + difference
-                        || item.getTemplate().getWidth() == similarToThisItem.getWidth() && item.getTemplate().getLength() >= similarToThisItem.getLength() - difference
-                        && item.getTemplate().getLength() <= similarToThisItem.getLength() + difference)
+                .filter(item -> item.getTemplate().getLength() == comparedItem.getLength() && item.getTemplate().getWidth() >= comparedItem.getWidth() - difference
+                        && item.getTemplate().getWidth() <= comparedItem.getWidth() + difference
+                        || item.getTemplate().getWidth() == comparedItem.getWidth() && item.getTemplate().getLength() >= comparedItem.getLength() - difference
+                        && item.getTemplate().getLength() <= comparedItem.getLength() + difference)
                 .collect(Collectors.toList());
     }
 
-    public List<Item> getItemWithOneSameDimension(List<Item> selectedItems, ItemTemplate similarToThisItem) {
-        return selectedItems.stream().filter(item -> !item.getTemplate().equals(similarToThisItem))
+    public List<Item> getItemWithOneSameDimension(List<Item> selectedItems, ItemTemplate comparedItem) {
+        return selectedItems.stream().filter(item -> !item.getTemplate().equals(comparedItem))
                 .filter(item -> item.getInPack() == 0)
-                .filter(item -> item.getTemplate().getLength() == similarToThisItem.getLength()
-                        || item.getTemplate().getWidth() == similarToThisItem.getWidth()
-                        || item.getTemplate().getWidth() == similarToThisItem.getLength() && item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated()
-                        || item.getTemplate().getLength() == similarToThisItem.getWidth() && item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated())
+                .filter(item -> item.getTemplate().getLength() == comparedItem.getLength()
+                        || item.getTemplate().getWidth() == comparedItem.getWidth()
+                        || item.getTemplate().getWidth() == comparedItem.getLength() && item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated()
+                        || item.getTemplate().getLength() == comparedItem.getWidth() && item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated())
                 .collect(Collectors.toList());
     }
 
@@ -125,6 +124,10 @@ public class LoadTrailer {
             numberOfRows++;
         }
         return itemTemplate1.getLength() * numberOfRows;
+    }
+
+    private void packCreator(){
+
     }
 
 
