@@ -60,7 +60,7 @@ public class ConsoleUI {
         }
         String input = inputControl(scanner.nextLine(), TRAILER_REGEX);
         trailerChoice = trailerTemplates.get(Integer.parseInt(input) - 1);
-        System.out.println("* Selected trailer: " + trailerChoice);
+        System.out.printf("* Selected trailer:  %S \n",trailerChoice);
     }
 
     public void selectionOfDate() {
@@ -121,9 +121,7 @@ public class ConsoleUI {
         return true;
     }
 
-
 //TODO create new search method which will take name of bands and create list of requested items
-
     public void printDebugReport(Trailer trailer, ListOfItems listOfItems) {
         System.out.println("--REPORT--");
         double centimetersToMeters = trailer.getFreeSquareCentimeters() / 100;
@@ -156,7 +154,7 @@ public class ConsoleUI {
         }
     }
 
-    public void printShipingReport(Trailer trailer, ListOfItems listOfItems) {
+    public void printShippingReport(Trailer trailer, ListOfItems listOfItems) {
         System.out.println("--Final REPORT--");
         System.out.println(trailer + ", number of pieces: " + listOfItems.getLoadedItems().size());
         System.out.println("\n--List of loaded goods--");

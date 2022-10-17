@@ -22,7 +22,7 @@ public class Main {
             listOfItems.createSelectedItems();
             loadTrailer.loading2(listOfItems, trailer);
             consoleUI.printDebugReport(trailer, listOfItems);
-            consoleUI.printShipingReport(trailer, listOfItems);
+            consoleUI.printShippingReport(trailer, listOfItems);
             consoleUI.printEmailData(trailer, listOfItems);
             System.out.println("--Write \"a\" to start again or write another key to finish.--");
             reset();
