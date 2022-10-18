@@ -16,7 +16,7 @@ public class Loading {
 
 
     public List<Item> getItemsToFit(List<Item> similarItems, int freeSpace) {
-        return similarItems.stream().filter(item1 -> item1.getInPack() == 0)
+        return similarItems.stream().filter(it -> it.getInPack() == 0)
                 .filter(item -> item.getTemplate().getWidth() <= freeSpace || item.getTemplate().getLength() <= freeSpace && item.getTemplate().isCanBeRotated90Degrees() && !item.getTemplate().isPreferNotToBeRotated())
                 .collect(Collectors.toList());
     }

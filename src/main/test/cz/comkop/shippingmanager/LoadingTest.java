@@ -10,7 +10,7 @@ import static cz.comkop.shippingmanager.ItemTemplate.PALLET_120X70;
 import static cz.comkop.shippingmanager.ItemTemplate.PALLET_120X80;
 import static cz.comkop.shippingmanager.TrailerTemplate.SEMITRAILER_2_48_M_X_13_6_M;
 
-public class LoadTrailerTest {
+public class LoadingTest {
     ListOfItems listOfItems;
     Loading loading;
     TrailerTemplate trailer = SEMITRAILER_2_48_M_X_13_6_M;
