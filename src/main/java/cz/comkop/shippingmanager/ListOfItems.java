@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class ListOfItems {
 
     private final List<Item> removedItems = new ArrayList<>();
-    private final List<Item> loadedItems = new ArrayList<>();
+    private final List<LoadedItem> loadedItems = new ArrayList<>();
     private List<Item> selectedItems = new ArrayList<>();
     private Map<ItemTemplate, Integer> requiredItems;
 //TODO zabezpečit manipulaci mimo třídu (vytvořit metody)
@@ -34,14 +34,14 @@ public class ListOfItems {
     public void createSelectedItems() {
         for (ItemTemplate template : requiredItems.keySet()) {
             for (int i = 0; i < requiredItems.get(template); i++) {
-                selectedItems.add(new ItemToCheck(template));
+                selectedItems.add(new Item(template));
             }
         }
         selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
     }
 
     public void moveItemToAnotherList(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, Coordinates coordinates, char codename) {
-        listOfItemsForMove.add(new ItemToLoad((ItemToCheck) selectedItems.get(i), codename));
+        listOfItemsForMove.add(new LoadedItem((ItemToCheck) selectedItems.get(i), codename));
         if (listOfItemsForMove.hashCode() == removedItems.hashCode()) {
             requiredItems.put(selectedItems.get(i).getTemplate(), requiredItems.get(selectedItems.get(i).getTemplate()) - 1);
             if (requiredItems.get(selectedItems.get(i).getTemplate()) == 0)
