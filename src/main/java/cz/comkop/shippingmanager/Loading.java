@@ -1,7 +1,6 @@
 package cz.comkop.shippingmanager;
 
 
-import org.paukov.combinatorics3.CombinationGenerator;
 import org.paukov.combinatorics3.Generator;
 
 import java.util.*;
@@ -132,39 +131,39 @@ public class Loading {
         return itemTemplate1.getLength() * numberOfRows;
     }
 
+    public List<ItemToCheck> setRotation(int modelId, List<List<Integer>> combinationOfItems, List<ItemToCheck> items) {
+            for (int j = 0; j < combinationOfItems.get(modelId).size(); j++) {
+                items.get(combinationOfItems.get(modelId).get(j)).setTurnItem90Degrees(true);
+        }
+        return items;
+    }
+
     //TODO implement new idea of space scanning
-    private void packCreator(List<Item> selectedItems) {
-        List<SuggestionOfPack> suggestionOfPacks = new ArrayList<>();
+    private void packCreator(List<Item> selectedItems, TrailerTemplate template) {
+        List<ModelOfPack> modelOfPacks = new ArrayList<>();
         List<ItemToCheck> itemsToCheck = new ArrayList<>();
         int quantity;
         for (int i = 0; i < selectedItems.size(); i++) {
             quantity = (int) selectedItems.stream().filter(it -> it.getTemplate().equals(selectedItems.get(0).getTemplate())).count();
-            
+            int itemsInRow = template.getWidth() / selectedItems.get(i).getTemplate().getWidth();
+
+
+
+        //put into trailer
+
+        //combination algorithm
+        int numberOfItemsToBeTurnedOver = 4;
+        int turnIDover = 0;
+        int increase = 0;
+        do {
+            List<Integer> itemIds = itemsToCheck.stream().map(Item::getID).toList();
+            List<List<Integer>> combinationOfItems = Generator.combination(itemIds).simple(numberOfItemsToBeTurnedOver++).stream().toList();
+        }while (true);
+       // modelOfPacks.add(new ModelOfPack(new ItemToCheck(selectedItems.get(0))));
         }
-
-
-
-            //put into trailer
-
-            //combination algorithm
-            int variation = 4;
-            int turnIDover = 0;
-            int increase = 0;
-            List<Integer> itemsToBeSort = Arrays.asList(2, 5, 6, 7);
-
-            List<List<Integer>> combination = Generator.combination(itemsToBeSort).simple(2).stream().toList();
-            combination.get(0).get(1)
-            for (int i = 0; i < combination.size(); i++) {
-                for (int j = 0; j < ; j++) {
-                    
-                }
-                itemsToCheck.get(i).setTurnItem90Degrees(true);
-            }
-        suggestionOfPacks.add(new SuggestionOfPack(new ItemToCheck(selectedItems.get(0))));
-
     }
 
-    private void packSolver(){
+    private void packSolver() {
 
     }
 
@@ -422,17 +421,23 @@ public class Loading {
 //        return true;
 //    }
 
-    class SuggestionOfPack {
-        private List<ItemToCheck> suggestedItems;
+    class ModelOfPack {
+        private List<ItemToCheck> itemsInModel;
         private int numberOfPoints;
-        public SuggestionOfPack(ItemToCheck... itemToCheck) {
-            suggestedItems = Arrays.asList(itemToCheck);
+        private boolean selectedModel;
+
+        public ModelOfPack(ItemToCheck... itemToCheck) {
+            itemsInModel = Arrays.asList(itemToCheck);
         }
 
-        //TODO CreatePointCounter
-        private int PointCounter(){
-            
+        //TODO Create Point Counter
+        private int pointCounter() {
+
             return 0;
+        }
+
+        public void setSelectedModel(boolean selectedModel){
+            this.selectedModel = selectedModel;
         }
     }
 }
