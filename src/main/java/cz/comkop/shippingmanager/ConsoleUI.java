@@ -130,8 +130,8 @@ public class ConsoleUI {
         printTrailerModel(trailer);
         System.out.println("Free meters in trailer: " + centimetersToMeters + ", needed LDM: " + trailer.getLDM() + ", number of pieces: " + listOfItems.getLoadedItems().size());
         for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
-            System.out.println("Goods in coordinates X: " + listOfItems.getLoadedItems().get(i).getAreaCoordinates()[0].x + ",Y: " + listOfItems.getLoadedItems().get(i).getAreaCoordinates()[0].y + ", " +
-                    listOfItems.getLoadedItems().get(i).getTemplate().getName() + ",code: " + listOfItems.getLoadedItems().get(i).get);
+            System.out.println("Goods in coordinates X: " + listOfItems.getLoadedItems().get(i).getArea().getCoordinates().get(0).x + ",Y: " +  listOfItems.getLoadedItems().get(i).getArea().getCoordinates().get(0).y + ", " +
+                    listOfItems.getLoadedItems().get(i).getTemplate().getName() + ",code: " + listOfItems.getLoadedItems().get(i).getCodeName());
         }
     }
 
@@ -143,7 +143,7 @@ public class ConsoleUI {
         System.out.println("--Email Data--");
         System.out.println("Hi,");
         System.out.println("your order " + orders + " will be ready on " + shipingDate.getDayOfWeek() + ", " + shipingDate.format(DateTimeFormatter.ofPattern("d.M.yyyy")));
-        Optional<Item> crane = listOfItems.getLoadedItems().stream().filter(item -> item.getTemplate().isLoadingByCrane()).findFirst();
+        Optional<LoadedItem> crane = listOfItems.getLoadedItems().stream().filter(item -> item.getTemplate().isLoadingByCrane()).findFirst();
         if (crane.isPresent()) {
             System.out.println("Please pay attention that one of the items is adapted only for crane loading.");
         }

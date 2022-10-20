@@ -37,7 +37,7 @@ public class ListOfItems {
                 selectedItems.add(new Item(template));
             }
         }
-        selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
+        selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getSortingArea).reversed()).collect(Collectors.toList());
     }
 
     public void moveItemToAnotherList(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, char codename) {

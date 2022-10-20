@@ -1,6 +1,8 @@
 package cz.comkop.shippingmanager;
 
 import lombok.Getter;
+
+
 @Getter
 public class ItemToCheck extends Item{
 
@@ -9,22 +11,22 @@ public class ItemToCheck extends Item{
 
 
 
-    public ItemToCheck(Item item, int x, int y) {
-        super(item.getTemplate());
-        area = new Area(this,x,y);
+    public ItemToCheck(ItemTemplate template) {
+        super(template);
+        area = new Area(template);
     }
 
-    public ItemToCheck(ItemToCheck item) {
-        super(item.getTemplate());
-        area = new Area(item.area);
+    public ItemToCheck(Item item) {
+        super(item);
+        area = new Area(item.getTemplate());
     }
-
 
     public void setTurnItem90Degrees(boolean turnItem90Degrees) {
         this.turnItem90Degrees = turnItem90Degrees;
     }
 
-    public Area.Coordinates[] getAreaCoordinates() {
-        return area.getCoordinates();
+
+    public void setAreaCoordinates(int x, int y){
+        area.setCoordinates(this,x,y);
     }
 }

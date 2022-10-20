@@ -10,8 +10,9 @@ public class Loading {
 
     private int coordinateY;
     private int coordinateX;
+    private List<ModelOfPack> modelsOfPack;
 
-    private Set<Coordinates> occupiedArea = new LinkedHashSet<>();
+    private Set<Area> occupiedArea = new LinkedHashSet<>();
 
 
 //    public List<Item> getItemsToFit(List<Item> similarItems, int freeSpace) {
@@ -20,14 +21,15 @@ public class Loading {
 //                .collect(Collectors.toList());
 //    }
 
-    public List<Item> getSimilarItems(List<Item> selectedItems, ItemTemplate comparedItem, int difference) {
-        return selectedItems.stream().filter(item -> !item.getTemplate().equals(comparedItem))
-                .filter(item -> item.getTemplate().getLength() == comparedItem.getLength() && item.getTemplate().getWidth() >= comparedItem.getWidth() - difference
-                        && item.getTemplate().getWidth() <= comparedItem.getWidth() + difference
-                        || item.getTemplate().getWidth() == comparedItem.getWidth() && item.getTemplate().getLength() >= comparedItem.getLength() - difference
-                        && item.getTemplate().getLength() <= comparedItem.getLength() + difference)
-                .collect(Collectors.toList());
-    }
+//    public List<Item> getSimilarItems(List<Item> selectedItems, ItemTemplate comparedItem, int freeWidth, int freeLength) {
+//        return selectedItems.stream().filter(item -> !item.getTemplate().equals(comparedItem))
+//                .filter(item -> item.getTemplate().getLength() == comparedItem.getLength() && item.getTemplate().getWidth() >= comparedItem.getWidth() - difference
+//                        && item.getTemplate().getWidth() <= comparedItem.getWidth() + difference
+//                        || item.getTemplate().getWidth() == comparedItem.getWidth() && item.getTemplate().getLength() >= comparedItem.getLength() - difference
+//                        && item.getTemplate().getLength() <= comparedItem.getLength()).map()
+//                .collect(Collectors.toSet());
+//
+//    }
 
 
 //    public List<Item> getItemWithOneSameDimension(List<Item> selectedItems, ItemTemplate comparedItem) {
@@ -138,16 +140,41 @@ public class Loading {
         return items;
     }
 
+    private ModelOfPack createModelOfSameItems(List<Item> items) {
+        ModelOfPack model = new ModelOfPack();
+        for (Item it : items) {
+            model.addItem(new ItemToCheck(it));
+        }
+        return model;
+    }
+
+    private List<Item> removeItems(List<Item> selectedItems, List<Item> itemsToRemove) {
+        for (Item it : selectedItems) {
+            for (Item it2 : itemsToRemove) {
+                if (it.getID() == it2.getID()) {
+                    selectedItems.remove(it);
+                }
+            }
+        }
+        return selectedItems;
+    }
+
     //TODO implement new idea of space scanning
-    private void packCreator(List<Item> selectedItems, TrailerTemplate template) {
-        List<ModelOfPack> modelsOfPack = new ArrayList<>();
+    private void packCreator(TrailerTemplate template, List<Item> selectedItems) {
+        modelsOfPack = new ArrayList<>();
         List<ModelOfPack> selectedModelsOfPack = new ArrayList<>();
         List<ItemToCheck> itemsToCheck = new ArrayList<>();
+        List<Item> sameItems = new ArrayList<>();
         int quantity;
         for (int i = 0; i < selectedItems.size(); i++) {
-            quantity = (int) selectedItems.stream().filter(it -> it.getTemplate().equals(selectedItems.get(0).getTemplate())).count();
+            Item item = selectedItems.get(i);
+            quantity = (int) selectedItems.stream().filter(it -> it.getTemplate().equals(item.getTemplate())).count();
             int itemsInRow = template.getWidth() / selectedItems.get(i).getTemplate().getWidth();
-            List<Item> similarItems = getSimilarItems();
+            quantity = Math.min(quantity, itemsInRow);
+            if (quantity > 1) {
+                sameItems = selectedItems.stream().filter(it -> it.getTemplate() == item.getTemplate()).limit(quantity).toList();
+            }
+            modelsOfPack.add(createModelOfSameItems(sameItems));
 
 
             //put into trailer
@@ -156,14 +183,10 @@ public class Loading {
             int numberOfItemsToBeTurnedOver = 4;
             int turnIDover = 0;
             int increase = 0;
-            do {
-                List<Integer> itemIds = itemsToCheck.stream().map(Item::getID).toList();
-                List<List<Integer>> combinationOfItems = Generator.combination(itemIds).simple(numberOfItemsToBeTurnedOver++).stream().toList();
-            } while (true);
-            // modelOfPacks.add(new ModelOfPack(new ItemToCheck(selectedItems.get(0))));
+
+            List<Integer> itemIds = itemsToCheck.stream().map(Item::getID).toList();
+            List<List<Integer>> combinationOfItems = Generator.combination(itemIds).simple(numberOfItemsToBeTurnedOver++).stream().toList();
         }
-
-
     }
 
     private void packSolver() {
@@ -182,7 +205,7 @@ public class Loading {
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
         int pack = 1;
         int totalTakenLength = 0;
-        packCreator(listOfItems);
+        packCreator(trailer.getTemplate(), listOfItems.getSelectedItems());
 //        for (int i = 0; i < listOfItems.getSelectedItems().size(); ) {
 //            int quantity;
 //            int itemsInRowWidth;
@@ -401,7 +424,7 @@ public class Loading {
 //        return false;
 //    }
 
-//    private boolean freeCoordinatesChecker(int coordinateXStart, int coordinateXEnd, int coordinateYStart,
+    //    private boolean freeCoordinatesChecker(int coordinateXStart, int coordinateXEnd, int coordinateYStart,
 //                                           int coordinateYEnd, ListOfItems listOfItems) {
 //        for (int y = coordinateYStart; y < coordinateYEnd; y++) {
 //            for (int x = coordinateXStart; x < coordinateXEnd; x++) {
@@ -423,15 +446,19 @@ public class Loading {
 //        }
 //        return true;
 //    }
-
-    class ModelOfPack {
+    static class ModelOfPack {
         private List<ItemToCheck> itemsInModel;
         private int numberOfPoints;
         private boolean selectedModel;
 
-        public ModelOfPack(ItemToCheck... itemToCheck) {
-            itemsInModel = Arrays.asList(itemToCheck);
+        public ModelOfPack() {
+            itemsInModel = new ArrayList<>();
         }
+
+        public void addItem(Item item) {
+            itemsInModel.add(new ItemToCheck(item));
+        }
+
 
         //TODO Create Point Counter
         private int pointCounter() {
@@ -442,7 +469,4 @@ public class Loading {
             this.selectedModel = selectedModel;
         }
     }
-
-}
-
 }
