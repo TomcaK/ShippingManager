@@ -40,7 +40,7 @@ public class ListOfItems {
         selectedItems = selectedItems.stream().sorted(Comparator.comparing(Item::getArea).reversed()).collect(Collectors.toList());
     }
 
-    public void moveItemToAnotherList(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, Coordinates coordinates, char codename) {
+    public void moveItemToAnotherList(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, char codename) {
         listOfItemsForMove.add(new LoadedItem((ItemToCheck) selectedItems.get(i), codename));
         if (listOfItemsForMove.hashCode() == removedItems.hashCode()) {
             requiredItems.put(selectedItems.get(i).getTemplate(), requiredItems.get(selectedItems.get(i).getTemplate()) - 1);

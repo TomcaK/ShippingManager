@@ -20,15 +20,15 @@ public class Loading {
 //                .collect(Collectors.toList());
 //    }
 
-//    public List<Item> getSimilarItems(List<Item> selectedItems, ItemTemplate comparedItem, int difference) {
-//        return selectedItems.stream().filter(item -> !item.getTemplate().equals(comparedItem))
-//                .filter(item -> item.getInPack() == 0)
-//                .filter(item -> item.getTemplate().getLength() == comparedItem.getLength() && item.getTemplate().getWidth() >= comparedItem.getWidth() - difference
-//                        && item.getTemplate().getWidth() <= comparedItem.getWidth() + difference
-//                        || item.getTemplate().getWidth() == comparedItem.getWidth() && item.getTemplate().getLength() >= comparedItem.getLength() - difference
-//                        && item.getTemplate().getLength() <= comparedItem.getLength() + difference)
-//                .collect(Collectors.toList());
-//    }
+    public List<Item> getSimilarItems(List<Item> selectedItems, ItemTemplate comparedItem, int difference) {
+        return selectedItems.stream().filter(item -> !item.getTemplate().equals(comparedItem))
+                .filter(item -> item.getTemplate().getLength() == comparedItem.getLength() && item.getTemplate().getWidth() >= comparedItem.getWidth() - difference
+                        && item.getTemplate().getWidth() <= comparedItem.getWidth() + difference
+                        || item.getTemplate().getWidth() == comparedItem.getWidth() && item.getTemplate().getLength() >= comparedItem.getLength() - difference
+                        && item.getTemplate().getLength() <= comparedItem.getLength() + difference)
+                .collect(Collectors.toList());
+    }
+
 
 //    public List<Item> getItemWithOneSameDimension(List<Item> selectedItems, ItemTemplate comparedItem) {
 //        return selectedItems.stream().filter(item -> !item.getTemplate().equals(comparedItem))
@@ -132,35 +132,38 @@ public class Loading {
     }
 
     public List<ItemToCheck> setRotation(int modelId, List<List<Integer>> combinationOfItems, List<ItemToCheck> items) {
-            for (int j = 0; j < combinationOfItems.get(modelId).size(); j++) {
-                items.get(combinationOfItems.get(modelId).get(j)).setTurnItem90Degrees(true);
+        for (int j = 0; j < combinationOfItems.get(modelId).size(); j++) {
+            items.get(combinationOfItems.get(modelId).get(j)).setTurnItem90Degrees(true);
         }
         return items;
     }
 
     //TODO implement new idea of space scanning
     private void packCreator(List<Item> selectedItems, TrailerTemplate template) {
-        List<ModelOfPack> modelOfPacks = new ArrayList<>();
+        List<ModelOfPack> modelsOfPack = new ArrayList<>();
+        List<ModelOfPack> selectedModelsOfPack = new ArrayList<>();
         List<ItemToCheck> itemsToCheck = new ArrayList<>();
         int quantity;
         for (int i = 0; i < selectedItems.size(); i++) {
             quantity = (int) selectedItems.stream().filter(it -> it.getTemplate().equals(selectedItems.get(0).getTemplate())).count();
             int itemsInRow = template.getWidth() / selectedItems.get(i).getTemplate().getWidth();
+            List<Item> similarItems = getSimilarItems();
 
 
+            //put into trailer
 
-        //put into trailer
-
-        //combination algorithm
-        int numberOfItemsToBeTurnedOver = 4;
-        int turnIDover = 0;
-        int increase = 0;
-        do {
-            List<Integer> itemIds = itemsToCheck.stream().map(Item::getID).toList();
-            List<List<Integer>> combinationOfItems = Generator.combination(itemIds).simple(numberOfItemsToBeTurnedOver++).stream().toList();
-        }while (true);
-       // modelOfPacks.add(new ModelOfPack(new ItemToCheck(selectedItems.get(0))));
+            //combination algorithm
+            int numberOfItemsToBeTurnedOver = 4;
+            int turnIDover = 0;
+            int increase = 0;
+            do {
+                List<Integer> itemIds = itemsToCheck.stream().map(Item::getID).toList();
+                List<List<Integer>> combinationOfItems = Generator.combination(itemIds).simple(numberOfItemsToBeTurnedOver++).stream().toList();
+            } while (true);
+            // modelOfPacks.add(new ModelOfPack(new ItemToCheck(selectedItems.get(0))));
         }
+
+
     }
 
     private void packSolver() {
@@ -432,12 +435,14 @@ public class Loading {
 
         //TODO Create Point Counter
         private int pointCounter() {
-
             return 0;
         }
 
-        public void setSelectedModel(boolean selectedModel){
+        public void setSelectedModel(boolean selectedModel) {
             this.selectedModel = selectedModel;
         }
     }
+
+}
+
 }

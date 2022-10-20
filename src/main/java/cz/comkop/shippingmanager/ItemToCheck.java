@@ -4,13 +4,19 @@ import lombok.Getter;
 @Getter
 public class ItemToCheck extends Item{
 
-    private Coordinates coordinates;
+    private Area area;
     private boolean turnItem90Degrees;
 
 
 
-    public ItemToCheck(Item item) {
+    public ItemToCheck(Item item, int x, int y) {
         super(item.getTemplate());
+        area = new Area(this,x,y);
+    }
+
+    public ItemToCheck(ItemToCheck item) {
+        super(item.getTemplate());
+        area = new Area(item.area);
     }
 
 
@@ -18,7 +24,7 @@ public class ItemToCheck extends Item{
         this.turnItem90Degrees = turnItem90Degrees;
     }
 
-    public int getCoordinates(Coordinates.Type type) {
-        return coordinates.getCoordinates(type);
+    public Area.Coordinates[] getAreaCoordinates() {
+        return area.getCoordinates();
     }
 }
