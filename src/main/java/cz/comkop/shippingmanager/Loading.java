@@ -3,14 +3,17 @@ package cz.comkop.shippingmanager;
 
 import org.paukov.combinatorics3.Generator;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Loading {
 
     private int coordinateY;
     private int coordinateX;
-    private List<ModelOfPack> modelsOfPack;
+    private List<ModelOfPack> modelsOfPack = new ArrayList<>();
+    private List<ModelOfPack> selectedModelsOfPack;
 
     private Set<Area> occupiedArea = new LinkedHashSet<>();
 
@@ -108,37 +111,37 @@ public class Loading {
 //        trailer.countLDM();
 //    }
 
-    public int findSolutionHowToLoad(ItemTemplate itemTemplate, int quantity, int itemsInRow, boolean isTurnedOver) {
-        int numberOfRows;
-        numberOfRows = quantity / itemsInRow;
-        numberOfRows += quantity % itemsInRow != 0 ? 1 : 0;
-        if (isTurnedOver) {
-            return itemTemplate.getWidth() * numberOfRows;
-        }
-        return itemTemplate.getLength() * numberOfRows;
-    }
+//    public int findSolutionHowToLoad(ItemTemplate itemTemplate, int quantity, int itemsInRow, boolean isTurnedOver) {
+//        int numberOfRows;
+//        numberOfRows = quantity / itemsInRow;
+//        numberOfRows += quantity % itemsInRow != 0 ? 1 : 0;
+//        if (isTurnedOver) {
+//            return itemTemplate.getWidth() * numberOfRows;
+//        }
+//        return itemTemplate.getLength() * numberOfRows;
+//    }
 
 
-    public int findSolutionHowToLoad(ItemTemplate itemTemplate1, int itemsInRow, ItemTemplate itemTemplate2, TrailerTemplate trailerTemplate, boolean isTurnedOver) {
-        int numberOfRows = 1;
-        if (isTurnedOver) {
-            if ((itemsInRow * itemTemplate1.getLength()) + itemTemplate2.getLength() > trailerTemplate.getWidth()) {
-                numberOfRows++;
-            }
-            return itemTemplate1.getWidth() * numberOfRows;
-        }
-        if ((itemsInRow * itemTemplate1.getWidth()) + itemTemplate2.getWidth() > trailerTemplate.getWidth()) {
-            numberOfRows++;
-        }
-        return itemTemplate1.getLength() * numberOfRows;
-    }
-
-    public List<ItemToCheck> setRotation(int modelId, List<List<Integer>> combinationOfItems, List<ItemToCheck> items) {
-        for (int j = 0; j < combinationOfItems.get(modelId).size(); j++) {
-            items.get(combinationOfItems.get(modelId).get(j)).setTurnItem90Degrees(true);
-        }
-        return items;
-    }
+//    public int findSolutionHowToLoad(ItemTemplate itemTemplate1, int itemsInRow, ItemTemplate itemTemplate2, TrailerTemplate trailerTemplate, boolean isTurnedOver) {
+//        int numberOfRows = 1;
+//        if (isTurnedOver) {
+//            if ((itemsInRow * itemTemplate1.getLength()) + itemTemplate2.getLength() > trailerTemplate.getWidth()) {
+//                numberOfRows++;
+//            }
+//            return itemTemplate1.getWidth() * numberOfRows;
+//        }
+//        if ((itemsInRow * itemTemplate1.getWidth()) + itemTemplate2.getWidth() > trailerTemplate.getWidth()) {
+//            numberOfRows++;
+//        }
+//        return itemTemplate1.getLength() * numberOfRows;
+//    }
+//
+//    public List<ItemToCheck> setRotation(int modelId, List<List<Integer>> combinationOfItems, List<ItemToCheck> items) {
+//        for (int j = 0; j < combinationOfItems.get(modelId).size(); j++) {
+//            items.get(combinationOfItems.get(modelId).get(j)).setTurnItem90Degrees(true);
+//        }
+//        return items;
+//    }
 
     private ModelOfPack createModelOfSameItems(List<Item> items) {
         ModelOfPack model = new ModelOfPack();
@@ -148,45 +151,44 @@ public class Loading {
         return model;
     }
 
-    private List<Item> removeItems(List<Item> selectedItems, List<Item> itemsToRemove) {
-        for (Item it : selectedItems) {
-            for (Item it2 : itemsToRemove) {
-                if (it.getID() == it2.getID()) {
-                    selectedItems.remove(it);
-                }
+    private void removeItems(List<Item> selectedItems, List<Item> itemsToRemove) {
+        for (Item it : itemsToRemove) {
+            for (int i = 0; i < selectedItems.size(); i++) {
+               if (selectedItems.get(i).getID() == it.getID()){
+                   selectedItems.remove(i);
+                   i--;
+               }
             }
         }
-        return selectedItems;
     }
 
     //TODO implement new idea of space scanning
-    private void packCreator(TrailerTemplate template, List<Item> selectedItems) {
-        modelsOfPack = new ArrayList<>();
-        List<ModelOfPack> selectedModelsOfPack = new ArrayList<>();
+    private void sameItemPackCreator(TrailerTemplate template, List<Item> selectedItems) {
         List<ItemToCheck> itemsToCheck = new ArrayList<>();
         List<Item> sameItems = new ArrayList<>();
-        int quantity;
         for (int i = 0; i < selectedItems.size(); i++) {
             Item item = selectedItems.get(i);
-            quantity = (int) selectedItems.stream().filter(it -> it.getTemplate().equals(item.getTemplate())).count();
+            int quantity = (int) selectedItems.stream().filter(it -> it.getTemplate() == item.getTemplate()).count();
             int itemsInRow = template.getWidth() / selectedItems.get(i).getTemplate().getWidth();
             quantity = Math.min(quantity, itemsInRow);
             if (quantity > 1) {
                 sameItems = selectedItems.stream().filter(it -> it.getTemplate() == item.getTemplate()).limit(quantity).toList();
+                modelsOfPack.add(createModelOfSameItems(sameItems));
+                removeItems(selectedItems,sameItems);
             }
-            modelsOfPack.add(createModelOfSameItems(sameItems));
-
-
-            //put into trailer
-
-            //combination algorithm
-            int numberOfItemsToBeTurnedOver = 4;
-            int turnIDover = 0;
-            int increase = 0;
-
-            List<Integer> itemIds = itemsToCheck.stream().map(Item::getID).toList();
-            List<List<Integer>> combinationOfItems = Generator.combination(itemIds).simple(numberOfItemsToBeTurnedOver++).stream().toList();
         }
+
+
+        //put into trailer
+
+        //combination algorithm
+        int numberOfItemsToBeTurnedOver = 4;
+        int turnIDover = 0;
+        int increase = 0;
+
+        List<Integer> itemIds = itemsToCheck.stream().map(Item::getID).toList();
+        List<List<Integer>> combinationOfItems = Generator.combination(itemIds).simple(numberOfItemsToBeTurnedOver++).stream().toList();
+
     }
 
     private void packSolver() {
@@ -205,7 +207,11 @@ public class Loading {
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
         int pack = 1;
         int totalTakenLength = 0;
-        packCreator(trailer.getTemplate(), listOfItems.getSelectedItems());
+
+        sameItemPackCreator(trailer.getTemplate(), listOfItems.getSelectedItems());
+        boolean overlap1 = Area.overlap(modelsOfPack.get(0).itemsInModel.get(0).getArea(), (modelsOfPack.get(0).itemsInModel.get(1).getArea()));
+        modelsOfPack.get(0).itemsInModel.get(0).setAreaCoordinates(30,20);
+        boolean overlap2 = Area.overlap(modelsOfPack.get(0).itemsInModel.get(0).getArea(), (modelsOfPack.get(0).itemsInModel.get(1).getArea()));
 //        for (int i = 0; i < listOfItems.getSelectedItems().size(); ) {
 //            int quantity;
 //            int itemsInRowWidth;
