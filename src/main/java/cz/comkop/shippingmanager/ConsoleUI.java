@@ -23,7 +23,7 @@ public class ConsoleUI {
     private static void printRemovedGoods(ListOfItems listOfItems) {
         for (Item item : listOfItems.getRemovedItems()
         ) {
-            System.out.println(item.getTemplate().getName() + " NOT LOADED");
+            System.out.println(item.getTEMPLATE().getName() + " NOT LOADED");
         }
         System.out.println();
     }
@@ -131,7 +131,7 @@ public class ConsoleUI {
         System.out.println("Free meters in trailer: " + centimetersToMeters + ", needed LDM: " + trailer.getLDM() + ", number of pieces: " + listOfItems.getLoadedItems().size());
         for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
             System.out.println("Goods in coordinates X: " + listOfItems.getLoadedItems().get(i).getArea().getCoordinates().get(0).x + ",Y: " +  listOfItems.getLoadedItems().get(i).getArea().getCoordinates().get(0).y + ", " +
-                    listOfItems.getLoadedItems().get(i).getTemplate().getName() + ",code: " + listOfItems.getLoadedItems().get(i).getCodeName());
+                    listOfItems.getLoadedItems().get(i).getTEMPLATE().getName() + ",code: " + listOfItems.getLoadedItems().get(i).getCODENAME());
         }
     }
 
@@ -143,7 +143,7 @@ public class ConsoleUI {
         System.out.println("--Email Data--");
         System.out.println("Hi,");
         System.out.println("your order " + orders + " will be ready on " + shipingDate.getDayOfWeek() + ", " + shipingDate.format(DateTimeFormatter.ofPattern("d.M.yyyy")));
-        Optional<LoadedItem> crane = listOfItems.getLoadedItems().stream().filter(item -> item.getTemplate().isLoadingByCrane()).findFirst();
+        Optional<LoadedItem> crane = listOfItems.getLoadedItems().stream().filter(item -> item.getTEMPLATE().isLoadingByCrane()).findFirst();
         if (crane.isPresent()) {
             System.out.println("Please pay attention that one of the items is adapted only for crane loading.");
         }
@@ -151,7 +151,7 @@ public class ConsoleUI {
         System.out.println("\nList of loaded goods");
         listOfItems.removeDuplicates();
         for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
-            String quantity = listOfItems.getRequiredItems().get(listOfItems.getLoadedItems().get(i).getTemplate()) > 1 ? listOfItems.getRequiredItems().get(listOfItems.getLoadedItems().get(i).getTemplate()) + "x " : "";
+            String quantity = listOfItems.getRequiredItems().get(listOfItems.getLoadedItems().get(i).getTEMPLATE()) > 1 ? listOfItems.getRequiredItems().get(listOfItems.getLoadedItems().get(i).getTEMPLATE()) + "x " : "";
             System.out.println((i + 1) + ". " + quantity + listOfItems.getLoadedItems().get(i));
         }
     }
@@ -162,7 +162,7 @@ public class ConsoleUI {
         System.out.println("\n--List of loaded goods--");
         for (int i = 0; i < listOfItems.getLoadedItems().size(); i++) {
             String turned = listOfItems.getLoadedItems().get(i).isTurnItem90Degrees() ? ", turned over" : "";
-            System.out.println((i + 1) + ". " + listOfItems.getLoadedItems().get(i).getTemplate().getName() + " codename: " + listOfItems.getLoadedItems().get(i).getCodeName() + turned);
+            System.out.println((i + 1) + ". " + listOfItems.getLoadedItems().get(i).getTEMPLATE().getName() + " codename: " + listOfItems.getLoadedItems().get(i).getCODENAME() + turned);
         }
         System.out.println("\n--Probable storage of goods--");
         trailer.printOutlineOfTrailer();

@@ -43,9 +43,9 @@ public class ListOfItems {
     public void moveItemToAnotherList(List<Item> selectedItems, List<Item> listOfItemsForMove, int i, char codename) {
         listOfItemsForMove.add(new LoadedItem((ItemToCheck) selectedItems.get(i), codename));
         if (listOfItemsForMove.hashCode() == removedItems.hashCode()) {
-            requiredItems.put(selectedItems.get(i).getTemplate(), requiredItems.get(selectedItems.get(i).getTemplate()) - 1);
-            if (requiredItems.get(selectedItems.get(i).getTemplate()) == 0)
-                requiredItems.remove(selectedItems.get(i).getTemplate());
+            requiredItems.put(selectedItems.get(i).getTEMPLATE(), requiredItems.get(selectedItems.get(i).getTEMPLATE()) - 1);
+            if (requiredItems.get(selectedItems.get(i).getTEMPLATE()) == 0)
+                requiredItems.remove(selectedItems.get(i).getTEMPLATE());
         }
         selectedItems.remove(i);
     }
@@ -53,7 +53,7 @@ public class ListOfItems {
     public void removeDuplicates() {
         for (int i = 0; i < loadedItems.size(); i++) {
             for (int j = i + 1; j < loadedItems.size(); j++) {
-                if (loadedItems.get(i).getTemplate().equals(loadedItems.get(j).getTemplate())) {
+                if (loadedItems.get(i).getTEMPLATE().equals(loadedItems.get(j).getTEMPLATE())) {
                     loadedItems.remove(j);
                     j--;
                 }

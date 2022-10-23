@@ -3,14 +3,17 @@ package cz.comkop.shippingmanager;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 class Area {
     private List<Coordinates> coordinates = new ArrayList<>();
 
-    public Area(List<LoadedItem> loadedItems) {
-        for (LoadedItem loadedItem : loadedItems) {
+    public Area(List<LoadedItem> items) {
+        for (LoadedItem loadedItem : items) {
             coordinates.addAll(loadedItem.getArea().getCoordinates());
         }
     }
@@ -21,31 +24,19 @@ class Area {
         }
     }
 
-    public static boolean overlap(Area area1, Area area2) {
-        if (area1.coordinates.get(0).x >= area2.coordinates.get(0).x) {
-            System.out.println();
-        }
-
-        if (area1.coordinates.get(1).x <= area2.coordinates.get(0).x) {
-            System.out.println();
-        }
-        if (area1.coordinates.get(0).y >= area2.coordinates.get(0).y) {
-            System.out.println();
-        }
-        if (area1.coordinates.get(1).y <= area2.coordinates.get(0).y) {
-            System.out.println();
-        }
-//        if (area1.coordinates.get(0).x >= area2.coordinates.get(0).x && area1.coordinates.get(1).x <= area2.coordinates.get(0).x
-//                && area1.coordinates.get(0).y >= area2.coordinates.get(0).y && area1.coordinates.get(1).y <= area2.coordinates.get(0).y) {
-//            return false;
-//        }
-        return true;
+    public boolean collision(Area area, Area... areas) {
+        return Arrays.stream(areas).map(c->c.coordinates)
+                .anyMatch(c -> area.coordinates.get(0).x >= c.get(0).x
+                        && area.coordinates.get(0).x <= c.get(1).x
+                        && area.coordinates.get(0).y >= c.get(0).y
+                        && area.coordinates.get(0).y <= c.get(1).y
+                );
     }
 
     public void setCoordinates(Item itemToCheck, int x, int y) {
         for (int i = 0; i < 2; i++) {
-            coordinates.get(i).x = i > 0 ? x + itemToCheck.getTemplate().getWidth() - 1 : x;
-            coordinates.get(i).y = i > 0 ? y + itemToCheck.getTemplate().getLength() - 1 : y;
+            coordinates.get(i).x = i > 0 ? x + itemToCheck.getTEMPLATE().getWidth() - 1 : x;
+            coordinates.get(i).y = i > 0 ? y + itemToCheck.getTEMPLATE().getLength() - 1 : y;
         }
     }
 

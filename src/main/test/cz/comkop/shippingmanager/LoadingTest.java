@@ -39,7 +39,7 @@ public class LoadingTest {
         listOfItems.getItemsFromInput("27.1 20.1 12.1 28.1 35.1 37.1 39.2 40.1 41.1 42.1");
         listOfItems.createSelectedItems();
         Trailer trailer = new Trailer(SEMITRAILER_2_48_M_X_13_6_M);
-        List<Item> similarItems = loading.getSimilarItems(listOfItems.getSelectedItems(),listOfItems.getSelectedItems().get(2).getTemplate(),difference);
+        List<Item> similarItems = loading.getSimilarItems(listOfItems.getSelectedItems(),listOfItems.getSelectedItems().get(2).getTEMPLATE(),difference);
         System.out.println(listOfItems.getSelectedItems().get(2));
         System.out.println(similarItems.size());
         System.out.println(similarItems.get(0));
@@ -51,7 +51,7 @@ public class LoadingTest {
         listOfItems.getItemsFromInput("27.1 20.1 12.1 28.1 35.1 37.1 39.2 40.1 41.1 42.1");
         listOfItems.createSelectedItems();
         Trailer trailer = new Trailer(SEMITRAILER_2_48_M_X_13_6_M);
-        List<Item> similarItems = loading.getItemWithOneSameDimension(listOfItems.getSelectedItems(),listOfItems.getSelectedItems().get(2).getTemplate());
+        List<Item> similarItems = loading.getItemWithOneSameDimension(listOfItems.getSelectedItems(),listOfItems.getSelectedItems().get(2).getTEMPLATE());
         System.out.println(listOfItems.getSelectedItems().get(2));
         System.out.println(similarItems.size());
         for (Item it: similarItems
@@ -65,17 +65,17 @@ public class LoadingTest {
         listOfItems.getItemsFromInput("27.1 20.1 12.1 28.1 35.1 37.1 39.2 40.1 41.1 42.1");
         listOfItems.createSelectedItems();
         Trailer trailer = new Trailer(SEMITRAILER_2_48_M_X_13_6_M);
-        List<Item> similarItems = loading.getItemWithOneSameDimension(listOfItems.getSelectedItems(),listOfItems.getSelectedItems().get(2).getTemplate());
+        List<Item> similarItems = loading.getItemWithOneSameDimension(listOfItems.getSelectedItems(),listOfItems.getSelectedItems().get(2).getTEMPLATE());
         System.out.println(listOfItems.getSelectedItems().get(2));
         System.out.println(similarItems.size());
         for (Item it: similarItems
         ) {
             System.out.println(it);
         }
-        int freeSpaceW = trailer.getTemplate().getWidth() - listOfItems.getSelectedItems().get(2).getTemplate().getWidth() * 2;
+        int freeSpaceW = trailer.getTemplate().getWidth() - listOfItems.getSelectedItems().get(2).getTEMPLATE().getWidth() * 2;
         Item bestItem = loading.getBestItem(freeSpaceW,similarItems);
         System.out.println("\n W " + bestItem);
-        int freeSpaceL = trailer.getTemplate().getWidth() - listOfItems.getSelectedItems().get(2).getTemplate().getLength();
+        int freeSpaceL = trailer.getTemplate().getWidth() - listOfItems.getSelectedItems().get(2).getTEMPLATE().getLength();
          bestItem = loading.getBestItem(freeSpaceL,similarItems);
         System.out.println("\n L " + bestItem);
     }

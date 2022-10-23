@@ -154,39 +154,37 @@ public class Loading {
     private void removeItems(List<Item> selectedItems, List<Item> itemsToRemove) {
         for (Item it : itemsToRemove) {
             for (int i = 0; i < selectedItems.size(); i++) {
-               if (selectedItems.get(i).getID() == it.getID()){
+               if (selectedItems.get(i).getId() == it.getId()){
                    selectedItems.remove(i);
-                   i--;
                }
             }
         }
     }
 
     //TODO implement new idea of space scanning
+    //Tasks: count occupied area on trailer
+    //packs could be made of more items than is quantity of items which fits into width of trailer
     private void sameItemPackCreator(TrailerTemplate template, List<Item> selectedItems) {
         List<ItemToCheck> itemsToCheck = new ArrayList<>();
         List<Item> sameItems = new ArrayList<>();
         for (int i = 0; i < selectedItems.size(); i++) {
             Item item = selectedItems.get(i);
-            int quantity = (int) selectedItems.stream().filter(it -> it.getTemplate() == item.getTemplate()).count();
-            int itemsInRow = template.getWidth() / selectedItems.get(i).getTemplate().getWidth();
+            int quantity = (int) selectedItems.stream().filter(it -> it.getTEMPLATE() == item.getTEMPLATE()).count();
+            int itemsInRow = template.getWidth() / selectedItems.get(i).getTEMPLATE().getWidth();
             quantity = Math.min(quantity, itemsInRow);
             if (quantity > 1) {
-                sameItems = selectedItems.stream().filter(it -> it.getTemplate() == item.getTemplate()).limit(quantity).toList();
+                sameItems = selectedItems.stream().filter(it -> it.getTEMPLATE() == item.getTEMPLATE()).limit(quantity).toList();
                 modelsOfPack.add(createModelOfSameItems(sameItems));
                 removeItems(selectedItems,sameItems);
+                i--;
             }
         }
 
-
-        //put into trailer
-
-        //combination algorithm
         int numberOfItemsToBeTurnedOver = 4;
         int turnIDover = 0;
         int increase = 0;
 
-        List<Integer> itemIds = itemsToCheck.stream().map(Item::getID).toList();
+        List<Integer> itemIds = itemsToCheck.stream().map(Item::getId).toList();
         List<List<Integer>> combinationOfItems = Generator.combination(itemIds).simple(numberOfItemsToBeTurnedOver++).stream().toList();
 
     }
@@ -205,14 +203,12 @@ public class Loading {
     //TODO improve difference for choosing more similar items,refactoring
     // 7.1 29.2 debug  items
     public void createPacks(Trailer trailer, ListOfItems listOfItems) {
+        sameItemPackCreator(trailer.getTemplate(), listOfItems.getSelectedItems());
+
         int pack = 1;
         int totalTakenLength = 0;
 
-        sameItemPackCreator(trailer.getTemplate(), listOfItems.getSelectedItems());
-        boolean overlap1 = Area.overlap(modelsOfPack.get(0).itemsInModel.get(0).getArea(), (modelsOfPack.get(0).itemsInModel.get(1).getArea()));
-        modelsOfPack.get(0).itemsInModel.get(0).setAreaCoordinates(30,20);
-        boolean overlap2 = Area.overlap(modelsOfPack.get(0).itemsInModel.get(0).getArea(), (modelsOfPack.get(0).itemsInModel.get(1).getArea()));
-//        for (int i = 0; i < listOfItems.getSelectedItems().size(); ) {
+//        for (int i = 0; i < listOfItems.getSelectedItems().size(); ){
 //            int quantity;
 //            int itemsInRowWidth;
 //            int itemsInRowLength = 0;
@@ -464,7 +460,9 @@ public class Loading {
         public void addItem(Item item) {
             itemsInModel.add(new ItemToCheck(item));
         }
-
+public ItemToCheck getItem(int index){
+          return  itemsInModel.get(index);
+}
 
         //TODO Create Point Counter
         private int pointCounter() {

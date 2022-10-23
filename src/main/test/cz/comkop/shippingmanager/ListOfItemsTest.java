@@ -29,14 +29,14 @@ public class ListOfItemsTest {
         listOfItems.getItemsFromInput("33.1 30.2");
         listOfItems.createSelectedItems();
         Assertions.assertEquals(3, listOfItems.getSelectedItems().size());
-        Assertions.assertEquals(PALLET_120X80, listOfItems.getSelectedItems().get(0).getTemplate());
+        Assertions.assertEquals(PALLET_120X80, listOfItems.getSelectedItems().get(0).getTEMPLATE());
     }
 
     @Test
     public void testSortSelectedItemsByArea(){
         listOfItems.getItemsFromInput("1.1 33.1 30.2");
         listOfItems.createSelectedItems();
-        Assertions.assertEquals(TEST_QUARTER_MACHINE, listOfItems.getSelectedItems().get(3).getTemplate());
+        Assertions.assertEquals(TEST_QUARTER_MACHINE, listOfItems.getSelectedItems().get(3).getTEMPLATE());
     }
 
     @Test
@@ -57,8 +57,8 @@ public class ListOfItemsTest {
         listOfItems.getItemsFromInput("30.1 33.1");
         listOfItems.createSelectedItems();
         listOfItems.moveItemToAnotherList(listOfItems.getSelectedItems(),listOfItems.getRemovedItems(),0, new Coordinates(), ' ');
-        Assertions.assertEquals(PALLET_80X60,listOfItems.getSelectedItems().get(0).getTemplate());
-        Assertions.assertEquals(PALLET_120X80,listOfItems.getRemovedItems().get(0).getTemplate());
+        Assertions.assertEquals(PALLET_80X60,listOfItems.getSelectedItems().get(0).getTEMPLATE());
+        Assertions.assertEquals(PALLET_120X80,listOfItems.getRemovedItems().get(0).getTEMPLATE());
     }
 
 }
