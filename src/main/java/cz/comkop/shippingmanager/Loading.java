@@ -173,7 +173,7 @@ public class Loading {
             int itemsInRow = template.getWidth() / selectedItems.get(i).getTEMPLATE().getWidth();
             quantity = Math.min(quantity, itemsInRow);
             if (quantity > 1) {
-                sameItems = selectedItems.stream().filter(it -> it.getTEMPLATE() == item.getTEMPLATE()).limit(quantity).toList();
+                sameItems = selectedItems.stream().filter(it -> it.getTEMPLATE() == item.getTEMPLATE()).toList();
                 modelsOfPack.add(createModelOfSameItems(sameItems));
                 removeItems(selectedItems,sameItems);
                 i--;
